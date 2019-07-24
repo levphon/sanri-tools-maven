@@ -17,6 +17,14 @@
    ```
    
 
+3. 启动
+
+```shell
+mvn jetty:run
+```
+
+
+
 ## 工具理念
 
 1. 轻量级,只依赖于文件系统
@@ -48,4 +56,3 @@
 * 除前端交互 servlet 必须写在 com.sanri.app.servlet 包中以外,其它随便自己定制
 
 * servlet 中的代码由于框架 javassist 的原因 ,不支持 java8 的 lambada 表达式
-
