@@ -60,7 +60,17 @@ define(['util','sqlclient/code','dialog','ztree'],function(util,code,dialog){
 			metatree.ztreeConfig.callback.onDblClick.call(ztree,null,'conn',defTreeNode);
 		});
 		bindEvents();
-	}
+	};
+
+	/**
+	 * 添加一个连接节点
+	 * @param connName
+	 */
+	metatree.appendConn = function(connName){
+		var connTreeNodeInfo = {id:connName+'_conn',pid:-1,nodeType:'conn',name:connName,originName:connName};
+		ztree.addNodes(null,-1,connTreeNodeInfo);
+		metatree.meta.connMeta[connName] = {};
+	};
 	
 	/**
 	 * 获取当前选中的 database 对象
@@ -145,7 +155,7 @@ define(['util','sqlclient/code','dialog','ztree'],function(util,code,dialog){
 				});
 				break;
 		}
-	}
+	};
 	
 	/**
 	 * 根据连接加载所有的数据库节点
@@ -154,7 +164,7 @@ define(['util','sqlclient/code','dialog','ztree'],function(util,code,dialog){
 		var connTreeNode = ztree.getNodeByParam('id',connName+'_conn');
 		ztree.removeChildNodes(connTreeNode);
 
-		if(connName && metatree.meta.connMeta[connName].databases && metatree.meta.connMeta[connName].databases.length > 0){
+		if(connName &&  metatree.meta.connMeta[connName].databases && metatree.meta.connMeta[connName].databases.length > 0){
 			//如果数据已经加载过了,则无需重复加载 ,暂时只改了这,以后所有的请求都得判断是否有数据 TODO 
 			appendDbTreeNode(connName);
 		}else{

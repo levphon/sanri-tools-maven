@@ -92,7 +92,7 @@ define(['util','dialog','sqlclient/meta','sqlclient/code','sqlclient/output','sq
 				height:$parent.height()
 			});
 		});
-	}
+	};
 	
 	/**
 	 * sqlclient 初始化
@@ -111,6 +111,23 @@ define(['util','dialog','sqlclient/meta','sqlclient/code','sqlclient/output','sq
 		var EVENTS = [{parent:'#functions',selector:'li',types:['click'],handler:callInterface},
 		              {parent:'#listfiles',selector:'li',types:['click'],handler:loadSqls}];
 		util.regPageEvents(EVENTS);
+
+		/**
+		 * 新建连接时,不同的数据库类型有不同的初始化参数
+		 */
+		function switchDbType(event) {
+			var value = $(this).val();
+			var defaultValues = {mysql:{port:3306,database:'mysql',username:'root'},
+			postgresql:{port:5432,database: 'postgres',username:'postgres'},
+			oracle:{port:1521,database:'orcl',username:'sanri'}};
+
+			$('#newconn').find('input').each(function () {
+				var elname = $(this).attr('name');
+				if(defaultValues[value][elname]){
+					$(this).val(defaultValues[value][elname]);
+				}
+			});
+		}
 		/**
 		 * 调用相应功能接口
 		 */
@@ -134,26 +151,29 @@ define(['util','dialog','sqlclient/meta','sqlclient/code','sqlclient/output','sq
 			case 'newconn':
 				var build=dialogutil.create('新连接')
 						.setContent($('#newconn'))
-						.setWidthHeight('400px','500px')
+						.setWidthHeight('500px','500px')
 						.addBtn({type:'yes',text:'确定',handler:function(index, layero){
 							var data = util.serialize2Json($('#newconn>form').serialize());
 							util.requestData('/sqlclient/createConnection',{connectionInfo:data},function(ret){
 								layer.close(index);
-								if(ret == -1){
+								if(ret == ""){
 									layer.msg('新建连接失败,已存在连接名称');
 									return ;
 								}
-								layer.msg('新建连接成功');
-								//TODO 树添加连接结点
+								// layer.msg('新建连接成功'); //连接建立成功后直接添加连接节点
+								metatree.appendConn(ret);
+
 							});
 						}})
 						.build();
+
 				//初始化单选框
 				require(['icheck'],function(){
 					$(':radio','#newconn').iCheck({
 						checkboxClass: 'icheckbox_square-green',
 						radioClass: 'iradio_square-green'
 					});
+					$(':radio','#newconn').on('ifChecked',switchDbType);
 				});
 				break;
 			case 'help':

@@ -85,13 +85,13 @@ public class SqlClientServlet extends BaseServlet{
 	 * 功能:创建连接 <br/>
 	 * 入参: <br/>
 	 */
-	public int createConnection(JdbcConnDetail connectionInfo) throws SQLException {
+	public String createConnection(JdbcConnDetail connectionInfo) throws SQLException {
 		String name = connectionInfo.getName();
 		if(existConnectionName(name)){
-			return -1;
+			return "";
 		}
 		InitJdbcConnections.saveConnection(connectionInfo);
-		return 0;
+		return name;
 	}
 
 	/**
