@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <style type="text/css">
+      .chart{
+        height: 300px;
+      }
+      .chart>.col-xs-4{
+        height: 100%;
+      }
+    </style>
+  </head> 
+  <body>
+    <div class="container-fluid">
+      <div class="row chart">
+        <div class="col-xs-4  chart-item"  name="physical"></div>
+        <div class="col-xs-4 chart-item"  name="swap"></div>
+        <div class="col-xs-4 chart-item"  name="jvmMem"></div>
+      </div>
+      <div class="row chart">
+        <div class="col-xs-4 chart-item"  name="codecache"></div>
+        <div class="col-xs-4 chart-item"  name="heap"></div>
+        <div class="col-xs-4 chart-item"  name="nonHeap"></div>
+      </div>
+      <div class="row chart">
+        <div class="col-xs-4 chart-item"  name="eden"></div>
+        <div class="col-xs-4 chart-item"  name="survivor"></div>
+        <div class="col-xs-4 chart-item"  name="old"></div>
+      </div>
+      <div class="row chart">
+        <div class="col-xs-4 chart-item"  name="perm"></div>
+      </div>
+    </div>
+    
+    </ul>
+    <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+    <script type="text/javascript" src="../config.js"></script>
+    <script type="text/javascript">
+    	require(['jquery','tools/jvm']);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,124 @@
+//package com.sanri.app.translate;
+//
+//import com.alibaba.fastjson.JSONArray;
+//import com.alibaba.fastjson.JSONObject;
+//import org.apache.commons.io.IOUtils;
+//import org.apache.commons.lang.ObjectUtils;
+//import org.apache.commons.lang.StringUtils;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
+//import sanri.utils.HttpUtil;
+//import sanri.utils.PathUtil;
+//
+//import javax.script.Invocable;
+//import javax.script.ScriptEngine;
+//import javax.script.ScriptEngineManager;
+//import javax.script.ScriptException;
+//import java.io.IOException;
+//import java.io.Reader;
+//import java.net.URLEncoder;
+//import java.util.HashMap;
+//import java.util.Iterator;
+//import java.util.Map;
+//
+///**
+// * 调用百度翻译
+// */
+//public class EnglishTranslate implements Translate {
+//
+//    private static final String baiduUrl = "https://fanyi.baidu.com/v2transapi";
+//
+//    String baiduSignJs = "";
+//
+//    {
+//        Reader reader = PathUtil.loadReader("/com/sanri/config/baidujs.js");
+//        try {
+//            baiduSignJs = IOUtils.toString(reader);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }finally {
+//            IOUtils.closeQuietly(reader);
+//        }
+//    }
+//
+//    private Log logger = LogFactory.getLog(getClass());
+//    @Override
+//    public boolean doTranslate(TranslateWord translateWord) {
+//        String origin = translateWord.getOrigin();
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("from", "zh");
+//        params.put("to", "en");
+//        params.put("transtype", "realtime");
+//        params.put("simple_means_flag", "3");
+//        String sign = jsSign(origin);
+//        params.put("sign", sign);
+//        params.put("token", "8619c2b7ac320c14373f0222dce92941");
+//        try {
+//            //设置查询词
+//            params.put("query", URLEncoder.encode(origin,"utf-8"));
+//
+//            String requestUrl = baiduUrl+"?";
+//            StringBuffer paramsBuffer = new StringBuffer();
+//            Iterator<Map.Entry<String, Object>> iterator = params.entrySet().iterator();
+//            while (iterator.hasNext()){
+//                Map.Entry<String, Object> next = iterator.next();
+//                String key = next.getKey();
+//                String value = ObjectUtils.toString(next.getValue());
+//
+//                paramsBuffer.append(key+"="+value+"&") ;
+//            }
+//
+//            requestUrl += paramsBuffer.toString();
+//            logger.debug("请求百度翻译:"+requestUrl);
+//            JSONObject jsonObject = HttpUtil.getJSON(requestUrl, null);
+//            logger.debug("百度翻译响应结果("+origin+")"+jsonObject);
+//            JSONObject transResult = jsonObject.getJSONObject("trans_result");
+//            if (transResult != null) {
+//                JSONArray data = transResult.getJSONArray("data");
+//                if (data != null && !data.isEmpty()) {
+//                    JSONObject firstData = data.getJSONObject(0);
+//                    String dst = firstData.getString("dst");
+//                    String[] split = dst.split(" ");
+//                    StringBuffer stringBuffer = new StringBuffer();
+//                    for (int i = 0; i < split.length; i++) {
+//                        if (i == 0) {
+//                            stringBuffer.append(split[0]);
+//                        } else {
+//                            stringBuffer.append(StringUtils.capitalize(split[i]));
+//                        }
+//                    }
+//
+//                    translateWord.addTranslate(stringBuffer.toString());
+//                    translateWord.setTranslate(true);
+//                }
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return false;
+//    }
+//
+//    ScriptEngineManager manager = new ScriptEngineManager();
+//    private String jsSign(String origin) {
+//        ScriptEngine engine = manager.getEngineByName("js");
+//        try {
+//            //2.引擎读取 脚本字符串
+//            engine.eval(baiduSignJs);
+//
+//            //3.将引擎转换为Invocable，这样才可以掉用js的方法
+//            Invocable invocable = (Invocable) engine;
+//
+//            //4.使用 invocable.invokeFunction掉用js脚本里的方法，第一個参数为方法名，后面的参数为被调用的js方法的入参
+//            String scriptResult = (String) invocable.invokeFunction("e", origin);
+//
+//            return scriptResult;
+//        } catch (ScriptException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+//}

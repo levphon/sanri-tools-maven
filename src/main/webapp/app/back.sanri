@@ -1,0 +1,178 @@
+<li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="compare/column.html" target="_blank">
+            <img src="../images/contrast.png">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="compare/column.html" target="_blank">字段比较</a>
+                <small>huangzr</small>
+            </h3>
+            <p>比较出两列字段中的差异,忽略顺序,空白; 支持下划线转驼峰</p>
+        </div>
+    </div>
+</li>
+<li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="diamond/groups.html" target="_blank">
+            <img src="../images/QJ6932449826.jpg">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="diamond/groups.html" target="_blank">钻石数据查询</a>
+                <small>huangzr</small>
+            </h3>
+            <p>免登录查询钻石配置</p>
+        </div>
+    </div>
+</li>
+
+<li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="tools/reqbuild.html" target="_blank">
+            <img src="../images/postman.jpg">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="tools/reqbuild.html" target="_blank">postman 工具</a>
+                <small>huangzr</small>
+            </h3>
+            <p>请求构建工具,模拟请求 </p>
+        </div>
+    </div>
+</li>
+
+ <li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="json/jsontree.html" target="_blank">
+            <img src="../images/json.png">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="json/jsontree.html" target="_blank">json 解析</a>
+                <small>huangzr</small>
+            </h3>
+            <p>一键格式化 JSON 数据，支持在线编辑 类json,map 数据,keyvalue 数据</p>
+        </div>
+    </div>
+</li>
+
+ <li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="tools/filefetch.html" target="_blank">
+            <img src="../images/github.png">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="tools/filefetch.html" target="_blank">文件抓取</a>
+                <small>huangzr</small>
+            </h3>
+            <p>一键抓取修改过的 class 文件列表(内部用)</p>
+        </div>
+    </div>
+</li>
+
+<li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="tools/jvm.html" target="_blank">
+            <img src="../images/QJ6932449826.jpg">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="tools/jvm.html" target="_blank">jvm监控</a>
+                <small>huangzr</small>
+            </h3>
+            <p>本程序 jvm 内存监控 </p>
+        </div>
+    </div>
+</li>
+
+<li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="client/sqlclient.html" target="_blank">
+            <img src="../images/timg.jpg">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="client/sqlclient.html"  target="_blank">sql 客户端</a>
+                <small>huangzr</small>
+            </h3>
+            <p>自动 javabean,pojo,service,dao 代码生成,表字段,表元数据查看</p>
+        </div>
+    </div>
+</li>
+
+<li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="kafka/groups.html" target="_blank">
+            <img src="../images/QJ6932449826.jpg">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="kafka/groups.html" target="_blank">kafka 消费监控</a>
+                <small>huangzr</small>
+            </h3>
+            <p>给出 zookeeper 地址,可监控 kafka 数据消费情况 </p>
+        </div>
+    </div>
+</li>
+
+<li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="client/wscall.html" target="_blank">
+            <img src="../images/webservice.jpg">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="client/wscall.html" target="_blank">webservice 调用</a>
+                <small>huangzr</small>
+            </h3>
+            <p>给出 wsdl 地址,自动生成 调用代码,然后调用返回结果</p>
+        </div>
+    </div>
+</li>
+
+<li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="client/zkclient.html" target="_blank">
+            <img src="../images/QJ6932449826.jpg">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="client/zkclient.html" target="_blank">zookeeper 监控</a>
+                <small>huangzr</small>
+            </h3>
+            <p>监控 zookeeper 数据 </p>
+        </div>
+    </div>
+</li>
+
+<li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="../monitoring" target="_blank">
+            <img src="../images/QJ6932449826.jpg">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="../monitoring" target="_blank">javamelody 监控</a>
+                <small>huangzr</small>
+            </h3>
+            <p>本程序请求信息,内存信息监控</p>
+        </div>
+    </div>
+</li>
+
+ <li class="col-xs-3">
+    <div class="thumbnail">
+        <a class="" href="tools/tablerefrence.html" target="_blank">
+            <img src="../images/timg.jpg">
+        </a>
+        <div class="caption">
+            <h3>
+                <a href="tools/tablerefrence.html" target="_blank">删除有关联表</a>
+                <small>huangzr</small>
+            </h3>
+            <p>删除有关联表,主要作用于有外键的情况</p>
+        </div>
+    </div>
+</li>

@@ -1,0 +1,37 @@
+/*--------tree---------------*/
+.tree{
+  overflow-y: scroll;
+  height: inherit;
+}
+.tree {} .tree-node span {
+	display: inline-block;
+}
+.tree-node{
+  padding: 2px 0;
+}
+.tree-node span.checkbox{
+  padding: 0 3px;
+}
+.tree-node span input:not(.checkbox) {
+	width: 85px;
+	border: none;
+	border-bottom: 1px solid #ddd;
+	padding: 3px 2px;
+	height: 22px;
+}
+.tree-node span input:not(.checkbox):hover {
+	border-bottom: 1px solid deepskyblue;
+}
+.tree-node span input:not(.checkbox):out-of-range {
+	border-bottom: 1px solid #ddd;
+}
+.tree-node span.indent {
+	width: 2em;
+}
+
+.tree-node .key{
+	text-align: right;
+}
+.tree-node .value{
+	text-align: left;
+}

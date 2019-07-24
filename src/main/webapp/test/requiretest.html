@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <name>表单元素</name>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../css/appbase.css" />
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../plugins/icheck/custom.css" />
+    <link rel="stylesheet" href="../plugins/chosen/chosen.min.css" />
+    <link rel="stylesheet" href="../plugins/datetimepicker/bootstrap-datetimepicker.min.css" />
+
+    <style>
+        .testicheck{
+
+        }
+        .testicheck label{
+            margin-right: 1.5em;
+            cursor: pointer;
+        }
+
+        fieldset{
+            margin: 2px;
+        }
+
+    </style>
+</head>
+<body>
+
+
+    <fieldset>
+        <div id="c" class="testicheck">
+            <label for="man">
+                <input type="radio" name="sex" value="1" id="man" >
+                男
+            </label>
+            <label for="woman">
+                <input type="radio" name="sex" value="2" id="woman" >
+                女
+            </label>
+
+            <label for="swim">
+                <input type="checkbox" name="favorite" id="swim">
+                游泳
+            </label>
+            <label for="sing">
+                <input type="checkbox" name="favorite" id="sing">
+                唱歌
+            </label>
+            <label for="xxoo">
+                <input type="checkbox" name="favorite" id="xxoo">
+                跨年晚会
+            </label>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <select name="city" id="city"></select>
+        <select name="" id="favorite"></select>
+        <input type="text" id="nowDate">
+    </fieldset>
+
+    <fieldset>
+        <button class="btn btn-w-m btn-primary" id="opendialog">打开对话框</button>
+    </fieldset>
+    <script src="../js/requirejs2.1.11-min.js" type="text/javascript"></script>
+    <script src="../app/config.js" type="text/javascript"></script>
+    <script type="text/javascript">
+       require(['util'],function(util){
+//            console.log(util.StringUtil.isBlank(''));
+//            console.log(util.StringUtil.isBlank('  '));
+//            console.log(util.StringUtil.isBlank(null));
+//            console.log(util.StringUtil.isBlank(undefined));
+//            console.log(util.StringUtil.isBlank('abc'));
+////            console.log(util.StringUtil.isBlank(0));
+//            console.log(util.FormatUtil.dateFormat(new Date()));
+//            console.log(util.FormatUtil.stringFormat('{0},你的验证码为{1},请及时查询,验证码{1}','sanri','4404'));
+//            util.dialog('http://www.baidu.com',{w:'sanri'},'测试打开百度','80%','90%');
+
+            util.icheck('#c');
+            util.chosen('#city',{data:[{val:'1',text:'深圳'},{val:'2',text:'长沙'},{val:'3',text:'汀谭'}],valueField:'val',textField:'text'});
+            util.chosen('#favorite',{valueField:'val',textField:'text',ajax:{url:'/data/favorite',data:{}}});
+            util.datetimepicker('#nowDate');
+
+           $('#opendialog').bind('click',function(){
+               util.dialog('http://www.baidu.com',{w:'sanri'},'测试打开百度','80%','90%');
+           });
+
+        });
+    </script>
+</body>
+</html>

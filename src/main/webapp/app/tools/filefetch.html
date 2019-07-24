@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <style type="text/css">
+      .files{
+        height: 500px !important;
+      }
+      #errorfiles .badge{
+        cursor: pointer;
+      }
+      #errorfiles .badge:hover{
+        background-color: pink;
+      }
+    </style>
+  </head> 
+  <body>
+    <div class="container" style="padding-top: 10px;">
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="btn-group">
+            <button class="btn btn-primary" id="seefiles">查看文件列表</button>
+            <button class="btn btn-default" id="handlePaths">整理路径</button>
+            <button class="btn btn-success" id="mergeVersion">版本合并</button>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <form class="form-inline">
+            <div class="form-group">
+              <label>需要切除的路径:</label>
+              <input class="form-control" name="cut-path" id="cutpath" value="/code/hhx-gps-web" />
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label class="">连接名称</label>
+            <input class="form-control" id="connName" value="web" name="connName"/>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label class="">输出目录(版本号)</label>
+            <input class="form-control" id="output" value="" name="output"/>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>文件列表</label>
+        <textarea class="form-control files" id="files" name="files"  ></textarea>
+      </div>
+      <button type="button" class="btn btn-primary" id="downfiles">下载文件</button>  
+      <button type="button" class="btn btn-success" id="deployPreview">一键部署</button>  
+      <button type="button" class="btn btn-danger" id="deployOnline">版本上线</button>  
+    </div>
+    
+    <ul id="errorfiles" class="list-group open-dialog">
+      
+    </ul>
+    
+    <ul id="uploadfiles" class="list-group open-dialog">
+      
+    </ul>
+    <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+    <script type="text/javascript" src="../config.js"></script>
+    <script type="text/javascript">
+    	require(['jquery','tools/fetchfile']);
+    </script>
+  </body>
+</html>

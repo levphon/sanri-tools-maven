@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用于查找表及字段</title>
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <link rel="stylesheet" href="../../plugins/contextMenu/jquery.contextMenu.min.css" />
+    <style>
+        .list-group-item{
+            cursor: pointer;
+        }
+        .list-group-item:hover{
+            background-color: #E8E7E6;
+        }
+        .table-list{
+            margin-top: -10px;
+        }
+        .table-list>.list-group-item{
+            margin-top: 8px;
+            margin-left: 5px;
+        }
+
+        select>option{
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" >数据表工具类</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <button class="btn btn-primary" id="testing">测试用</button>
+    <div class="row">
+        <div class="col-xs-4">
+            <div class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-plug"></i></span>
+                        <select class="form-control" style="width: 150px" name="" id="conns">
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-database"></i></span>
+                        <select class="form-control" style="width: 150px" name="" id="schemas">
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="panel panel-default margin-top">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row margin-bottom">
+                        <div class="col-xs-12">
+                            <div class="input-group ">
+                                <input type="text" placeholder="输入表名/字段名/表注释/字段注释" class="form-control " autocomplete="off" spellcheck="false" name="keyword" id="search" />
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary" id="btnsearch"><i class="fa fa-search"></i> 搜索</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <ul class="list-group list-inline table-list" style="margin-left: 0;" id="tables">
+
+                            </ul>
+                            <table class="table table-striped table-bordered" id="columns">
+                                <thead>
+                                    <tr>
+                                        <td>列名</td>
+                                        <td>类型</td>
+                                        <td>注释</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--模板代码配置-->
+<div class="open-dialog" id="templatecodeconfig">
+   <div class="col-xs-6">
+       <div class="form-inline">
+           <div class="form-group">
+               <div class="input-group input-group-sm">
+                   <span class="input-group-addon"><i class="fa fa-bitbucket"></i></span>
+                   <select class="form-control" name="" style="width: 150px;" id="templates">
+                       <option value="">模板一</option>
+                       <option value="">模板二</option>
+                   </select>
+               </div>
+           </div>
+           <div class="form-group">
+               <button class="btn btn-info btn-sm" id="plustemplate"><i class="fa fa-plus-square"></i> 添加模板</button>
+               <a href="javascript:;" id="seevars">查看可用变量</a>
+           </div>
+       </div>
+
+   </div>
+    <div class="col-xs-6">
+        <p id="codepreview"></p>
+    </div>
+</div>
+
+<!-- 添加模板对话框 -->
+<div class="open-dialog" id="plustemplatedialog">
+    <div class="col-xs-12">
+        <form class="form-horizontal" >
+            <div class="form-group">
+                <input type="text" name="codename" class="form-control" placeholder="模板名称" />
+            </div>
+            <div class="form-group">
+                <textarea name="codesource" placeholder="模板源码可以使用变量" class="form-control" style="min-height: 450px;"></textarea>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="open-dialog" id="varslist">
+    <table class="table table-bordered table-bordered">
+        <caption>主体变量表</caption>
+        <thead>
+            <tr>
+                <td>变量名</td>
+                <td>解释</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>CONNECTION</td><td>连接名</td></tr>
+            <tr><td>SCHEMA</td><td>数据库名</td></tr>
+            <tr><td>TABLE</td><td>表格名</td></tr>
+            <tr><td>TABLE_COMMENTS</td><td>表注释</td></tr>
+            <tr><td>COLUMNS</td><td>表格列的列表 Map 对象,下面有解释</td></tr>
+
+            <tr><td>TIME</td><td>时间 hh:mm:ss</td></tr>
+            <tr><td>DATE</td><td>日期 yyyy-MM-dd</td></tr>
+            <tr><td>AUTHOR</td><td>作者,取自计算机名</td></tr>
+
+            <tr><td>PO_NAME</td><td>持久层类名</td></tr>
+            <tr><td>PO_NAME_LOWER</td><td>持久层类名第一个字母小写</td></tr>
+            <tr><td>PROPERTIES</td><td>属性列表 Map 对象,下面解释</td></tr>
+
+        </tbody>
+    </table>
+
+    <table class="table table-striped table-bordered">
+        <caption>COLUMNS 说明</caption>
+        <thead>
+            <tr><td>变量名</td><td>注释</td></tr>
+        </thead>
+        <tbody>
+            <tr><td></td><td></td></tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped table-bordered">
+        <caption>COLUMNS 说明</caption>
+        <thead>
+        <tr><td>变量名</td><td>注释</td></tr>
+        </thead>
+        <tbody>
+        <tr><td></td><td></td></tr>
+        </tbody>
+    </table>
+
+    <table class="table table-striped table-bordered">
+        <caption>PROPERTIES 说明</caption>
+        <thead>
+        <tr><td>变量名</td><td>注释</td></tr>
+        </thead>
+        <tbody>
+        <tr><td></td><td></td></tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require([ 'bootstrap','tools/tablehelp']);
+</script>
+</body>
+</html>

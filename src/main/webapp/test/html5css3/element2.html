@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <name>name</name>
+</head>
+<body>
+<b>表单元素</b><br/>
+<form action="" id="reg" autocomplete="off">
+    用户名: <input name="user" value="xxx">
+    <input type="text" autofocus>
+    <input disabled />
+    <input type="text" autocomplete="off">
+
+    <button>提交</button>
+
+    <label for="username"></label>
+    <input type="text" id="username">
+</form>
+
+<input type="text" form="reg"> <!--与表单进行挂钩-->
+
+input type 列表 <br/>
+<form action="#" >
+    <label for="">文本框输入限制:  <input type="text" name="username2" maxlength="5" /></label><br/>
+    <label for="">文本框(加长):  <input type="text" maxlength="5" size="30" /></label><br/>
+    <label for="">文本框(只读):  <input type="text" maxlength="5" readonly size="30" /></label><br/>
+    <label for="">文本框(禁用):  <input type="text" maxlength="5" disabled size="30" /></label>禁用的文档框,数据不会提交出去<br/>
+    <label for="">文本框(必填):  <input type="text" maxlength="5" required value="1"  size="30" /></label>存在兼容性问题,效果不一样<br/>
+    <label for="">文本框(数据列表):  <input type="text" maxlength="5" list="datalist"   size="30" /></label><br/>
+    <label for="">文本框(字符提示):  <input type="text" placeholder="请输入" maxlength="5" list="datalist"   size="30" /></label><br/>
+    <label for="">密码框:  <input type="password" placeholder="请输入" maxlength="5" list="datalist"   size="30" /></label><br/>
+    <label for="">搜索框:  <input type="search" placeholder="请输入" maxlength="5"   /></label>存在兼容性问题,firefox 没有叉,其它浏览器有<br/>
+    <label for="">数字框:  <input type="number" placeholder="请输入" maxlength="5"    size="30" />存在兼容性问题,chrome 直接不让输,firefox 可以输入,但不能提交,ie 不支持</label><br/>
+    <label for="">数字框:  <input type="number" placeholder="请输入" min="10" max="50" step="2"/>存在兼容性问题,chrome 直接不让输,firefox 可以输入,但不能提交,ie 不支持</label><br/>
+    <label for="">日期框:  <input type="date" />存在兼容性问题,ie,firefox 不支持,chrome 支持</label><br/>
+    <label for="">月:  <input type="month" />存在兼容性问题,ie,firefox 不支持,chrome 支持</label><br/>
+    <label for="">时间:  <input type="time" />存在兼容性问题,ie,firefox 不支持,chrome 支持</label><br/>
+    <label for="">周:  <input type=week />存在兼容性问题,ie,firefox 不支持,chrome 支持</label><br/>
+    <label for="">日期时间:  <input type="datetime" />存在兼容性问题,ie,firefox 不支持,chrome 支持</label><br/>
+    <label for="">颜色框:  <input type="color" />ie 不支持</label><br/>
+    <label for="">复选框:  <input type="checkbox" />显示效果不一样</label><br/>
+    <label for="">单选框:  <input type="radio" />显示效果不一样</label><br/>
+    <label for="">inputsubmit:  <input type="submit" /></label><br/>
+    <label for="">inputreset:  <input type="reset" /></label><br/>
+    <label for="">inputbutton:  <input type="button" /></label><br/>
+    <label for="">图片按扭:  <input type="image" src="0016.jpg" style="width: 96px;height: 38px;" /></label><br/>
+    <label for="">邮件框:  <input type="email" /></label>支持还可以<br/>
+    <label for="">电话:  <input type="tel" /></label>不太支持<br/>
+    <label for="">url:  <input type="url" /></label>验证不一样,兼容性问题<br/>
+    <label for="">隐藏元素:  <input value="1" name="id" type="hidden" /></label><br/>
+    <label for="">上传元素:  <input type="file" /></label>兼容性问题,不同浏览器显示不一样,而且很丑<br/>
+    <label for="">上传元素限制类型:  <input type="file" accept="image/gif" /></label>只允许 git 图片,但会导致响应变慢<br/>
+    <label for="">下拉列表:
+        <select name="fruit" id="">
+            <option value="1">苹果</option>
+            <option value="2">香蕉</option>
+            <option value="3">橘子</option>
+        </select>
+    </label>兼容性问题,不同浏览器显示不同,而且很丑<br/>
+    <label for="" >下拉列表(多选):
+        <select multiple name="fruit" id="" size="10">
+            <option value="1">苹果</option>
+            <option value="2">香蕉</option>
+            <option value="3">橘子</option>
+        </select>
+    </label>兼容性问题,不同浏览器显示不同,而且很丑<br/>
+    <label for="">下拉列表(分组):
+        <select name="fruit" id="">
+            <optgroup label="水果">
+                <option value="1">苹果</option>
+                <option value="2">香蕉</option>
+                <option value="3">橘子</option>
+            </optgroup>
+            <optgroup label="粗粮">
+                <option value="4">小米</option>
+                <option value="5">玉米</option>
+                <option value="6">大米</option>
+            </optgroup>
+        </select>
+    </label>兼容性问题,不同浏览器显示不同,而且很丑<br/>
+
+    <label for="">多行文本框: <textarea>这里写内容</textarea></label> 需去掉下面的三角<br/>
+
+    <button type="submit">提交</button>
+</form>
+
+
+
+
+<datalist id="datalist">
+    <option value="1">果子</option>
+    <option value="2">蒴果</option>
+    <option value="3">橘子</option>
+</datalist>
+<br/><br/><br/><br/><br/><br/><br/><br/>
+</body>
+</html>

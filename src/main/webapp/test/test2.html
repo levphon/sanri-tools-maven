@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+  </head> 
+  <body > 
+    <script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+    <script type="text/javascript">
+    	var generateConfig={
+    			daoPackage:'com.hhx.gps.dao',
+    			daoImplPackage:'com.hhx.gps.dao.impl',
+    			servicePackage:'com.hhx.gps.service',
+    			serviceImplPackage:'com.hhx.gps.service.impl',
+    			controllerPackage:'com.hhx.gps.web.action',
+    			modelPackage:'com.hhx.gps.model',
+    			voPackage:'com.hhx.gps.pojo'
+    	};
+    	var data = {generateConfig:generateConfig,tables:['d_user','d_track_info'],connName:'default'};
+      $.ajax({
+        type:'post',
+        url:'/newsanritools/code/generate/ssm',
+        contentType:'application/json',
+        data:JSON.stringify(data),
+        dataType:'json',
+        success:function(path){
+        	$('body').append('<iframe id="downloadiframe" style="display:none;" src="/newsanritools/code/download?path='+path+'"></iframe>');
+        }
+      });
+    </script>
+    
+  </body>
+</html>

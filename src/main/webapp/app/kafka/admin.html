@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>kafka 主题管理</title>
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <link rel="stylesheet" href="../../plugins/icheck/custom.css" />
+    <link rel="stylesheet" href="../../plugins/jsonview/jquery.jsonview.min.css" />
+
+        <style>
+        .list-group-item{
+            cursor: pointer;
+        }
+        .checkbox-inline{
+            margin-left: 0 !important;
+        }
+        .custom-input{
+            border: 1px solid #c6cede;
+            background-color: #fff;
+            height: 30px;
+            line-height: 30px;
+            padding: 0px 5px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header" id="adminconn">
+            <a class="navbar-brand"><span conn=""></span> 主题管理 </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">主题列表
+                    <a href="javascript:;" class="pull-right padding-right" id="createTopic">
+                        <i class="fa fa-plus"></i> 创建主题
+                    </a>
+                </div>
+                <div class="list-group" id="topics">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-7">
+            <div class="panel panel-default">
+                <div class="panel-heading" ><span id="topicname">.</span></div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#profile" data-toggle="tab">属性列表</a></li>
+                        <li  class="" ><a href="#data" data-toggle="tab">数据模拟</a></li>
+                    </ul>
+
+                    <div class="tab-content padding-top">
+                        <div class="active tab-pane" id="profile">
+                            <button class="btn btn-link" id="refreshlogsize"><i class="fa fa-refresh"></i></button>
+                            <table class="table table-bordered table-striped table-hover" id="topicdetail">
+                                <thead>
+                                <tr>
+                                    <td>partition</td>
+                                    <td>logSize</td>
+                                    <td>update</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="tab-pane" id="data">
+                            <div >
+                                <div class="form-group">
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" checked  > 全选
+                                    </label>
+                                    <input type="text" name="dataSize" class="custom-input margin-left" value="1000" size="10" placeholder="数据量">
+                                    <button class="btn btn-sm btn-primary" id="createdata"> <i class="fa fa-magic"></i> 生成数据</button>
+                                </div>
+                                <div class="form-group" id="partitionlist">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 创建主题 -->
+<div class="open-dialog" id="createTopicDialog">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-sm-3  ">主题名:</label>
+            <div class="col-sm-9">
+                <input type="text" name="topic"  class="form-control" placeholder="主题名" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3 ">分区数:</label>
+            <div class="col-sm-9">
+                <input type="text" name="partitions"  class="form-control" placeholder="分区数" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3 ">副本数:</label>
+            <div class="col-sm-9">
+                <input type="text" name="replication"  class="form-control" placeholder="副本数" />
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require([ 'bootstrap', 'kafka/admin' ]);
+</script>
+</body>
+</html>

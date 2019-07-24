@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模板代码生成器</title>
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <style>
+        .value-col{
+            width: 160px;
+            height: 500px;
+            float: left;
+            margin-right: 10px;
+        }
+        .value-col-plus{
+            width: 160px;
+            height: 500px;
+            float: left;
+        }
+        .value-col>textarea{
+            height: 100%;
+        }
+
+        .plus{
+            border: 1px solid;
+            color: #CCCCCC;
+            transition: color .25s;
+            position: relative;
+        }
+        .plus:before{
+            content: ' ';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 64px;
+            border-top: 10px solid;
+            margin-top: -5px;
+            margin-left: -32px;
+        }
+        .plus:after{
+            content: ' ';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 480px;
+            border-left: 10px solid;
+            margin-top: -240px;
+            margin-left: -5px;
+        }
+        .plus:hover{
+            color: #00ff00;
+            cursor: pointer;
+        }
+
+        .template-edit{
+            height: 120px !important;
+        }
+        .result-show{
+            height: 280px !important;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default" style="margin-bottom: 5px;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" >模板代码生成器</a>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-fluid ">
+        <div class="row ">
+            <div class="col-xs-7 ">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">在下面添加你的列元素</div>
+                    <div class="panel-body " id="datacols">
+                        <div class="value-col ">
+                            <textarea class="form-control" ></textarea>
+                        </div>
+                        <div class="plus value-col-plus " ></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5 ">
+                <div class="panel panel-success">
+                    <div class="panel-heading">模板选择</div>
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            <div class="row">
+                                <div class="col-xs-4 col-md-3">
+                                    <select class="form-control" id="templates" >
+                                    </select>
+                                </div>
+                                <div class="col-xs-8 col-md-7">
+                                     <div class="btn-group">
+                                        <button class="btn btn-info " id="newTmp"><i class="fa fa-plus"></i> 新模板</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row margin-top">
+                                <div class="col-xs-12">
+                                    <textarea  class="form-control template-edit" id="template-edit"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row margin-top">
+                                <div class="col-xs-12">
+                                    <div class="btn-group">
+                                         <button class="btn btn-primary " id="gencode"><i class="fa fa-apple"></i> 生成</button>
+                                        <button class="btn btn-success " id="copy"><i class="fa fa-copy"></i> 复制结果</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row margin-top">
+                                <div class="col-xs-12">
+                                    <textarea  class="result-show form-control" id="result-show"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+<!--新配置-->
+<div class="open-dialog" id="newconfig">
+     <form class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-xs-3 col-lg-2 ">模板名:</label>
+          <div class="col-xs-9 col-lg-9">
+            <input type="text" name="baseName"  class="form-control" placeholder="模板名"  spellcheck="false" autocomplete="off" />
+          </div>
+        </div>
+
+         <div class="form-group">
+          <label class="control-label col-xs-3 col-lg-2">内容:</label>
+          <div class="col-xs-9 col-lg-9">
+              <textarea name="content" style="height: 250px;" class="form-control" placeholder="模板内容" spellcheck="false" autocomplete="off"></textarea>
+          </div>
+        </div>
+      </form>
+</div>
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require([ 'bootstrap','tools/templatecode']);
+</script>
+</body>
+</html>

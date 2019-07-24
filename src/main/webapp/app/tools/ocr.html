@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>粘贴版内容</title>
+    <link rel="stylesheet" href="../../css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../css/animate.min.css"/>
+    <link rel="stylesheet" href="../../css/appbase.css"/>
+    <link rel="stylesheet" href="../../css/style.css"/>
+
+    <link rel="stylesheet" href="../../plugins/fancybox/jquery.fancybox.css" />
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" >粘贴板 OCR 识别</a>
+        </div>
+    </div>
+</nav>
+<div class="col-xs-12">
+    <div class="alert alert-success">在本页面使用 CTRL + V ,如果粘贴板有图片,则会识别出文本 </div>
+
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <a href="#imgNode" class="fancybox"><img src="" id="imgNode"></a>
+        </div>
+        <div class="col-xs-6 result text" id="result" >
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require([ 'bootstrap','tools/ocr']);
+</script>
+</html>

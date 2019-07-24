@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>钻石配置查询</title>
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <style>
+        li.list-group-item{
+            cursor: pointer;
+        }
+         li.list-group-item:hover{
+            background-color: #eeeeee;
+        }
+    </style>
+</head>
+<body>
+ <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+          <a href="javascript:;" class="navbar-brand" id="groupBrand"></a>
+      </div>
+    </div>
+  </nav>
+
+    <div class="container-fluid">
+        <div class="panel panel-default" id="dataIds">
+          <div class="panel-heading">数据编号数:<span style="font-weight: bold;padding-left: 10px;"></span></div>
+          <div class="list-group">
+          </div>
+        </div>
+    </div>
+
+ <div class="open-dialog" id="content" style="height: 95%">
+    <textarea class="form-control" style="height: 100%" ></textarea>
+ </div>
+ <div class="open-dialog" id="testContent" style="height: 95%">
+    <textarea class="form-control" style="height: 100%" ></textarea>
+ </div>
+   <div class="open-dialog" id="releaseContent" style="height: 95%">
+    <textarea class="form-control" style="height: 100%" ></textarea>
+ </div>
+
+  <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+  <script type="text/javascript" src="../config.js"></script>
+  <script type="text/javascript">
+    	require(['bootstrap','diamond/dataId']);
+  </script>
+</body>
+</html>

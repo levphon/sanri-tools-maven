@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>springcloud 配置中心</title>
+    <link rel="stylesheet" href="../../css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../css/animate.min.css"/>
+    <link rel="stylesheet" href="../../css/appbase.css"/>
+    <link rel="stylesheet" href="../../css/style.css"/>
+
+    <link rel="stylesheet" href="../../plugins/jsonview/jquery.jsonview.min.css" />
+    <style>
+        .fixed-height{
+            height: 510px;
+            overflow-y: scroll;
+        }
+        #latestUse .list-group-item{
+            cursor: pointer;
+        }
+        .list-group-item:hover{
+            background-color: ghostwhite;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">springcloud 配置中心可视化工具</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading">设置区</div>
+        <div class="panel-body">
+            <div class="col-xs-9 ">
+                <div class="input-group input-group-sm">
+                    <div class="input-group-btn" id="connect">
+                        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                            <span></span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                        </ul>
+                    </div>
+                    <input class="form-control" name="connect" disabled/>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="button-group ">
+                    <button id="newconnbtn" class="btn btn-primary btn-sm"><i class="fa fa-play-circle"></i> 新连接</button>
+                    <button id="newconfigbtn" class="btn btn-info btn-sm"><i class="fa fa-android"></i> 新配置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="col-xs-9">
+        <div id="loadconfigdata" class="fixed-height"></div>
+    </div>
+
+    <div class="col-xs-3">
+        <div class="panel panel-success" id="latestUse">
+            <div class="panel-heading">保存的配置</div>
+            <div class="list-group">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--新连接-->
+<div class="open-dialog" id="newconn">
+     <form class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 col-lg-1">连接名:</label>
+          <div class="col-sm-9 col-lg-5">
+            <input type="text" name="conn" autocomplete="false"  spellcheck="false" class="form-control" placeholder="连接名称" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-3 col-lg-1">地址路径:</label>
+          <div class="col-sm-9 col-lg-11">
+            <input type="text" name="address" autocomplete="false" spellcheck="false"  class="form-control" placeholder="请求地址" />
+          </div>
+        </div>
+      </form>
+</div>
+
+<!--新配置-->
+<div class="open-dialog" id="newconfig">
+     <form class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 ">模块名:</label>
+          <div class="col-sm-9">
+            <input type="text" name="modul"  class="form-control" placeholder="模块名" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-3">环境名:</label>
+          <div class="col-sm-9">
+            <input type="text" name="env"  class="form-control" placeholder="环境名" />
+          </div>
+        </div>
+
+         <div class="form-group">
+          <label class="control-label col-sm-3">分支名:</label>
+          <div class="col-sm-9">
+            <input type="text" name="branch"  class="form-control" placeholder="分支名" />
+          </div>
+        </div>
+      </form>
+</div>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require(['bootstrap', 'tools/cloudconfig']);
+</script>
+</body>
+</html>

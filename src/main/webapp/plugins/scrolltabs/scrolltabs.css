@@ -1,0 +1,79 @@
+.content-tabs {
+  width: 100%;
+  height: 42px;
+  line-height: 40px;
+  overflow: hidden;
+  border-bottom: solid 2px #2f4050;
+  background: #fafafa;
+  position: relative;
+}
+
+.content-tabs .tabs-nav {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  color: #999;
+  z-index: 2;
+  top: 0;
+  border: none;
+  background-color: #fff;
+  outline: none; /*原来这个可以去掉按扭点击时的那个外边框*/
+  cursor: pointer;
+}
+
+.content-tabs .tabs-nav:hover {
+  background-color: #fafafa;
+}
+
+.content-tabs .nav-left {
+  left: 0;
+  border-right: solid 1px #eee;
+}
+
+.content-tabs .nav-right {
+  right: 0;
+  border-left: solid 1px #eee;
+}
+
+.content-tabs .page-tabs {
+  width: 100000px;
+  margin-left: 40px;
+  height: 40px;
+}
+
+.page-tabs .page-tabs-content {
+  float: left;
+  height: 40px;
+}
+.page-tabs .page-tabs-content li{
+  float: left;
+  border-right: solid 1px #eee;
+}
+.page-tabs .page-tabs-content li a {
+  color: #999;
+  display: block;
+  padding: 0 15px;
+}
+.page-tabs .page-tabs-content li a:hover{
+  color: #777;
+  background: #f2f2f2;
+  text-decoration: none;
+}
+.page-tabs .page-tabs-content li.selected a{
+  background: #2f4050;
+  color: #a7b1c2;
+  text-decoration: none;
+}
+.page-tabs .page-tabs-content li.selected a:hover{
+  color: white;
+  background-color: #777;
+  text-decoration: none;
+}
+.page-tabs .page-tabs-content a i.fa {
+  color: #ccc;
+  padding-left: 3px;
+}
+.page-tabs .page-tabs-content a i.fa:hover{
+  color: #c00;
+}

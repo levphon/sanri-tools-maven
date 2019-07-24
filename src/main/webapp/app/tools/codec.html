@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <name>编码解码工具</name>
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <style>
+        .list-group button.list-group-item{
+            text-align: center;
+        }
+        .op-list>button{
+            padding: 5px 20px !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <span class="navbar-brand" >编码解码工具(采用 <a class="" href="https://www.oschina.net/p/crypto-js">Crypto-JS</a> 实现)</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#encode" data-toggle="tab">编码/解码</a></li>
+                    <li ><a href="#encrypt" data-toggle="tab">加密/解密</a></li>
+                    <li ><a href="#hash" data-toggle="tab">散列/哈希</a></li>
+                    <li ><a href="#hash" data-toggle="tab">unicode/utf-8/gbk 转换</a></li>
+                </ul>
+
+                <div class="tab-content ">
+                    <div class="tab-pane active" id="encode">
+                        <div class="form-inline">
+                            <textarea class="form-control" name="origin" rows="20" cols="50" placeholder="输入原始字符"></textarea>
+                            <div class="form-group">
+                                <select name="algorithm" size="4" class="form-control" style="width: 126px; border: none;">
+                                    <option value="escape" selected>escape</option>
+                                    <option value="urlencode" >urlencode</option>
+                                    <option value="urlencodeComponent" >urlencodeComponent</option>
+                                    <option value="base64">base64</option>
+                                </select>
+                                <div class="list-group">
+                                    <button class="list-group-item" name="encode" type="button">编码 <i class="fa fa-angle-right"></i></button>
+                                    <button class="list-group-item margin-top" name="decode" type="button"><i class="fa fa-angle-left"></i> 解码</button>
+                                </div>
+                            </div>
+                            <textarea class="form-control" name="encode" rows="20" cols="50" placeholder="输入编码后字符"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane " id="encrypt">
+                        <div class="form-inline">
+                            <textarea class="form-control" name="origin" rows="20" cols="50" placeholder="输入原始字符"></textarea>
+                            <div class="form-group">
+                                <select name="algorithm" size="2" class="form-control" style="width: 126px; border: none;">
+                                    <option value="aes" selected>AES</option>
+                                    <option value="des">DES</option>
+                                </select>
+                                <div class="list-group">
+                                    <button class="list-group-item " type="button">加密 <i class="fa fa-angle-right"></i></button>
+                                    <input type="text" class="form-control margin-top" size="10" placeholder="密码" autocomplete="false" spellcheck="false"/>
+                                    <button class="list-group-item margin-top" type="button"><i class="fa fa-angle-left"></i> 解密</button>
+                                </div>
+                            </div>
+
+                            <textarea class="form-control" name="encode" rows="20" cols="50" placeholder="输入加密后字符"></textarea>
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="hash">
+                        <textarea name="origin" class="form-control" placeholder="这里输入明文" rows="10"></textarea>
+                        <div class="btn-group btn-group-sm padding-top op-list">
+                            <button class="btn btn-primary ">MD5</button>
+                            <button class="btn btn-warning ">SHA1</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane " id="charcode">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+    <script type="text/javascript" src="../config.js"></script>
+    <script type="text/javascript">
+        require([ 'bootstrap','tools/codec']);
+    </script>
+</body>
+</html>

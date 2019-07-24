@@ -1,0 +1,36 @@
+.bookbox{
+    padding: 5px;
+    float: left;
+}
+.bookbox .bookimg{
+    float: left;
+    padding-right: 8px;
+    height: 200px;
+}
+.bookbox .bookimg img{
+    width: 120px;
+    height: 150px;
+}
+
+.bookbox .bookinfo{
+    width: 350px;
+    line-height: 1.5;
+    color: #999;
+    font-size: 14px;
+}
+.bookbox .bookinfo .introduce{
+    font-size: 10px;
+}
+.visted-item{
+    float: left;
+    margin-left: 10px;
+}
+.visted-item>a{
+    padding: 5px 15px;
+    border: 1px dotted #999977;
+}
+.visted-item>a:hover{
+    text-decoration: none;
+    background-color: #5bc0de;
+    color: whitesmoke;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据提取</title>
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <style>
+        .source{
+            overflow-x: scroll;
+            word-break: keep-all;
+            white-space: nowrap;
+        }
+
+        textarea{
+            min-height: 500px;
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" >字符串中提取数据</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="btn-group margin-bottom">
+                <button class="btn btn-success" id="a_b2aB" title="下划线转驼峰"><i class="fa fa-android"></i> 下划线转驼峰</button>
+                <button class="btn btn-info" id="aB2a_b" title="驼峰转下划线"><i class="fa fa-android"></i> 驼峰转下划线</button>
+            </div>
+            <textarea  autoHeight id="source" class="form-control source" spellcheck="false" autocomplete="off" ></textarea>
+        </div>
+        <div class="col-xs-6">
+            <div class="row margin-bottom">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <div class="input-group-btn" id="examples">
+                            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                                <span></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li></li>
+                            </ul>
+                        </div>
+                        <input type="text"  disabled class="form-control" placeholder="提取正则" spellcheck="false" autocomplete="off">
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary " id="distllbtn"><i class="fa fa-camera"></i> 提取</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <textarea autoHeight id="result"  class="form-control" spellcheck="false" autocomplete="off"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require([ 'bootstrap','tools/distill']);
+</script>
+</body>
+</html>

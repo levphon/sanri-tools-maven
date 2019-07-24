@@ -1,0 +1,146 @@
+.page-wrap {
+  padding: 10px;
+  font-size: 12px;
+}
+.page-wrap .button-group .radio-item{
+ display: inline-block;
+  padding: 4px 15px;
+  cursor: pointer;
+}
+.page-wrap .button-group .radio-item label{
+  cursor: pointer;
+}
+.page-wrap .button-group .radio-item input[type=radio]{
+  padding: 0 2px;
+}
+
+.page-wrap textarea { /*  border: none; */
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #333;
+}
+
+.page-wrap textarea:focus {
+  border-color: #f40;
+}
+
+.params-tree {
+  width: 600px;
+  display: inline-block;
+  float: left;
+}
+.params-tree .checkbox{
+  margin: 0;
+}
+
+.json-input-status {
+  float: left;
+}
+
+.json-input-status .no-standard-json {
+  height: 150px;
+}
+
+.json-input-status .standard-json {
+  height: 150px;
+}
+
+.button-group.fun {
+  padding: 4px 0;
+}
+
+.json-input-status .json-status {
+  border: 1px solid #c8d1ce;
+  -moz-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+}
+
+.json-input-status .json-status .legend {
+  color: #1f4397;
+  padding: 4px;
+  border-bottom: 1px solid #eee;
+  background-color: #eee;
+  position: relative;
+  height: 35px;
+}
+/*解决 chosen 高度问题 */
+.json-input-status .json-status .legend .chosen-container {
+  margin: 4px;
+}
+
+.json-input-status .json-status .legend .filter {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.json-input-status .json-status .legend .title {
+  top: 0;
+  left: 0;
+  line-height: 32px;
+}
+
+.json-input-status .json-status .log {
+  height: 35px;
+  overflow: scroll;
+  padding: 5px;
+  background-color: #111;
+}
+
+.json-input-status .json-status .search-box {
+  width: 250px;
+  float: right;
+}
+.json-input-status .json-status .log li{
+  width: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+}
+.json-input-status .json-status .log li:hover{
+  background-color: #233299;
+  cursor: pointer;
+}
+.json-input-status .json-status .log li.debug {
+  color: blue;
+}
+
+.json-input-status .json-status .log li.error {
+  color: #c9302c;
+}
+
+.json-input-status .json-status .log li.warning {
+  color: #eea236;
+}
+
+.json-input-status .json-status .log li.info {
+  color: #5bc0de;
+}
+
+.json-input-status .json-status .log li.success {
+  color: #4cae4c;
+}
+
+.json-input-status .json-status .log li span {
+  display: inline-block;
+  padding: 0 10px;
+}
+
+.json-input-status .json-status .log li span.linenum {
+  width: 40px;
+  padding: 0 1px;
+}
+
+.json-input-status .json-status .log li span.message {
+  
+}
+.json-input-status .json-status .log li span.level{
+  width: 65px;
+}
+.json-view-wrap{
+  display: none;
+}

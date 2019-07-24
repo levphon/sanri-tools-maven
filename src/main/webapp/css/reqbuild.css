@@ -1,0 +1,55 @@
+.login-wraper{
+    padding: 5px 0;
+    text-align: center;
+}
+.login-wraper .login-success{
+    display: none;
+    line-height: 30px;
+}
+.login-wraper .login-form{
+    display: block;
+}
+.login-wraper .validate-code{
+    cursor: pointer;
+    width: 85px;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 0 6px;
+}
+textarea.column-data{
+    border: 1px solid #ddd;
+    width: 100%;
+    height: 200px;
+    padding: 3px;
+}
+
+table.generate-column>tbody>tr{
+
+}
+table.generate-column>tbody>tr>td>.btn.selected{
+    border:1px solid #e4f;
+}
+table.generate-column>tbody>tr>td:nth-child(3)>span.finaly-value{
+    display: inline-block;
+    width: 80px;
+}
+table.generate-column>thead>tr>th{
+    text-align: center;
+}
+table.generate-column>tbody>tr>td>.btn>input{
+    width: 30px;
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+table.generate-column>tbody>tr>td>.btn>input.fix-value{
+    width: 80px;
+    text-align: left;
+    padding-left: 3px;
+}
+table.generate-column>tbody>tr>td>.btn>input.date-format{
+    width: 90px;
+}

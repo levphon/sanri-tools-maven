@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>身份证相关</title>
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <link rel="stylesheet" href="../../plugins/icheck/custom.css" />
+
+    <style>
+        .group-element{
+            padding: 0 4px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" >身份证相关工具</a>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">随机生成身份证</div>
+                    <div class="panel-body">
+                        <div class="form-horizontal" id="infoload">
+                            <div class="form-group place" >
+                                <label class="col-xs-2 control-label">出生地:</label>
+                                <span class="col-xs-3 group-element"><select name="province" class="form-control"></select></span>
+                                <span class="col-xs-4 group-element"><select name="city" class="form-control"></select></span>
+                                <span class="col-xs-3 group-element"><select name="area" class="form-control"></select></span>
+                            </div>
+
+                            <div class="form-group birthday">
+                                <label class="col-xs-2 control-label">出生日期:</label>
+                                <span class="col-xs-2 group-element"><select name="year" class="form-control"></select></span>
+                                <span class="col-xs-2 group-element"><select name="month" class="form-control"></select></span>
+                                <span class="col-xs-2 group-element"><select name="day" class="form-control"></select></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label">性别:</label>
+                                <span class="col-xs-4">
+                                    <label class="radio-inline"><input name="gender" checked value="1" type="radio" class="radio" />男</label>
+                                    <label  class="radio-inline"><input name="gender" value="0" type="radio" class="radio" />女</label>
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label">个数:</label>
+                                <span class="col-xs-2">
+                                    <input  type="text" value="10" name="size" class="form-control" />
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-xs-2 control-label"></label>
+                                <button class="btn btn-danger" id="generate">开始生成</button>
+                                <button class="btn btn-white" id="cleanall">清空</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <textarea id="genresult" class="form-control" style="height: 250px;" placeholder="生成结果展示"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">身份证验证</div>
+                    <div class="panel-body">
+                        <div class="alert alert-success">此处检验身份证后会在左边生成城市和生日性别信息</div>
+                        <div class="input-group" id="checkIdcard">
+                            <input type="text" value="430124199311163606" autocomplete="false" class="form-control" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" >检验身份证</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require([ 'bootstrap','tools/idcard']);
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+/*use border-box*/
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box; /* Firefox */
+    -webkit-box-sizing: border-box; /* Safari */
+    /* font-size:62.5%; */
+    /**
+    fonts-size:62.5%;
+      即可此后面布局可依据以下技巧进行设置em单位
+    fonts-size:1.2em等于font-size:12px
+    fonts-size:1.4em等于font-size:14px
+    */
+}
+*:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+/*解决 chrome 浏览器下字体不能小于 12px*/
+html {  -webkit-text-size-adjust: none;  }
+body {overflow-x: hidden;font-size: 12px;color: #333;font-family: Verdana, Arial, Helvetica, sans-serif; /*fonts-family:Helvetica Neue",​Helveti...YaHei",​Arial,​sans-serif;*//*手机字体*/  }
+a {outline: none;text-decoration: none;color: #06f;}
+a:hover {text-decoration: underline;color: #f60;}
+i,em{ font-style:normal;}
+img{vertical-align:middle; max-width: 100%;border:none;}
+html{zoom:1;}html *{outline:0;zoom:1;} html button::-moz-focus-inner{border-color:transparent!important;}
+/*设置margin和padding为0*/
+body,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+address,caption,cite,code,dfn,em,th,var，i{font-style:normal;font-weight:normal;}
+input{outline:none;}    /*所有 input 不加 outline 属性*/
+ul,ol{list-style-type: none;}   /*ul,ol 不加默认编号 */
+input[type="submit"],input[type="reset"],input[type="button"],input[type=date],button,select{
+    appearance:none;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari 和 Chrome */
+    /*去掉苹果的默认UI来渲染按钮 、解决部分手机浏览器对border：none无效办法*/
+}
+/*clearfix*/
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+* html .clearfix {
+    zoom: 1;
+} /* IE6 */
+*:first-child+html .clearfix {
+    zoom: 1;
+} /* IE7 */
+/*clearfix*/
+/*html5*/
+article,aside,dialog,footer,header,section,footer,nav,figure,menu {
+    display: block;
+}
+/*修改占位符字体颜色 */
+::-webkit-input-placeholder {
+    color: #999
+}
+
+:-moz-placeholder {
+    color: #999
+}
+
+::-moz-placeholder {
+    color: #999
+}
+
+:-ms-input-placeholder {
+    color: #ccc
+}
+/*css hack for IE*/
+input, textarea, select {
+    *font-size:100%;
+}
+/*滚动条默认样式,重置浏览器默认样式*/
+::-webkit-scrollbar {
+    width: 6px;
+    height:6px;
+    background-color: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #999;
+}
+::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+/*iframe 样式,解决 iframe 5 像素问题*/
+iframe {
+    border: none;
+    display: block;
+}
+/*解决 textarea 下面三角的问题,不显示三角,如需要显示,设置 resize:*/
+textarea{
+    resize: none;
+    outline: none;
+}
+/*fieldset 设置*/
+fieldset{
+    border: 1px solid #c8d1ce;
+    -moz-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    padding:5px;
+}
+
+/*垂直居中*/
+.valign{
+    display: table-cell;
+    *display:inline;
+    zoom: 1;
+    vert-align: middle;
+}
+
+/*全局设定,原子样式*/
+.pull-left{
+    float: left !important;
+}
+.pull-right{
+    float: right !important;
+}
+/*加省略号*/
+.ellipsis{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*文件输入样式,重置浏览器默认样式
+	使用时用 .file 包裹 input[type=file]
+	在 .file 里面加一个span 写入提示文本
+*/
+.file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+    cursor: pointer;
+}
+.file input[type=file] {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+
+

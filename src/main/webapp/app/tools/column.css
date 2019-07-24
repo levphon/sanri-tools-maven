@@ -1,0 +1,58 @@
+dt{
+  padding: 5px;
+}
+.left-column,
+.right-column,
+.ignore-column,
+.left-muti,
+.right-muti,
+.equal-column,
+.fun_column{
+  width: 100%;
+  height: 300px;
+}
+.left-column textarea,
+.right-column textarea,
+.ignore-column textarea,
+.fun_column textarea {
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  border-color: #eee;
+}
+
+ul.colset{
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+ul.colset li{
+  float: left;
+  margin-right: 2px;
+  margin-bottom: 5px;
+}
+ul.colset li button{
+  outline: none;
+}
+ul.colset li button:focus{
+  outline: none;
+}
+ul.colset li button:hover {
+  outline: none;
+}
+
+.left-muti,
+.right-muti,
+.equal-column{
+  border: 1px solid #eee;
+  overflow-y:scroll;
+}
+
+.col-count-see{
+  
+}
+.col-count-see>li>span{
+  width: 100px;
+  text-align: right;
+  padding-right: 5px;
+  display: inline-block;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>抓取小说文章</title>
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <link rel="stylesheet" href="novel.css" />
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" >搜书工具</a>
+        </div>
+        <div class="navbar-form">
+            <span class="" style="font-size: 15px;color: #777;line-height: 34px">网源:</span>
+            <select style="width: 400px;" class="form-control" name="netsource" id="netsource">
+            </select>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="input-group" id="search">
+                <input name="keyword" autocomplete="true" placeholder="输入书名,作者名" class="form-control input-lg" />
+                <div class="input-group-btn">
+                    <button class="btn btn-primary btn-lg"><i class="fa-search fa"></i> 搜索</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container padding-top">
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">最近查看 <span></span></div>
+            <div class="panel-body">
+                <ul id="lastvisted" class="bookcase">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">搜索结果 <span id="resultCount"></span></div>
+            <div class="panel-body">
+                <ul id="result"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="novelTemplate">
+    <li class="bookbox" bookId="{{bookId}}" chapterUrl="{{chapterUrl}}" bookname="{{title}}">
+        <div class="bookimg">
+            <a href="javascript:;" target="_blank">
+                <img src="{{logo}}" alt="{{title}}" >
+            </a>
+        </div>
+        <div class="bookinfo">
+            <h4 class="bookname">
+                <a href="javascript:;" target="_blank">{{title}}</a>
+            </h4>
+            <div class="cat">分类:{{category}}</div>
+            <div class="author">作者:{{author}}</div>
+            <div class="update">
+                <span>最新章节:</span>
+                <a href="javascript:;" target="_blank">{{lastChapter}}-{{lastChapterTitle}}</a>
+            </div>
+            <p class="introduce">{{introduce}}</p>
+        </div>
+    </li>
+</script>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require([ 'bootstrap','novel/novel']);
+</script>
+</body>
+</html>

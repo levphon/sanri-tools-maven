@@ -1,0 +1,255 @@
+button ,button:focus,button:active{
+  outline: none;
+}
+.page-wrap{
+  position: relative;
+}
+.main-fun{
+  width: 100%;
+  border-radius:0;
+  -webkit-border-radius:0;
+}
+.functions{
+  width: 100%;
+  padding: 2px 0;
+}
+.functions>li{
+  padding: 0 5px;
+  float: left;
+}
+.functions>li>button:hover {
+  background-color: #333;
+  border-color: #fff;
+  color: #fff;
+}
+
+.functions>li>button:focus {
+  outline: none;
+  background-color: #333;
+  border-color: #fff;
+  color: #fff;
+}
+.page-wrap .conn{
+  position: absolute;
+  left: 0;
+  top: 51px;
+  bottom: 0;
+  min-width: 240px;
+  border-top-right-radius:0;
+  -webkit-border-top-right-radius:0;
+}
+.page-wrap .main-wrap{
+  position: absolute;
+  left: 241px;
+  top: 51px;
+  bottom: 0;
+  right: 0;
+  border-top-left-radius: 0;    
+  -webkit-border-top-left-radius: 0;
+}
+.page-wrap .conn .tree-fun{
+  float: right;
+  padding: 2px 0;
+}
+
+.main-wrap .sql-input{
+  width: 100%;
+  height: 220px;
+  font-family: monospace;
+  font-size: 18px;
+}
+.main-wrap .sql-input textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+.main-wrap .quick-sql{
+  padding: 5px 3px;
+}
+.main-wrap .quick-sql .form-group{
+  margin-bottom: 0;
+  display: inline-block;
+}
+
+.about{
+  display:none;
+  position: relative;
+}
+.about>.logo{
+  position: absolute;
+  left: 5px;
+  top: 10px;
+}
+.about .about-content{
+  position: absolute;
+  top: 10px;
+  left: 38px;
+  right: 0;
+  bottom: 0;
+}
+
+.files{
+  display: none;
+}
+.files .list-group li{
+  cursor: pointer;
+}
+.files .list-group li>p{
+  line-height: 30px;
+  display: inline-block;
+}
+.files .list-group li>button{
+  float: right;
+}
+.files .list-group li:after {
+  content: " ";
+  clear: both;
+}
+.files .list-files-page{
+  position: relative;
+  margin-top: -10px;
+  height: 22px;
+}
+.files .list-files-page a{
+  color: #999;
+  font-size: 15px;
+  position: absolute;
+}
+.files .list-files-page a:hover{
+  text-decoration: none;
+  color: #333;
+}
+.files .list-files-page .prev-page{
+   left: 10px;
+}
+.files .list-files-page .next-page{
+  right: 10px;
+}
+
+.tables-result-set{
+  overflow-y:scroll;
+  position: absolute;
+  top: 267px;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+}
+.conntabletree{
+  bottom: 5px;
+  top: 65px;
+  overflow-y: scroll;
+  position: absolute;
+  right: 5px;
+  left: 5px;
+}
+/*添加随机数据一行的样式*/
+table.add-data>tbody>tr{
+  
+}
+table.add-data>tbody>tr>td>.btn.selected{
+  border:1px solid #e4f;
+}
+table.add-data>tbody>tr>td:nth-child(3)>span.finaly-value{
+  display: inline-block;
+  width: 80px;
+}
+table.add-data>thead>tr>th{
+  text-align: center;
+}
+table.add-data>tbody>tr>td>.btn>input{
+  width: 30px;
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+table.add-data>tbody>tr>td>.btn>input.fix-value{
+  width: 80px;
+  text-align: left;
+  padding-left: 3px;
+}
+table.add-data>tbody>tr>td>.btn>input.date-format{
+  width: 90px;
+}
+
+.open-dialog.add-multi-data .form-horizontal{
+  padding: 0 15px;
+}
+
+.generate-project-code textarea.template-code{
+  width: 100%;
+  height: 99%;
+  border:1px solid #ddd;
+}
+
+.generate-project-code .generate-base-configs ul,
+.generate-project-code .generate-base-configs li{
+  list-style-type: none;
+}
+
+.template-list{
+  
+}
+
+.template-list label{
+  display: block;
+}
+
+.wizard > .steps > ul > li{
+  width: auto;
+}
+
+
+.export-sql-input{
+  height: 99%;
+  position: relative;
+}
+.export-sql-input>.button-group{
+      position: absolute;
+    right: 5px;
+    top: 0;
+}
+
+.export-sql-input>textarea{
+  width: 100%;
+  border: none;
+  font-size: 15px;
+  position: absolute;
+    top: 35px;
+    right: 0;
+    bottom: 0;
+  padding: 5px;
+  border-top: 1px solid gray;
+}
+
+.progress-mask{
+      top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  position: absolute;
+  background-color: #838383;
+}
+
+.progress-mask>.progress{
+  top: 50%;
+      position: absolute;
+    left: 10%;
+    right: 10%;
+}
+.preview-data-info{
+  height: 30px;
+  padding: 0 15px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+}
+.preview-data-info>span{
+  line-height: 30px;
+}
+.preview-data-info>span>b{
+  font-weight: normal;
+}
+
+.position-relative{
+  position: relative;
+  overflow: hidden;
+}

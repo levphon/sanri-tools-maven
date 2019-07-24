@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>base64 工具</title>
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../css/animate.min.css"/>
+    <link rel="stylesheet" href="../../css/appbase.css"/>
+    <link rel="stylesheet" href="../../css/style.css"/>
+
+    <link rel="stylesheet" href="../../plugins/fancybox/jquery.fancybox.css" />
+
+    <style>
+        textarea{
+            height: 300px !important;
+        }
+
+        .image-preview{
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        .image-preview>span{
+            text-align: center;
+            height: 20px;
+            line-height: 20px;
+        }
+        .image-preview>.image{
+            position: absolute;
+            top: 20px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div class="navbar-brand ">上传图片即覆盖 base64 串,点击按扭覆盖图片</div>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="file btn btn-primary" >
+            <span>图片转base64</span>
+            <input type="file" id="file" class=""  name="image"/>
+        </div>
+        <button class="btn btn-success" id="base642img">base64 转图片</button>
+        <button class="btn btn-white" id="copytext">复制base64(除图片信息)</button>
+    </div>
+
+    <div class="row margin-top  border border-whitesmoke ">
+        <div class="col-xs-5">
+            <div class="image-preview" id="imagepreview">
+                <a class="image fancybox" href="#imgNode"></a>
+            </div>
+        </div>
+        <div class="col-xs-7">
+            <textarea class="form-control" name="base64" id="base64"></textarea>
+            <div class="alert alert-info margin-top" style="padding-left: 0;padding-right: 0;" id="imginfo"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require(['jquery', 'tools/base64img']);
+</script>
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    
+    <link rel="stylesheet" href="../../plugins/codemirror/codemirror.css" />
+    <link rel="stylesheet" href="../../plugins/codemirror/hint/show-hint.css" />
+    <link rel="stylesheet" href="../../plugins/codemirror/theme/3024-night.css" />
+    <link rel="stylesheet" href="../../plugins/ztree/theme/bootstrap/ztree-bootstrap.css" />
+    <link rel="stylesheet" href="../../plugins/datatable/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="../../plugins/contextMenu/jquery.contextMenu.min.css" />
+    <link rel="stylesheet" href="../../plugins/scrolltabs/scrolltabs.css" />
+    <link rel="stylesheet" href="../../plugins/chosen/chosen.min.css" />
+    <link rel="stylesheet" href="../../plugins/icheck/custom.css" />
+    <link rel="stylesheet" href="../../plugins/steps/jquery.steps.css" />
+    <link rel="stylesheet" href="../../plugins/jsonview/jquery.jsonview.min.css" />
+    <link rel="stylesheet" href="../../plugins/syntaxhighlighter/shCore.css" />
+    <link rel="stylesheet" href="../../plugins/syntaxhighlighter/shCoreDefault.css" />
+    <link rel="stylesheet" href="../../plugins/syntaxhighlighter/theme/shThemeEclipse.css" />
+    
+    <link rel="stylesheet" href="sqlclient.css" />
+  </head> 
+  <body class="full-window">
+    <div class="page-wrap fit">
+      <fieldset class="main-fun">
+       <ul class="functions btn-group" id="functions">
+        <li event="save"><button class="btn btn-white btn-bitbucket btn-ms"><i class="icon-save"></i>&nbsp;保存</button></li>
+        <li event="open"><button class="btn btn-white btn-bitbucket btn-ms"><i class="icon-folder-open"></i>&nbsp;打开</button></li>
+        <li event="execute"><button class="btn btn-white btn-bitbucket btn-ms"><i class="icon-cog"></i>&nbsp;执行</button></li>
+        <li event="newconn"><button class="btn btn-white btn-bitbucket btn-ms"><i class="icon-gear"></i>&nbsp;新连接</button></li>
+        <li event="help"><button class="btn btn-white btn-bitbucket btn-ms"><i class="icon-question">&nbsp;帮助</i></button></li>
+        <li event="about"><button class="btn btn-white btn-bitbucket btn-ms"><i class="icon-info"></i>&nbsp;关于</button></li>
+       </ul>
+      </fieldset>
+      <fieldset class="conn">
+        <input type="text" id="search" class="form-control" placeholder="搜索"/>
+        <div class="btn-group btn-group-xs tree-fun" >
+          <button type="button" class="btn btn-white"><i class="fa fa fa-expand"></i></button>
+          <button type="button" class="btn btn-white"><i class="fa fa-compress"></i></button>
+        </div>
+        <div style="clear: both;"></div> <!-- 清除浮动 -->
+        <ul class="ztree conntabletree" id="metatree"></ul>
+      </fieldset>
+      <fieldset class="main-wrap">
+        <div class="sql-input">
+          <textarea  id="sqlInput"></textarea>
+        </div>
+        <!-- 标签页 -->
+        <div class="result-set-tabs" id="tableTabs"></div>  
+        <div class="tables-result-set" id="tables"></div>
+      </fieldset>
+    </div>
+    
+    <!-- 文件列表 -->
+    <div class="files" id="files">
+      <ul id="listfiles" class="list-group"></ul>
+      <div id="listfilespage" class="list-files-page">
+        <a href="#" class="prev-page" id="prevpage">上一页</a>
+        <a href="#" class="next-page" id="nextpage">下一页</a>
+      </div>
+    </div>
+    
+    <!-- 新建连接 -->
+    <div id="newconn" class="open-dialog ">
+      <form  class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3">名称:</label>
+          <div class="col-sm-9">
+            <input class="form-control" name="name" value="localhost" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">类型:</label>
+          <div class="col-sm-9">
+            <label class="radio-inline">
+              <input type="radio" name="dbType" checked="checked" value="mysql"> mysql
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="dbType" value="oracle"> oracle
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-3">主机:</label>
+          <div class="col-sm-9">
+              <input class="form-control" name="host"  value="localhost" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">端口:</label>
+          <div class="col-sm-9">
+            <input class="form-control" name="port" type="text" value="3306" />
+          </div>
+        </div>
+         <div class="form-group">
+          <label class="control-label col-sm-3">库:</label>
+          <div class="col-sm-9">
+              <input class="form-control" name="database"  value="" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">用户名:</label>
+          <div class="col-sm-9">
+            <input class="form-control" name="username" value="root" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">密码:</label>
+          <div class="col-sm-9">
+            <input class="form-control" name="userpass" value="123456" />
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <!-- 连接信息展示  -->
+    <div class="open-dialog" id="connInfo">
+      <form  class="form-horizontal">
+         <div class="form-group">
+          <label class="control-label col-sm-3">名称:</label>
+          <div class="col-sm-9">
+            <p class="form-control-static" name="name"></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">类型:</label>
+          <div class="col-sm-9">
+            <p class="form-control-static" name="dbType"></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">库:</label>
+          <div class="col-sm-9">
+            <p class="form-control-static" name="database"></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">主机:</label>
+          <div class="col-sm-9">
+            <p class="form-control-static" name="host"></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">端口:</label>
+          <div class="col-sm-9">
+            <p class="form-control-static" name="port"></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">用户名:</label>
+          <div class="col-sm-9">
+            <p class="form-control-static" name="username"></p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">密码:</label>
+          <div class="col-sm-9">
+            <p class="form-control-static" name="userpass"></p>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <!-- 关于软件  -->
+    <div class="about" id="about">
+      <img alt="sanri" class="logo" src="../../images/three_sun_32_32.gif">
+      <ul class="about-content">
+        <li>sqlclient(sql客户端) v2.0.0</li>
+        <li>这是一款免费软件,版权归作者 sanri1993 所有 &copy;</li>
+        <li>--------------------------------</li>
+        <li>http://www.sanri.com</li>
+        <li>ningxiangsanri@163.com</li>
+      </ul>
+    </div>
+    
+    <!-- begin 以下是代码生成区的 html 结构 -->
+    <!-- 获取表字段自定义设置 -->
+    <div class="open-dialog" id="diyTableColumns">
+      <form  class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3">前缀:</label>
+          <div class="col-sm-9">
+           <input class="form-control  input-sm" name="prefix" value="'" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">拼接:</label>
+          <div class="col-sm-9">
+           <input class="form-control  input-sm" name="join" value="," />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">后缀:</label>
+          <div class="col-sm-9">
+           <input class="form-control  input-sm" name="suffix" value="'" />
+          </div>
+        </div>
+      </form>
+    </div>
+      <!-- java pojo 生成-->
+    <div class="open-dialog" id="generatepojo">
+       <form  class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3">生成模式:</label>
+          <div class="col-sm-9">
+            <label class="radio-inline">
+              <input type="radio" name="model"  value="hibernate"> hibernate
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="model" checked="checked" value="normal"> 普通
+            </label>
+          </div>
+        </div>
+         <div class="form-group">
+             <label class="control-label col-sm-3">添加支持:</label>
+            <label class="checkbox-inline">
+              <input type="checkbox" name="support"  value="swagger"> swagger
+            </label>
+           <label class="checkbox-inline">
+             <input type="checkbox" name="support" value="lombok"> lombok
+           </label>
+         </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">包名:</label>
+          <div class="col-sm-9">
+           <input class="form-control" name="packageName" placeholder="填写包名" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">继承自:</label>
+          <div class="col-sm-9">
+           <input class="form-control" name="baseEntity" placeholder="填写基类名称" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">重命名策略:</label>
+          <div class="col-sm-9">
+           <label class="radio-inline">
+              <input type="radio" name="rename" checked="checked" value="_2aB"> 下划线转驼峰
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">实现接口:</label>
+          <div class="col-sm-9">
+           <label class="checkbox-inline">
+            <input type="checkbox" name="interfaces" value="java.io.Serializable"  > Serializable
+           </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-3">排除字段:</label>
+          <div class="col-sm-9" id="generatepojoexclude">
+           
+          </div>
+        </div>
+      </form>
+      
+    </div>
+
+    <!--xml 代码生成-->
+    <div class="open-dialog" id="generatemybatis">
+      <form  class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3">基础包路径:</label>
+          <div class="col-sm-9">
+           <input class="form-control" name="basePackage" placeholder="com.glsx.taxi" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-3">命名空间:</label>
+          <div class="col-sm-9">
+           <input class="form-control" name="namespace" placeholder="com.glsx.taxi.mapper" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-sm-3">javaBean类型:</label>
+          <div class="col-sm-9">
+           <input class="form-control" name="beanType" placeholder="com.glsx.taxi.model." />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <code>TODO 添加初始化 sql </code>
+        </div>
+      </form>
+    </div>
+    
+    <!-- 生成项目代码 -->
+    <div class="open-dialog generate-project-code" id="generateprojectcode"> 
+      <h6>欢迎页</h6>
+      <section>
+          <p>欢迎使用三日代码生成工具</p>
+      </section>
+      <h6>选择表</h6>
+      <section>
+        <table name="generatetables" class="table table-striped table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th><input type="checkbox" name="checkall" checked></th>
+              <th>表格名称</th>
+              <th>表格注释</th>
+            </tr>
+          </thead>
+          <tbody>
+        
+          </tbody>
+        </table>
+      </section>
+      <h6>框架选择</h6>
+      <section>
+        <div class="list-group">
+          <a href="#" name="ssm" class="list-group-item active">ssm(springmvc+spring+mybatis)</a>
+          <a href="#" name="ssh" class="list-group-item">ssh(springmvc+spring+hibernate)</a>
+        </div>
+      </section>
+      <h6>配置信息</h6>
+      <section >
+        <form class="form-horizontal">
+          <div class="panel panel-default">
+            <div class="panel-heading">实体生成配置</div>
+            <div class="panel-body">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">生成模式:</label>
+                  <div class="col-sm-9">
+                    <label class="radio-inline">
+                      <input type="radio" name="model"  value="hibernate"> hibernate
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="model" checked="checked" value="normal"> 普通
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">继承自:</label>
+                  <div class="col-sm-9">
+                   <input class="form-control" name="baseEntity" placeholder="填写基类名称" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">重命名策略:</label>
+                  <div class="col-sm-9">
+                   <label class="radio-inline">
+                      <input type="radio" name="rename" checked="checked" value="_2aB"> 下划线转驼峰
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">实现接口:</label>
+                  <div class="col-sm-9">
+                   <label class="checkbox-inline">
+                    <input type="checkbox" name="interfaces" value="java.io.Serializable"  > Serializable
+                   </label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">排除字段:</label>
+                  <div class="col-sm-9">
+                    <input class="form-control" name="excludeColumns" placeholder="排除字段以逗号分隔" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">包配置</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label col-sm-3">基础包:</label>
+                    <div class="col-sm-9">
+                      <input class="form-control"  name="basePackage" placeholder="填写基础包,将自动配置下面的包" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">controller:</label>
+                  <div class="col-sm-9">
+                   <input class="form-control" key="controller" name="controllerPackage" placeholder="controller 包名称" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">entity:</label>
+                  <div class="col-sm-9">
+                   <input class="form-control" key="entity" name="entityPackage" placeholder="entity包名" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">service:</label>
+                  <div class="col-sm-9">
+                   <input class="form-control" key="service" name="servicePackage" placeholder="service包名" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">service/impl:</label>
+                  <div class="col-sm-9">
+                   <input class="form-control" key="service.impl" name="serviceimplPackage" placeholder="service/impl包名" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">dao:</label>
+                  <div class="col-sm-9">
+                   <input class="form-control" key="dao" name="daoPackage" placeholder="dao包名" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="control-label col-sm-3">dao/impl:</label>
+                  <div class="col-sm-9">
+                   <input class="form-control" key="dao.impl" name="daoimplPackage" placeholder="dao/impl包名" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </section>
+      <h6>模板-controller</h6>
+      <section>
+        <textarea spellcheck="false" class="template-code" id="controllercode"></textarea>
+      </section>
+      <h6>模板-service</h6>
+      <section>
+        <textarea spellcheck="false" class="template-code" id="servicecode"></textarea>
+      </section>
+      <h6>模板-service/impl</h6>
+      <section>
+        <textarea spellcheck="false" class="template-code" id="serviceImplcode"></textarea>
+      </section>
+      <h6>模板-dao</h6>
+      <section>
+        <textarea spellcheck="false" class="template-code" id="daocode"></textarea>
+      </section>
+      <h6>模板-dao/impl</h6>
+      <section>
+        <textarea spellcheck="false" class="template-code" id="daoImplcode"></textarea>
+      </section>
+      <h6>模板-mapper(mybatis)</h6>
+      <section>
+        <textarea spellcheck="false" class="template-code" id="mappercode"></textarea>
+      </section>
+      <h6>模板-xml(mybatis)</h6>
+      <section>
+        <textarea spellcheck="false" class="template-code" id="xmlcode"></textarea>
+      </section>
+      <h6>确认配置</h6>
+      <section>
+        <div class="panel panel-default">
+          <div class="panel-heading">基础配置</div>
+          <div class="panel-body generate-base-configs"  name="configs">
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">模板信息</div>
+          <div class="panel-body template-list" name="templates">
+            
+          </div>
+        </div>
+      </section>
+    </div>
+    
+     <!-- 表关联添加数据 -->
+    <div class="open-dialog" id="relationdata"> 
+      <h4>欢迎页</h4>
+      <section>
+          <p>欢迎使用三日代码数据生成工具</p>
+      </section>
+      <h4>选择表</h4>
+      <section>
+      </section>
+      <h4>表关联配置</h4>
+      <section>
+          <p>The next and previous buttons help you to navigate through your content.</p>
+      </section>
+      <h4>生成数据</h4>
+      <section>
+          <p>The next and previous buttons help you to navigate through your content.</p>
+      </section>
+    </div>
+    
+    <!-- 添加随机数据 -->
+    <div class="open-dialog " id="adddata">
+      <table class="add-data table table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>序号</th>
+            <th>字段名</th>
+            <th>最终值</th>
+            <th colspan="11">生成方式</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </div>
+
+    <div class="open-dialog" style="" id="showtableinfo">
+      <sql id="tableinfo" style="font-size: 13px;line-height: 1.7em;"></sql>
+    </div>
+
+    <div class="open-dialog " style="height: 100%" id="exportExcel">
+        <div class="row" style="height: 100%">
+            <div class="col-xs-4 border-right border-gold export-sql-input" >
+              <div class="form-inline">
+                <div class="form-group form-group-sm">
+                  <label for="">业务:</label>
+                  <select name="" class="form-control input-sm" id="exportbusiness" style="width: 130px;line-height: inherit;">
+                  </select>
+                </div>
+              </div>
+              <div class="button-group pull-right">
+                <button class="btn btn-toolbar  btn-sm " id="newexport"> <i class="fa fa-plus"></i></button>
+                <button class="btn btn-danger  btn-sm" id="saveexport"> <i class="fa fa-save"></i> 保存</button>
+                <button class="btn  btn-success btn-sm" id="preview"> <i class="fa fa-print"></i> 预览</button>
+                <button class="btn btn-primary btn-sm" id="exportProcess"> <i class="fa fa-download"></i> 开始导出</button>
+              </div>
+              <textarea class="border-top border-whitesmoke" id="previewSql" placeholder="1.输入sql 语句 ;
+2.点击数据预览;
+3.点击导出数据;"></textarea>
+            </div>
+          <div class="col-xs-8">
+            <div id="datainfoshow" class="preview-data-info">
+              <span class="pull-right" ><label >数据量: </label><b  name="total"></b></span>
+            </div>
+            <table class="table  table-striped table-hover" id="datapreview">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+
+    <!-- 新业务sql 创建-->
+    <div class="open-dialog" id="addbusinesssql">
+      <form class="form-horizontal">
+        <div class="form-group">
+          <label class="control-label col-sm-3 ">业务标题:</label>
+          <div class="col-sm-9">
+            <input type="text" name="subject"  class="form-control" placeholder="业务名称" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-12">
+            <textarea name="sql" class="form-control" placeholder="这里写入你的 sql 内容" style="height: 300px;"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 添加大量随机数据 -->
+    <div class="open-dialog add-multi-data" id="addmultidata">
+      <div class="row">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label class="control-label col-sm-3">生成数量:</label>
+            <div class="col-sm-9">
+              <input type="number" name="count" class="form-control" value="1000" placeholder="生成数量" />
+            </div>
+          </div>          
+        </form>
+      </div>
+      <table class="add-data table table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>序号</th>
+            <th>字段名</th>
+            <th>固定值</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+      </table>
+    </div>
+
+    <script type="text/html" id="processtemplate">
+        <div class="progress " name="process_{{id}}">
+          <label for="">{{name}}:</label>
+          <div class="progress-bar progress-bar-warning progress-bar-striped"  style="min-width: 2em;">
+            0%
+          </div>
+      </div>
+
+    </script>
+
+  <script type="text/html" id="generatetablestemplate">
+    {{each tables as table}}
+    <tr tablename="{{table.tableName}}">
+    <td><input type="checkbox" checked  name="notgenerate" /></td>
+      <td>{{table.tableName}}</td>
+      <td>{{table.comments}}</td>
+    </tr>
+    {{/each}} 
+    </script>
+    
+    <script type="text/html" id="randommultidata">
+	{{each columns as columnname i}}
+    <tr columnname="{{columnname}}">
+      <td><input type="checkbox" checked  name="notgenerate" /></td>
+      <td>{{i + 1}}</td>
+      <td>{{columnname}}</td>
+      <td><input class="form-control" name="fixedval" type="text" placeholder="填入固定值" /></td>
+    </tr>
+	{{/each}}
+	</script>
+    <script type="text/html" id="randomdata">
+	{{each columns as column i}}
+	<tr columnname="{{column.name}}">
+      <td><input type="checkbox" checked  name="notgenerate" /></td>
+      <td>{{i + 1}}</td>
+      <td>{{column.name}}</td>
+      <td><span class="finaly-value">{{column.initValue}}</span></td>
+      <td generate="num" ><div class="btn btn-sm btn-white selected" >数字limit<input type="text" value="5" ></div></td>
+      <td generate="nums" ><div class="btn btn-sm btn-white " >数字长度<input type="text" value="5" ></div></td>
+      <td generate="letters" ><div class="btn btn-sm btn-white " >字母<input type="text" value="5" ></div></td>
+      <td generate="strings" ><div class="btn btn-sm btn-white " >混合<input type="text" value="5" ></div></td>
+      <td generate="chinese" ><div class="btn btn-sm btn-white " >中文<input type="text" value="5" ></div></td>
+      <td generate="username" ><div class="btn btn-sm btn-white" >用户名</div></td>
+      <td generate="email" ><div class="btn btn-sm btn-white" >邮件<input type="text" value="5" ></div></td>
+      <td generate="date" ><div class="btn btn-sm btn-white" >日期<input type="text" class="date-format" value="yyyy-MM-dd" ></div></td>
+      <td generate="timestamp" ><div class="btn btn-sm btn-white" >时间戳</div></td>
+      <td generate="idcard" ><div class="btn btn-sm btn-white" >生份证号</div></td>
+      <td generate="fixed" ><div class="btn btn-sm btn-white" >固定值<input type="text" class="fix-value" value="{{column.initValue}}" ></div></td>
+    </tr>	
+	{{/each}}
+	
+	</script>
+    <!-- end 以下是代码生成区的 html 结构  -->
+    
+    <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+    <script type="text/javascript" src="../config.js"></script>
+    <script type="text/javascript">
+    	require(['bootstrap','sqlclient/main']);
+    </script>
+  </body>
+</html>

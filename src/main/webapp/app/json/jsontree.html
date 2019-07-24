@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    
+    <link rel="stylesheet" href="../../plugins/icheck/custom.css" />
+    <link rel="stylesheet" href="../../plugins/chosen/chosen.min.css" />
+    <link rel="stylesheet" href="../../plugins/jsonview/jquery.jsonview.min.css" />
+    <link rel="stylesheet" href="layout.css" />
+    <link rel="stylesheet" href="tree.css" />
+    
+  </head> 
+  <body class="full-window">
+    <div class="page-wrap clearfix fit">
+      <div class="params-tree">
+        <ul class="tree" id="tree"></ul>
+      </div>
+      <div class="json-input-status">
+        <div class="button-group" id="inputTypeCmd">
+          <div class="radio-item">
+            <input type="radio" id="likeJson" name="inputType" checked="checked" value="likeJson">
+            <label for="likeJson" class="radio-item-label">类json</label>
+          </div>
+          <div class="radio-item">
+            <input type="radio" name="inputType" id="mapJson" value="mapJson">
+            <label for="mapJson" class="radio-item-label">map 数据</label>
+          </div>
+          <div class="radio-item">
+            <input type="radio" name="inputType" id="keyvalueJson" value="keyvalueJson">
+            <label for="keyvalueJson" class="radio-item-label">keyValue 数据 </label>
+          </div>
+        </div>
+        
+        <div class="no-standard-json">
+          <textarea id="nostandardjson" placeholder="请输入类 json"></textarea>
+        </div>
+        <div class="standard-json">
+          <textarea id="standardjson" placeholder="请输入标准 json"></textarea>
+        </div>
+        <div class="button-group fun" id="jsontreeOpts">
+          <button class="btn btn-white" event="cleanNoStandardJson">清空类json</button>
+          <button class="btn btn-white" event="cleanStandardJson">清空标准json</button>
+          <button class="btn btn-white" event="cleanLog">清空日志信息</button>
+          <button class="btn btn-white" event="jsonview">折叠形式查看 json 视图</button>
+        </div>
+        <div class="json-status">
+          <div class="legend">
+            <span class="name">消息日志</span>
+            <div class="filter">
+              <select id="levelFilter" >
+                <option value="debug">debug</option>
+                <option value="info">info</option>
+                <option value="warning">warning</option>
+                <option value="error">error</option>
+                <option value="success">success</option>
+              </select>
+              <div class="input-group search-box" id="logSearch">
+                <input class="form-control "  />
+                <span class="input-group-addon search"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+          </div>
+          <ul class="log" id="log"></ul>
+        </div>
+        
+      </div>
+    </div>
+    <div id="jsonviewwrap" class="json-view-wrap">
+      <div class="button-group">
+        <button class="btn btn-white" id="expand">展开/折叠</button>
+      </div>
+      <div id="jsonview" class="json-view"></div>
+    </div>
+    <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+    <script type="text/javascript" src="../config.js"></script>
+    <script type="text/javascript">
+    	require(['bootstrap','json/main']);
+    </script>
+  </body>
+</html>

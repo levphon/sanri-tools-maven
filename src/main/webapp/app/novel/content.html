@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>内容页</title>
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <style>
+        .mainread{
+            background-color: #CCE8CF;
+            padding: 15px;
+            font-size: 15px;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default" style="margin-bottom: 0;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <span class="navbar-brand" id="chaptername" ></span>
+        </div>
+    </div>
+</nav>
+
+<div  class="mainread">
+    <div class="row" id="contentHtml"></div>
+</div>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require([ 'bootstrap','novel/bookread']);
+</script>
+</body>
+</html>

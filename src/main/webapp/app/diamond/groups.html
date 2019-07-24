@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>钻石配置查询</title>
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <style>
+        li.list-group-item{
+            cursor: pointer;
+        }
+        li.list-group-item:hover{
+            background-color: #eeeeee;
+        }
+
+    </style>
+</head>
+<body>
+ <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+          <a href="javascript:;" class="navbar-brand">钻石数据查询</a>
+      </div>
+    </div>
+  </nav>
+
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">设置区</div>
+            <div class="panel-body">
+                 <div class="col-xs-9 ">
+                      <div class="input-group " >
+                          <div class="input-group-btn" id="connect">
+                            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                                <span ></span> <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                            </ul>
+                        </div>
+                          <input  class="form-control" name="connect"  disabled />
+                      </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="col-xs-9">
+            <div class="panel panel-primary" id="groups">
+                <div class="panel-heading">钻石分组数:<span style="font-weight: bold;padding-left: 10px;"></span></div>
+                <div class="list-group">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-3">
+            <div class="panel panel-success" id="latestUse">
+                <div class="panel-heading">最近使用</div>
+                <div class="list-group">
+                </div>
+            </div>
+        </div>
+    </div>
+
+  <div class="open-dialog" id="content" style="height: 95%">
+    <textarea class="form-control" style="height: 100%" ></textarea>
+ </div>
+   <div class="open-dialog" id="testContent" style="height: 95%">
+    <textarea class="form-control" style="height: 100%" ></textarea>
+ </div>
+   <div class="open-dialog" id="releaseContent" style="height: 95%">
+    <textarea class="form-control" style="height: 100%" ></textarea>
+ </div>
+  <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+  <script type="text/javascript" src="../config.js"></script>
+  <script type="text/javascript">
+    	require(['bootstrap','diamond/group']);
+  </script>
+</body>
+</html>

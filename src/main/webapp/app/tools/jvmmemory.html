@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jvm 设置</title>
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css"/>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../css/animate.min.css"/>
+    <link rel="stylesheet" href="../../css/appbase.css"/>
+    <link rel="stylesheet" href="../../css/style.css"/>
+
+    <link rel="stylesheet" href="../../plugins/ionRangeSlider/ion.rangeSlider.css"/>
+    <link rel="stylesheet" href="../../plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css"/>
+    <link rel="stylesheet" href="../../plugins/icheck/custom.css" />
+
+    <style>
+        label.checkbox{
+            cursor: pointer;
+        }
+        select.form-control{
+            line-height: normal !important;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">jvm 调优工具</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container ">
+    <div class="row">
+        <div class="col-xs-7 col-lg-4 col-md-5">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-xs-3">JDK 版本</label>
+                    <div class="col-xs-5">
+                        <select class="form-control">
+                            <option value="6">JDK6</option>
+                            <option value="7" selected>JDK7</option>
+                            <option value="8">JDK8</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary"><i class="fa fa-android"></i> 获取设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#basic" data-toggle="tab">基础设置</a></li>
+                <li class=""><a href="#garbage" data-toggle="tab">垃圾收集器设置</a></li>
+                <li class=""><a href="#debug" data-toggle="tab">调试设置</a></li>
+                <li class=""><a href="#other" data-toggle="tab">其它设置</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="basic">
+                    <div class="form-horizontal padding-top ">
+                        <!-- heap -->
+                        <div class="form-group form-group-sm">
+                            <label class="control-label col-sm-2">堆大小</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" placeholder="最小值" value="512" spellcheck="false"
+                                       autocomplete="off"/>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" placeholder="最大值" value="1024"
+                                       spellcheck="false" autocomplete="off"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control ">
+                                    <option value="m">Mb</option>
+                                    <option value="g">Gb</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--堆伸缩,在不扩张堆无效 -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">堆伸缩</label>
+                            <div class="col-sm-10">
+                                <div id="heapFreeRatio"></div>
+                            </div>
+                        </div>
+
+                        <!--方法区 non-heap -->
+                        <div class="form-group form-group-sm">
+                            <label class="control-label col-sm-2">永久代/元空间</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" placeholder="最小值" value="128" spellcheck="false"
+                                       autocomplete="off"/>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" placeholder="最大值" value="256" spellcheck="false"
+                                       autocomplete="off"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control">
+                                    <option value="m">Mb</option>
+                                    <option value="g">Gb</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 新生代比例; 存活区比例-->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">新生代比例</label>
+                            <div class="col-sm-10">
+                                <div id="newRatio"></div>
+                            </div>
+                        </div>
+                        <!--新生代值-->
+                        <div class="form-group form-group-sm">
+                            <label class="control-label col-sm-2" style="cursor: pointer;"
+                                   title="点击切换设置规则">或新生代大小</label>
+                            <div class="col-sm-3">
+                                <input type="text" disabled class="form-control" placeholder="最小值" value="128"
+                                       spellcheck="false" autocomplete="off"/>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" disabled class="form-control" placeholder="最大值" value="256"
+                                       spellcheck="false" autocomplete="off"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control" disabled>
+                                    <option value="m">Mb</option>
+                                    <option value="g">Gb</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 存活区比例 -->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">存活区比例(from/to)</label>
+                            <div class="col-sm-10">
+                                <div id="survivorRatio"></div>
+                            </div>
+                        </div>
+                        <!-- 栈大小值 -->
+                        <div class="form-group form-group-sm">
+                            <label class="control-label col-sm-2">线程栈大小</label>
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <input type="text" value="256" class="form-control" autocomplete="off"
+                                           spellcheck="false"/>
+                                    <span class="input-group-addon">Kb</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane  margin-top" id="garbage">
+                    <div class="form-horizontal">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-xs-12">
+                                    <select class="form-control">
+                                        <option value="UseG1GC">UseG1GC(面向服务端应用)</option>
+                                        <option value="UseSerialGC">UseSerialGC (client 默认值 Serial + Serial Old )</option>
+                                        <option value="UseConcMarkSweepGC">UseConcMarkSweepGC (ParNew + CMS + Serial Old)</option>
+                                        <option value="UseParallelGC">UseParallelGC (server 默认值 Parallel Scavenge + Serial Old )</option>
+                                        <option value="UseParallelOldGC">UseParallelOldGC (Parallel Scavenge  + Parallel Old )</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!--parNew -->
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 col-lg-3 ">垃圾收集线程数(ParallelGCThreads)</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" autocomplete="off" spellcheck="false" />
+                                </div>
+                            </div>
+
+                            <!--Paralled Scavenge-->
+                            <div class="form-group">
+                                <label class="control-label col-sm-4 col-lg-3 ">停顿时间(MaxGCPauseMillis)</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" autocomplete="off" spellcheck="false" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label  col-sm-4 col-lg-3">吞吐量(GCTimeRatio)</label>
+                                <div class="col-sm-8 ">
+                                    <input type="text" class="form-control" value="99" autocomplete="off" spellcheck="false" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox"><input type="checkbox">自动调节(UseAdaptiveSizePolicy,不需要设置 新生代大小(-Xmn) Eden 与 Survivor 的比例(-XX:SurvivorRatio) 晋升老年代对象大小(-XX:PretenureSizeThreshold) )</label>
+                            </div>
+
+                            <!--CMS -->
+                            <div class="form-group">
+                                <label class="col-sm-4 col-lg-3 control-label">CMS 并发收集启动阈值</label>
+                                <div class="col-sm-8">
+                                    <div id="cmdStartThreshold"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox"><input type="checkbox" checked>-XX:+UseCMSCompactAtFullCollection 将要进行 Full GC 时开始碎片整理</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label  col-sm-8 col-lg-7">-XX:CMSFullGCsBeforeCompaction 多少次 Full GC 时进行碎片整理,0 表示每次 Full GC 都碎片整理</label>
+                                <div class="col-sm-4 ">
+                                    <input type="text" class="form-control" value="0" autocomplete="off" spellcheck="false" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane   margin-top" id="debug">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">垃圾日志收集</div>
+                        <div class="panel-body">
+                            <div class="col-xs-12">
+                                <label class="checkbox"><input type="checkbox"  > PrintGC </label>
+                                <label class="checkbox"><input type="checkbox"  > PrintGCDetails </label>
+                                <label class="checkbox"><input type="checkbox"  > PrintGCApplicationStoppedTime</label>
+                                <label class="checkbox"><input type="checkbox"  > PrintGCApplicationConcurrentTime</label>
+                                <label class="checkbox"><input type="checkbox"  > PrintAdaptiveSizePolicy</label>
+                                <label class="checkbox"><input type="checkbox"  > PrintTenuringDistribution</label>
+                                <hr class="" />
+                                <label class="checkbox"><input type="checkbox"  > PrintGCTimeStamps</label>
+                                <label class="checkbox"><input type="checkbox"  > PrintGCDateStamps</label>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">对象晋升设置</div>
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" >大对象阀值 -XX:PretenureSizeThreshold</label>
+                                    <div class="col-sm-6 col-lg-4">
+                                        <input type="text" value="" placeholder="byte 值" class="form-control" spellcheck="false" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" >年龄阀值 -XX:MaxTenuringThreshold</label>
+                                    <div class="col-sm-6 col-lg-4">
+                                        <input type="text" value=""  class="form-control" spellcheck="false" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">GC 日志文件输出</div>
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" >GC 日志文件</label>
+                                    <div class="col-sm-8 col-lg-4">
+                                        <input type="text" class="form-control" spellcheck="false" autocomplete="off" />
+                                    </div>
+                                    <div class="col-sm-2 col-lg-4">
+                                        <label class="checkbox "><input type="checkbox"  > 开启滚动日志 </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" >文件个数</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" spellcheck="false" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" >每个文件大小</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" spellcheck="false" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">GC发生时 Dump 堆信息</div>
+                        <div class="panel-body">
+                            <div class="col-xs-12">
+                                <label class="checkbox"><input type="checkbox"  > PrintHeapAtGC </label>
+                                <label class="checkbox"><input type="checkbox"  > HeapDumpOnOutOfMemoryError </label>
+                            </div>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-xs-2 col-lg-1" >堆文件路径</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" spellcheck="false" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">打印 JVM 选项</div>
+                        <div class="panel-body">
+                            <div class="col-xs-12">
+                                <label class="checkbox"><input type="checkbox"  > PrintCommandLineFlags </label>
+                                <label class="checkbox"><input type="checkbox"  > PrintFlagsInitial </label>
+                                <label class="checkbox"><input type="checkbox"  > PrintFlagsFinal</label>
+                                <label class="checkbox"><input type="checkbox"  > UnlockDiagnosticVMOptions</label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane  margin-top" id="other">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">其它参数设置</div>
+                        <div class="panel-body">
+                            <div class="col-xs-12">
+                                <div class="form-horizontal">
+                                    <div class="form-group-sm form-group">
+                                        <label class="checkbox"><input type="checkbox">禁用 IPV6 (-Djava.net.preferIPv4Stack=true) </label>
+                                        <label class="checkbox"><input type="checkbox">开启 jmx 远程支持(-Dcom.sun.managment.jmxremote) </label>
+                                        <label class="checkbox"><input type="checkbox">禁用 jmx 权限(-Dcom.sun.management.jmxremote.authenticate=false) </label>
+                                        <label class="checkbox"><input type="checkbox">跳过 ssl 权限认证(-Dcom.sun.management.jmxremote.ssl=false) </label>
+                                        <label class="checkbox"><input type="checkbox">禁用字节码验证(-Xverify:none) </label>
+                                        <label class="checkbox"><input type="checkbox">屏蔽System.gc()(-XX:+DisableExplicitGC) </label>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                        <label class="control-label col-sm-4 "> -Dcom.sun.management.jmxremote.port</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" value="10080" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require(['bootstrap', 'tools/jvmmemory']);
+</script>
+</body>
+</html>

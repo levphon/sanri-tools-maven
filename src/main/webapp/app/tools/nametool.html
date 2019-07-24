@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>方法变量取名工具</title>
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <link rel="stylesheet" href="../../plugins/icheck/custom.css" />
+
+    <style>
+        textarea.main{
+            height: 360px !important;
+        }
+        textarea.dialog{
+            height: 300px !important;
+        }
+        .biz-select{
+            min-width: 120px;
+        }
+        textarea.multicolumn{
+            height: 400px !important;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" >用于方法或变量的取名</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid" style="margin-top: -10px;">
+    <div class="panel panel-default" style="margin-bottom: 5px;">
+        <div class="panel-heading">设置分词工具和翻译工具</div>
+        <div class="panel-body">
+            <form action="" class="" id="resultconfig">
+                <div class="form-group">
+                    <label class="radio-inline">
+                        <input type="radio"  value="ik" name="participle" disabled checked> ik 分词
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio"  value="jcseg" name="participle" disabled> jcseg
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio"  value="paoding" name="participle" disabled> 庖丁
+                    </label>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-inline">
+                        <input type="checkbox"  value="baidu" name="translate"  checked> 百度英语
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox"  value="youdao"  name="translate" > 有道
+                    </label>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="input-group">
+                <input type="text" name="chinese" tabindex="1" autocomplete="false" class="form-control" placeholder="输入需要取名的字符" />
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" id="enname" tabindex="2"><i class="fa fa-android"></i> 结果</button>
+                </div>
+            </div>
+            <textarea class="form-control margin-top main" placeholder="取名结果" spellcheck="false" autocomplete="off"  name="result" id="result" ></textarea>
+        </div>
+
+        <div class="col-xs-6">
+            <div class="form-inline">
+                <div class="form-group">
+                    <!--<span>选择业务:</span>-->
+                    <!--<select class="form-control" name="bizs" id="bizs">-->
+                    <!--</select>-->
+                    <!--<button class="btn btn-success" id="uploadBizConfig"><i class="fa fa-edit"></i>上传业务配置</button>-->
+                    <div class="input-group">
+                        <span class="input-group-addon">选择业务</span>
+                        <select class="form-control biz-select" name="bizs" id="bizs" ></select>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-danger" id="plusBiz"><i class="fa fa-plus"></i> 新业务</button>
+                        <button class="btn btn-success" id="editBizConfig"><i class="fa fa-edit"></i> 修改业务</button>
+                        <button class="btn btn-info" id="muticolumntranslate"><i class="fa fa-apple"></i> 多列翻译</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <textarea class="form-control margin-top main" spellcheck="false" autocomplete="off"  name="bizmapping" id="bizmapping" ></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="open-dialog" id="mutiltranslate">
+    <div class="alert alert-warning" >警告:当前多列翻译每列只会取第一个结果</div>
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" placeholder="添加前缀" value="private String " class="form-control" name="prefix" autocomplete="false" spellcheck="false" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="confirmPrefix">确定</button>
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <textarea name="left" class="form-control multicolumn" spellcheck="false" autocomplete="off" placeholder="翻译前中文结果" ></textarea>
+        </div>
+        <div class="col-xs-6">
+            <textarea name="right" class="form-control multicolumn" spellcheck="false" autocomplete="off" placeholder="翻译后对应结果" ></textarea>
+        </div>
+    </div>
+</div>
+
+<!--新业务-->
+<div class="open-dialog" id="newbiz">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-sm-2 ">业务名:</label>
+            <div class="col-sm-10 ">
+                <input type="text" name="biz" autocomplete="false"  spellcheck="false" class="form-control" placeholder="业务名" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2 ">业务内容:</label>
+            <div class="col-sm-10 ">
+                <textarea name="content" class="form-control dialog" id="content" placeholder="业务内容 key=value"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require([ 'bootstrap','tools/nametool']);
+</script>
+</body>
+</html>

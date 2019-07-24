@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <link rel="stylesheet" href="../../plugins/chosen/chosen.min.css" />
+    <link rel="stylesheet" href="../../plugins/jsonview/jquery.jsonview.min.css" />
+    
+    <style type="text/css">
+      .row.input,
+      .row.output{
+        height: 279px;
+      }
+      .row.input .jsonview,
+      .row.output .jsonview{
+        height: 250px;
+        overflow-y: scroll;
+      }
+      .row.output {
+        border-top : 1px solid #ddd;
+      }
+      .soapmessage{
+        height: 100%;
+        width: 500px;
+      }
+      .soapmessage textarea {
+        width: 100%;
+        height: 100%; 
+        border: none;
+        font-size: 15px;
+      }
+    </style>
+  </head> 
+  <body>
+    <div class="container-fluid" style="padding-top: 10px;">
+      <!-- 存放 wsdl 地址 -->
+      <div class="row" style="padding-bottom: 3px;">
+        <!-- 可固定选择的 -->
+        <div class="col-xs-2">
+          <select class="" id="existsws">
+            <option value="">请选择</option>
+          </select>
+        </div>
+        <!-- 手动输入临时解析的 -->
+        <div class="col-xs-5">
+          <input type="text" class="form-control input-sm" id="wsdladdress" />
+        </div>
+        <!-- ports -->
+        <div class="col-xs-3">
+          <select id="ports">
+            <option value="">请选择</option>
+          </select>
+        </div>
+        <!-- operation -->
+        <div class="col-xs-2" >
+          <select id="operations">
+            <option value="">请选择</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="btn-group" id="operationcmd">
+            <button event="buildSoapMessage" class="btn btn-white">构建 soap 消息</button>
+            <button event="invokeMethod" class="btn btn-white">发送 soap xml 消息</button>
+            <button event="callMethod" class="btn btn-white">使用参数进行方法调用</button>
+          </div>
+        </div>
+      </div>
+      <!-- 存放方法参数和返回值 -->
+      <!-- 入参及值 -->
+      <div class="row input">
+        <div class="col-xs-4 " >
+          <div class="btn-group btn-group-sm" id="inputjsoncmd">
+            <button field="input" event="toggle" current="expand"  class="btn btn-white"><i class="fa fa-compress"></i>&nbsp;展开/折叠</button>
+            <button field="input" event="view"  class="btn btn-white"><i class="icon-eye-open"></i>&nbsp;查看</button>
+          </div>
+          <div class="jsonview" id="inputjsonview"></div>
+        </div>
+        <div class="col-xs-4" style="height: 100%;">
+          <div class="soapmessage">
+            <textarea id="inputsoapmessage"></textarea>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <ul id="inputparam">
+            
+          </ul>
+        </div>
+      </div>
+      <!-- 出参及值 -->
+      <div class="row output">
+        <div class="col-xs-4">
+          <div class="btn-group btn-group-sm" id="outputjsoncmd">
+            <button field="output" event="toggle" current="expand"  class="btn btn-white"><i class="fa fa-compress"></i>&nbsp;展开/折叠</button>
+            <button field="output" event="view"  class="btn btn-white"><i class="icon-eye-open"></i>&nbsp;查看</button>
+          </div>
+          <div class="jsonview" id="outputjsonview"></div>
+        </div>
+        <div class="col-xs-4"  style="height: 100%;">
+          <div class="soapmessage">
+            <textarea id="outputsoapmessage"></textarea>
+          </div>
+        </div>
+        <div class="col-xs-4"></div>
+      </div>
+    </div>
+    
+    <div class="" id="jsontreeview" style="display: none;">
+      
+    </div>
+    <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+    <script type="text/javascript" src="../config.js"></script>
+    <script type="text/javascript">
+      require(['jquery','tools/wscall']);
+    </script>
+  </body>
+</html>
