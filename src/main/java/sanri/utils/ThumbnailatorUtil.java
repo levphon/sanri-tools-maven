@@ -9,7 +9,6 @@ import java.io.File;
  * @author Administrator
  * @Title ThumbnailatorUtil.java
  * @Package com.hhx.tiger.util.image
- * @Description TODO 图片处理工具
  * @date 2018年6月27日 下午3:25:37
  */
 public class ThumbnailatorUtil {

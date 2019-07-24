@@ -165,7 +165,6 @@ define(['util','sqlclient/code','dialog','ztree'],function(util,code,dialog){
 		ztree.removeChildNodes(connTreeNode);
 
 		if(connName &&  metatree.meta.connMeta[connName].databases && metatree.meta.connMeta[connName].databases.length > 0){
-			//如果数据已经加载过了,则无需重复加载 ,暂时只改了这,以后所有的请求都得判断是否有数据 TODO 
 			appendDbTreeNode(connName);
 		}else{
 			util.requestData(api.schemas,{connName:connName},function(databases){

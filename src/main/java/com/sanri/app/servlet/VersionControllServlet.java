@@ -2,7 +2,6 @@ package com.sanri.app.servlet;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +24,7 @@ import sanri.utils.ZipUtil;
 import com.sanri.app.BaseServlet;
 import com.sanri.app.filefetch.FindFilesResult;
 import com.sanri.app.filefetch.ItemProperties;
-import com.sanri.app.versioncontroll.SSHService;
+import com.sanri.app.filefetch.SSHService;
 import com.sanri.frame.RequestMapping;
 
 /**

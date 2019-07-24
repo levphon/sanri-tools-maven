@@ -53,7 +53,6 @@ define(['util','scrolltabs','datatable'],function(){
 //           id = tabId.split('_')[1];
 //       this.$scrollTabs.scrolltabs('select',tabId);
 //       this.$scrollTabs.scrolltabs('showActive');
-//       //datatable 重新加载  TODO 
 //       return ;
 //     }
 //     //如果不存在,则新加 tab
@@ -71,7 +70,7 @@ define(['util','scrolltabs','datatable'],function(){
 	        id = tabId.split('_')[1];
 	    this.$scrollTabs.scrolltabs('select',tabId);
 	    this.$scrollTabs.scrolltabs('showActive');
-	    //datatable 重新加载  TODO 
+	    //datatable 重新加载  TODO
 	    return ;
 	  }
 		//如果不存在,则新加 tab
