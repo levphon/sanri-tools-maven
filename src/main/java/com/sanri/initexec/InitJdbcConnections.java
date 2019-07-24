@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InitJdbcConnections {
-    private Log logger = LogFactory.getLog(getClass());
+    private static Log logger = LogFactory.getLog(InitJdbcConnections.class);
     /** 保存所有的连接信息 */
     public static Map<String,ExConnection> CONNECTIONS = new HashMap<String, ExConnection>();
 
@@ -29,16 +29,35 @@ public class InitJdbcConnections {
      * @param connectionInfo
      */
     public static void saveConnection(JdbcConnDetail connectionInfo) throws SQLException {
-        if("mysql".equalsIgnoreCase(connectionInfo.getDbType())){
+        ExConnection exConnection = null;
+        if(MysqlExConnection.dbType.equalsIgnoreCase(connectionInfo.getDbType())){
             MysqlDataSource dataSource = new MysqlDataSource();
             dataSource.setServerName(connectionInfo.getHost());
             dataSource.setPort(Integer.parseInt(connectionInfo.getPort()));
             dataSource.setDatabaseName(connectionInfo.getDatabase());
             dataSource.setUser(connectionInfo.getUsername());
             dataSource.setPassword(connectionInfo.getUserpass());
-            ExConnection exConnection = ExConnection.newInstance("mysql", connectionInfo.getDatabase(), dataSource);
-            CONNECTIONS.put(connectionInfo.getName(),exConnection);
+
+            exConnection =  ExConnection.newInstance(connectionInfo.getDbType(), connectionInfo.getDatabase(), dataSource);
+        }else if(PostgreSqlExConnection.dbType.equalsIgnoreCase(connectionInfo.getDbType())){
+            PGSimpleDataSource pgSimpleDataSource = new PGSimpleDataSource();
+            pgSimpleDataSource.setServerName(connectionInfo.getHost());
+            pgSimpleDataSource.setPortNumber(Integer.parseInt(connectionInfo.getPort()));
+            pgSimpleDataSource.setDatabaseName(connectionInfo.getDatabase());
+            pgSimpleDataSource.setUser(connectionInfo.getUsername());
+            pgSimpleDataSource.setPassword(connectionInfo.getUserpass());
+
+            exConnection = ExConnection.newInstance(connectionInfo.getDbType(), connectionInfo.getDatabase(), pgSimpleDataSource);
+
         }
+        if(exConnection != null) {
+            CONNECTIONS.put(connectionInfo.getName(), exConnection);
+            return ;
+        }
+
+        String error = "添加连接失败,当前数据库类型不受支持:"+connectionInfo.getDbType();
+        logger.error(error);
+        throw new IllegalArgumentException(error);
     }
 
     @PostConstruct
