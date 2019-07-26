@@ -39,6 +39,20 @@ public class ProjectConfigServlet extends BaseServlet {
     }
 
     /**
+     * 简单配置名列表
+     * @param modul
+     * @return
+     */
+    public List<String> simpleConfigNames(String modul){
+        List<ConfigPath> configPaths = configNames(modul);
+        List<String> names = new ArrayList<>();
+        for (ConfigPath configPath : configPaths) {
+            names.add(configPath.getPathName());
+        }
+        return names;
+    }
+
+    /**
      * 读取模块配置列表/顶层
      * @param modul
      * @return

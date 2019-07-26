@@ -1,10 +1,10 @@
 define(['util', 'dialog', 'icheck'], function (util, dialog) {
     var nametool = {};
-
+    var modul = 'translate';
     var apis = {
-        loadConfigNames: '/translate/loadConfigNames',
-        writeConfig: '/translate/writeConfig',
-        readConfig: '/translate/readConfig',
+        loadConfigNames: '/file/manager/simpleConfigNames',
+        writeConfig: '/file/manager/writeConfig',
+        readConfig: '/file/manager/readConfig',
         translate: '/translate/translate',
         mutiTranslate:'/translate/mutiTranslate'
     }
@@ -21,7 +21,7 @@ define(['util', 'dialog', 'icheck'], function (util, dialog) {
     }
 
     function reloadBizs(biz) {
-        util.requestData(apis.loadConfigNames, function (bizs) {
+        util.requestData(apis.loadConfigNames, {modul:modul},function (bizs) {
             $('#bizs').empty();
             for (var i = 0; i < bizs.length; i++) {
                 $('#bizs').append('<option value="' + bizs[i] + '">' + bizs[i] + '</option>');
@@ -123,7 +123,7 @@ define(['util', 'dialog', 'icheck'], function (util, dialog) {
          */
         function loadConfig() {
             var biz = $(this).val();
-            util.requestData(apis.readConfig, {biz: biz}, function (configs) {
+            util.requestData(apis.readConfig, {baseName: biz,modul:modul}, function (configs) {
                 $('#bizmapping').val(configs);
             });
         }
@@ -149,6 +149,7 @@ define(['util', 'dialog', 'icheck'], function (util, dialog) {
                             layer.msg('请把信息填写完整');
                             return;
                         }
+                        params.modul = modul;
                         util.requestData(apis.writeConfig, params, function () {
                             reloadBizs(params.biz);
                             layer.close(index);
@@ -164,7 +165,7 @@ define(['util', 'dialog', 'icheck'], function (util, dialog) {
             var biz = $('#bizs').val();
             var configs = $('#bizmapping').val().trim();
 
-            util.requestData(apis.writeConfig, {biz: biz, content: configs});
+            util.requestData(apis.writeConfig, {biz: biz, content: configs,modul:modul});
         }
 
     }

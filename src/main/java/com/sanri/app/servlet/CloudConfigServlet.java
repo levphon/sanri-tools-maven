@@ -28,7 +28,7 @@ public class CloudConfigServlet extends BaseServlet {
     static final String addressFileName = "address";
 
     static {
-        configCenter = mkConfigPath("configcenter/");
+        configCenter = mkConfigPath("configcenter");
     }
     /**
      * 读取 springcloud 配置

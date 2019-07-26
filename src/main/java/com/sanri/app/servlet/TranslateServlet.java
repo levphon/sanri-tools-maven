@@ -34,34 +34,6 @@ public class TranslateServlet extends BaseServlet {
     }
 
     /**
-     * 加载所有配置列表
-     * @return
-     */
-    public List<String> loadConfigNames(){
-        return TranslateSupport.loadConfigNames();
-    }
-
-    /**
-     *  写入配置
-     * @param biz
-     * @param configs
-     * @return
-     */
-    public int writeConfig(String biz,String content) throws IOException {
-        TranslateSupport.writeConfig(biz,content);
-        return 0;
-    }
-
-    /**
-     * 读取配置
-     * @param biz
-     * @return
-     */
-    public String readConfig(String biz) throws IOException {
-        return TranslateSupport.readConfig(biz);
-    }
-
-    /**
      * 翻译命名服务
      * @param orginChars
      * @param biz 业务连接

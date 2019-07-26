@@ -16,9 +16,9 @@ define(['util','dialog','template','ztree','contextMenu'],function (util,dialog,
 
     var apis = {
         serializes:'/zk/serializes',
-        createConn:'/zk/createConn',
-        connNames:'/zk/connNames',
-        detail:'/zk/detail',
+        createConn:'/file/manager/writeConfig',
+        connNames:'/file/manager/configNames',
+        detail:'/file/manager/readConfig',
         childrens:'/zk/childrens',
         readData:'/zk/readData',
         meta:'/zk/meta',
@@ -135,6 +135,9 @@ define(['util','dialog','template','ztree','contextMenu'],function (util,dialog,
                             layer.msg('请将信息填写完整');
                             return ;
                         }
+                        params.modul = 'zookeeper';
+                        params.baseName = name;
+                        params.content = params.connectStrings;
                         util.requestData(apis.createConn,params,function () {
                             layer.close(index);
 
@@ -170,7 +173,7 @@ define(['util','dialog','template','ztree','contextMenu'],function (util,dialog,
             zkclient.conn = conn;
 
             $('#connect>button>span:eq(0)').text(conn);
-            util.requestData(apis.detail,{name:conn},function (address) {
+            util.requestData(apis.detail,{modul:'zookeeper',baseName:conn},function (address) {
                 $('#connect').next('input').val(address);
             });
             $('#connect>.dropdown-menu').dropdown('toggle');
@@ -202,7 +205,10 @@ define(['util','dialog','template','ztree','contextMenu'],function (util,dialog,
     }
 
     function loadConns(callback) {
-        util.requestData(apis.connNames,function (conns) {
+        util.requestData(apis.connNames,{modul:'zookeeper'},function (paths) {
+            var conns = paths.map(function (path) {
+                return path.pathName;
+            });
             var $menu = $('#connect>ul.dropdown-menu').empty();
             if(conns){
                 for(var i=0;i<conns.length;i++){

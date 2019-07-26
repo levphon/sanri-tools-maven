@@ -57,40 +57,10 @@ public class ZkServlet extends BaseServlet {
     }
 
     /**
-     * 创建一个新连接
-     * 修改一个连接
-     * @param connectString
-     */
-    public int createConn(String name,String connectStrings) throws IOException {
-        String[] connects = StringUtils.split(connectStrings, ',');
-        boolean reachable = false;
-        for (String connect : connects) {
-            String[] hostPort = StringUtils.split(connect, ':');
-            String host = hostPort[0];
-            int port = NumberUtil.toInt(hostPort[1]);
-            reachable = reachable || ReachableUtil.isHostConnectable(host,port);
-        }
-        if(!reachable){
-            return -1;
-        }
-        File configFile = new File(zookeeperConfigDir, name);
-        FileUtils.writeStringToFile(configFile,connectStrings);
-        return 0;
-    }
-
-    /**
-     * 列出所有的连接名
-     * @return
-     */
-    public List<String> connNames(){
-        return Arrays.asList(zookeeperConfigDir.list());
-    }
-
-    /**
      * 读取连接字符串
      * @return
      */
-    public String detail(String name) throws IOException {
+    String detail(String name) throws IOException {
         File file = new File(zookeeperConfigDir, name);
         return FileUtils.readFileToString(file);
     }

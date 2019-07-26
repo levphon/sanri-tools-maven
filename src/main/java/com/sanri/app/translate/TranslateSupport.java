@@ -107,21 +107,6 @@ public class TranslateSupport {
     }
 
     /**
-     * 加载配置文件列表
-     * @return
-     */
-    public static List<String> loadConfigNames(){
-        File[] files = translateDir.listFiles();
-        List<String> fileNames = new ArrayList<String>();
-        for (File file : files) {
-            String name = file.getName();
-            fileNames.add(name);
-        }
-
-        return fileNames;
-    }
-
-    /**
      * 将翻译结果转成驼峰式
      * @param source
      * @return
