@@ -32,7 +32,7 @@ define(['util', 'dialog', 'zclip'], function (util, dialog) {
          */
         function switchTemplate() {
             var tmp = $(this).val();
-            util.requestData('/tmpcode/readTmplate',{baseName:tmp},function (data) {
+            util.requestData('/file/manager/readConfig',{modul:'tempcode',baseName:tmp},function (data) {
                 $('#template-edit').val(data);
             });
         }
@@ -53,7 +53,8 @@ define(['util', 'dialog', 'zclip'], function (util, dialog) {
                     layer.msg('埴入模板名称和内容');
                     return ;
                 }
-                util.requestData('/tmpcode/writeTemplate',params,function () {
+                params.modul = 'tempcode';
+                util.requestData('/file/manager/writeConfig',params,function () {
                     loadTemplates(function () {
                         //选中当前模板
                          $('#templates').val(params.baseName).change();
@@ -124,7 +125,10 @@ define(['util', 'dialog', 'zclip'], function (util, dialog) {
     
     function loadTemplates(callback) {
         //加载所有模板,并加载第一个
-        util.requestData('/tmpcode/listTemplates',function (templates) {
+        util.requestData('/file/manager/configNames',{modul:'tempcode'},function (paths) {
+            var templates = paths.map(function (path) {
+                return path.pathName;
+            });
             if(templates.length > 0){
                 $('#templates').empty();
                 for (var i=0;i<templates.length;i++){
