@@ -38,9 +38,10 @@ define(['util','template','dialog','chosen'],function (util, template,dialog) {
     });
 
     $('#tools').on('click','a#removetool',function () {
+        var _this = this;
         var url = $(this).closest('li').attr('url');
         util.requestData('/index/removeTool',{url:url},function () {
-           location.reload();
+            $(_this).closest('li').remove();
         });
     });
 
