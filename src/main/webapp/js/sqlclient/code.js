@@ -120,25 +120,19 @@ define([ 'util','sqlclient/output', 'codemirror/lib/codemirror','codemirror/lib/
         var index = layer.load(1, {
           shade: [0.1,'#fff']
         });
-        try{
-            util.requestData('/sqlclient/executeSql',{connName:connName,database:dbName,executorSqlArray:sqls},function(resultSets){
-                try{
-                    if(resultSets){
-                      for(var sqlStatemt in resultSets){
-                        output.addTab(connName,dbName,code.executeCount++,sqlStatemt,resultSets[sqlStatemt]);
-                      }
-                    }
-                }finally {
-                    layer.close(index);
-                }
-
-		    });
-        }catch (e) {
-            layer.close(index);
-        }finally {
-
-        }
-
+		util.requestData('/sqlclient/executeSql',{connName:connName,database:dbName,executorSqlArray:sqls},function(resultSets){
+			try{
+				if(resultSets){
+				  for(var sqlStatemt in resultSets){
+					output.addTab(connName,dbName,code.executeCount++,sqlStatemt,resultSets[sqlStatemt]);
+				  }
+				}
+			}finally {
+				layer.close(index);
+			}
+		},function () {
+			layer.close(index);
+		});
 	}
 
 	return code;

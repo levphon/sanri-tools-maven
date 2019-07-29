@@ -1,8 +1,13 @@
 package com.sanri.app.kafka;
 
+import com.sanri.app.BaseServlet;
+import com.sanri.app.servlet.DiamondServlet;
 import com.sanri.app.servlet.KafkaServlet;
+import com.sanri.app.servlet.ZkServlet;
+import com.sanri.frame.DispatchServlet;
 import kafka.common.OffsetAndMetadata;
 import kafka.coordinator.*;
+import kafka.utils.ZkUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -12,6 +17,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 import sanri.utils.NumberUtil;
+import scala.collection.Seq;
 
 import java.io.File;
 import java.io.IOException;
@@ -111,13 +117,21 @@ public class NewKafkaMonitor extends BaseKafkaMonitor{
 
     public Map<String,Long> logSizes(String name,String topic) throws IOException {
         KafkaConsumer<byte[], byte[]> consumer = createConsumer(name);
-        List<PartitionInfo> partitionInfos = consumer.partitionsFor(topic);
 
         List<TopicPartition> topicPartitions = new ArrayList<TopicPartition>();
-        for (PartitionInfo partitionInfo : partitionInfos) {
-            TopicPartition topicPartition = new TopicPartition(topic, partitionInfo.partition());
+
+        // partitionsFor 导致卡死，改为从 zk 上获取 2018/7/29
+//        List<PartitionInfo> partitionInfos = consumer.partitionsFor(topic);
+//        for (PartitionInfo partitionInfo : partitionInfos) {
+//            TopicPartition topicPartition = new TopicPartition(topic, partitionInfo.partition());
+//            topicPartitions.add(topicPartition);
+//        }
+        int partitions = partitionsFromZk(name,topic);
+        for (int i = 0; i < partitions; i++) {
+            TopicPartition topicPartition = new TopicPartition(topic, i);
             topicPartitions.add(topicPartition);
         }
+
         consumer.assign(topicPartitions);
 
         Map<TopicPartition, Long> topicPartitionLongMap = consumer.endOffsets(topicPartitions);
@@ -132,6 +146,19 @@ public class NewKafkaMonitor extends BaseKafkaMonitor{
             logSizes.put(topicPartition.partition()+"",value);
         }
         return logSizes;
+    }
+
+    /**
+     * 从 zk 中拿取分区数
+     * @param name
+     * @param topic
+     * @return
+     * @throws IOException
+     */
+    private int partitionsFromZk(String name, String topic) throws IOException {
+        ZkUtils zkUtils = KafkaServlet.zkUtilsMap.get(name);
+        Seq<String> children = zkUtils.getChildren("/brokers/topics/" + topic + "/partitions");
+        return children.length();
     }
 
     /**

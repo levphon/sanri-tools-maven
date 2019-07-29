@@ -215,9 +215,19 @@ define(['util','sqlclient/code','dialog','ztree'],function(util,code,dialog){
 		if(metatree.meta.connMeta[connName].databases[dbName].tables && metatree.meta.connMeta[connName].databases[dbName].tables.length> 0){
 			appendTableTreeNodes(connName,dbName);
 		}else{
+			//添加加载样式,表的加载太慢了
+			var index = layer.load(1, {
+				shade: [0.1,'#fff']
+			});
 			util.requestData(api.tables,{connName:connName,schemaName:dbName},function(tables){
-				metatree.meta.connMeta[connName].databases[dbName].tables = tables;
-				appendTableTreeNodes(connName,dbName);
+				try{
+					metatree.meta.connMeta[connName].databases[dbName].tables = tables;
+					appendTableTreeNodes(connName,dbName);
+				}finally {
+					layer.close(index);
+				}
+			},function () {
+				layer.close(index);
 			});
 		}
 

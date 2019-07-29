@@ -8,7 +8,7 @@ define(['util','dialog'],function (util,dialog) {
         setThirdpartTool:'/kafka/setThirdpartTool',
         createConn:'/kafka/createConn',
         groupSubscribeTopics:'/kafka/groupSubscribeTopics',
-        zkConns:'/zk/connNames',
+        zkConns:'/file/manager/simpleConfigNames',
         stopConsumer:'/kafka/stopConsumer'
     }
 
@@ -97,7 +97,7 @@ define(['util','dialog'],function (util,dialog) {
                 .addBtn({type:'yes',text:'添加',handler:createConn})
                 .build();
             //加载所有 zk 连接
-            util.requestData(apis.zkConns,function (conns) {
+            util.requestData(apis.zkConns,{modul:'zookeeper'},function (conns) {
                 $('#conns').empty();
                 for(var i=0;i<conns.length;i++){
                     $('#conns').append('<option value="'+conns[i]+'">'+conns[i]+'</option>');

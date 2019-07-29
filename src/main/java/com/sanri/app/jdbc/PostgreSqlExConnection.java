@@ -39,7 +39,10 @@ public class PostgreSqlExConnection extends ExConnection {
 
     @Override
     protected List<Table> refreshTables(String schemaName) throws SQLException {
-        String sql = "select relname as name,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname";
+//        String sql = "select relname as name,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname";
+        String sql = "select concat(n.nspname,'.',relname) as name,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c\n" +
+                "inner join pg_namespace n on n.oid = c.relnamespace\n" +
+                "where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname ";
         Schema schema = schemas.get(schemaName);
         QueryRunner queryRunner = new QueryRunner(schema.dataSource());
         List<Table> tables = queryRunner.query(sql, new ResultSetHandler<List<Table>>() {
@@ -61,6 +64,7 @@ public class PostgreSqlExConnection extends ExConnection {
     protected List<Column> refreshColumns(String schemaName, String tableName) throws SQLException {
         Schema schema = schemas.get(schemaName);
         QueryRunner queryRunner = new QueryRunner(schema.dataSource());
+        tableName = tableName.split("\\.")[1];
         String sql = "SELECT col_description(a.attrelid,a.attnum) as comment,format_type(a.atttypid,a.atttypmod) as type,a.attname as name, a.attnotnull as notnull FROM pg_class as c,pg_attribute as a where c.relname = '"+tableName+"' and a.attrelid = c.oid and a.attnum>0";
         List<Column> columns = queryRunner.query(sql, new ResultSetHandler<List<Column>>() {
             @Override

@@ -223,7 +223,7 @@ public class SqlClientServlet extends BaseServlet{
 	 * 入参: <br/>
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Map<String,Object> executeSql(String connName,String database,String [] executorSqlArray){
+	public Map<String,Object> executeSql(String connName,String database,String [] executorSqlArray) throws SQLException {
 		Map<String,Object> result = new HashMap<String, Object>();
 		Connection connection  = null;PreparedStatement ps = null;ResultSet rs = null;
 		ExConnection exConnection = InitJdbcConnections.CONNECTIONS.get(connName);
@@ -238,7 +238,6 @@ public class SqlClientServlet extends BaseServlet{
 					if(StringUtils.isBlank(sql) || StringUtils.isBlank(sql.trim())){
 						continue;
 					}
-					try {
 						sql = sql.trim().toUpperCase();
 						if(sql.startsWith("SELECT")){
 							//查询语句
@@ -269,15 +268,12 @@ public class SqlClientServlet extends BaseServlet{
 							int update = mainQueryRunner.update(connection, sql);
 							result.put(sql, update);
 						}
-					} catch (SQLException e) {
-						logger.error("sql 执行出错,sql:"+sql);
-						e.printStackTrace();
-					}
 
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e){
+			logger.error("当前执行的 sql 列表为:\n"+StringUtils.join(executorSqlArray,'\n'));
+			throw e;
 		}finally{
 			DbUtils.closeQuietly(connection, ps, rs);
 		}

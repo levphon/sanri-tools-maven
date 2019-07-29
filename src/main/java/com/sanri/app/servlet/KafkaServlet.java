@@ -1,5 +1,6 @@
 package com.sanri.app.servlet;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sanri.app.BaseServlet;
 import com.sanri.app.kafka.KafkaConnInfo;
@@ -34,6 +35,8 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.sanri.app.servlet.ZkServlet.zkSerializerMap;
 
@@ -82,15 +85,28 @@ public class KafkaServlet extends BaseServlet {
      * @param version  [new,old] 0.8.1.1 及以前的版本为旧版本; 之后的为新版本
      * @return
      */
+    static Pattern ipPort = Pattern.compile("(\\d+\\.\\d+\\.\\d+\\.\\d+):(\\d+)");
     public int createConn(String name, String rootPath, String version) throws IOException {
         ZkClient zkClient = zkClient(name);
 
         //读取 zk kafka 配置信息
-        String path = rootPath + "/brokers/ids/0";
+//        String path = rootPath + "/brokers/ids/0"; // 这次没有看到 0 节点，先暂时换成 1 节点 2019/7/29
+        String path = rootPath + "/brokers/ids/1";
         String brokerInfo = ObjectUtils.toString(zkClient.readData(path, true));
         JSONObject brokerJson = JSONObject.parseObject(brokerInfo);
         String host = brokerJson.getString("host");
         int port = brokerJson.getIntValue("port");
+
+        if(StringUtils.isBlank(host)){
+            //如果没有提供 host 和 port 信息，则从 endpoints 中拿取信息
+            JSONArray endpoints = brokerJson.getJSONArray("endpoints");
+            String endpoint = endpoints.getString(0);
+            Matcher matcher = ipPort.matcher(endpoint);
+            if(matcher.find()) {
+                host = matcher.group(1);
+                port = NumberUtil.toInt(matcher.group(2));
+            }
+        }
 
         //读取 zk 设置
         String detail = _getZkServlet().detail(name);

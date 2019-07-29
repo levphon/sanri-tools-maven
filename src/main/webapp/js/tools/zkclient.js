@@ -136,7 +136,7 @@ define(['util','dialog','template','ztree','contextMenu'],function (util,dialog,
                             return ;
                         }
                         params.modul = 'zookeeper';
-                        params.baseName = name;
+                        params.baseName = params.name;
                         params.content = params.connectStrings;
                         util.requestData(apis.createConn,params,function () {
                             layer.close(index);
