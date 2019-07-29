@@ -6,6 +6,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 import javax.annotation.PostConstruct;
@@ -24,15 +25,7 @@ public class InitNettyServer {
         serverBootstrap.group(boss,worker);
         serverBootstrap.channel(NioServerSocketChannel.class);
 
-        serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-            @Override
-            protected void initChannel(SocketChannel socketChannel) throws Exception {
-                ChannelPipeline pipeline = socketChannel.pipeline();
-                // 最大帐长度 64k ,offset 为 0 ，标记长度的长度为 8 字节
-                pipeline.addLast(new LengthFieldBasedFrameDecoder(64 * 1024 ,0,8));
-                pipeline.addLast(new ServerHandler());
-            }
-        });
+        serverBootstrap.childHandler(new ChildHandler());
 
         // 这个参数只是影响还没有被accept取出的连接 ，并不影响连接数 https://www.cnblogs.com/little-fly/p/8683197.html
         serverBootstrap.option(ChannelOption.SO_BACKLOG,128);
@@ -46,5 +39,16 @@ public class InitNettyServer {
         // 关闭事件循环组
         boss.shutdownGracefully().sync();
         worker.shutdownGracefully().sync();
+    }
+
+    class ChildHandler extends ChannelInitializer<SocketChannel> {
+
+        @Override
+        protected void initChannel(SocketChannel socketChannel) throws Exception {
+            ChannelPipeline pipeline = socketChannel.pipeline();
+            // 最大帐长度 64k ,offset 为 0 ，标记长度的长度为 8 字节
+            pipeline.addLast(new LengthFieldBasedFrameDecoder(64 * 1024 ,0,8));
+            pipeline.addLast(new ServerHandler());
+        }
     }
 }

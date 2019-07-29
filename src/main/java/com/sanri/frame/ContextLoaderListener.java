@@ -6,6 +6,10 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContextEvent;
@@ -33,6 +37,7 @@ import sanri.utils.PathUtil;
 public class ContextLoaderListener implements ServletContextListener{
 
 	private Log logger = LogFactory.getLog(ContextLoaderListener.class);
+	ExecutorService executorService = Executors.newFixedThreadPool(10);
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
@@ -61,20 +66,30 @@ public class ContextLoaderListener implements ServletContextListener{
 			String baseName = FilenameUtils.getBaseName(fileName);
 			try {
 				Class clazz = ClassUtils.getClass(initExec + "." + baseName);
+				if(clazz.isAnonymousClass() || clazz.isMemberClass()){
+					continue;
+				}
 				Object newInstance = clazz.newInstance();
 				List<Method> methodsListWithAnnotation = MethodUtils.getMethodsListWithAnnotation(clazz, PostConstruct.class);
 				for (Method method : methodsListWithAnnotation) {
-					MethodUtils.invokeMethod(newInstance,method.getName());
+					executorService.submit(()->{
+						try {
+							MethodUtils.invokeMethod(newInstance,method.getName());
+						} catch (NoSuchMethodException e) {
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						} catch (InvocationTargetException e) {
+							e.printStackTrace();
+						}
+					});
+
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
 		}
