@@ -60,22 +60,22 @@ public class KafkaServlet extends BaseServlet {
         newKafkaConfigDir = mkConfigPath("/kafka/configs/new");
     }
 
-    {
-        //新 kafka 的初始化
-        File[] files = kafkaConnDir.listFiles();
-        for (File file : files) {
-            try {
-                String contentJson = FileUtils.readFileToString(file);
-                KafkaConnInfo kafkaConnInfo = JSONObject.parseObject(contentJson, KafkaConnInfo.class);
-                KafkaConnInfo.KafkaVersion kafkaVersion = kafkaConnInfo.getKafkaVersion();
-                if (kafkaVersion == KafkaConnInfo.KafkaVersion.NEW) {
-                    newKafkaMonitor.initConsumer(file.getName());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    {
+//        //新 kafka 的初始化
+//        File[] files = kafkaConnDir.listFiles();
+//        for (File file : files) {
+//            try {
+//                String contentJson = FileUtils.readFileToString(file);
+//                KafkaConnInfo kafkaConnInfo = JSONObject.parseObject(contentJson, KafkaConnInfo.class);
+//                KafkaConnInfo.KafkaVersion kafkaVersion = kafkaConnInfo.getKafkaVersion();
+//                if (kafkaVersion == KafkaConnInfo.KafkaVersion.NEW) {
+//                    newKafkaMonitor.initConsumer(file.getName());
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 
     /**
      * 创建 kafka 连接

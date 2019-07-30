@@ -1,5 +1,7 @@
 package com.sanri.initexec;
 
+import com.sanri.app.chat.MessageDecoder;
+import com.sanri.app.chat.MessageEncoder;
 import com.sanri.app.chat.ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -8,6 +10,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 import javax.annotation.PostConstruct;
 
@@ -46,8 +50,9 @@ public class InitNettyServer {
         @Override
         protected void initChannel(SocketChannel socketChannel) throws Exception {
             ChannelPipeline pipeline = socketChannel.pipeline();
-            // 最大帐长度 64k ,offset 为 0 ，标记长度的长度为 8 字节
-            pipeline.addLast(new LengthFieldBasedFrameDecoder(64 * 1024 ,0,8));
+            // 1<< 20
+            pipeline.addLast(new MessageDecoder(1048576, 10, 4));
+            pipeline.addLast(new MessageEncoder());
             pipeline.addLast(new ServerHandler());
         }
     }

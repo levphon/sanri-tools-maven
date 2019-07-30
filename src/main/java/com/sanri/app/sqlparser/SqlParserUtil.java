@@ -40,11 +40,11 @@ public class SqlParserUtil {
     }
 
     public static void main(String[] args) throws JSQLParserException {
-//        SqlStatement sqlStatement = parser("select a,b,c from table_student s " +
-//                "inner join table_people p on s.idcard = p.idcard and p.status = 0 " +
-//                "inner join table_other o on o.idcard = s.idcard or o.mm = s.mm " +
-//                "where a =1");
-//        System.out.println(sqlStatement);
+        SqlStatement sqlStatement = parser("select a,b,c from table_student s " +
+                "inner join table_people p on s.idcard = p.idcard and p.status = 0 " +
+                "inner join table_other o on o.idcard = s.idcard or o.mm = s.mm " +
+                "where a =1");
+        System.out.println(sqlStatement);
 
 
     }

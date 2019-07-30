@@ -26,6 +26,7 @@ import java.util.*;
 
 public class NewKafkaMonitor extends BaseKafkaMonitor{
     static Map<String, KafkaConsumer> kafkaConsumerMap = new HashMap<String, KafkaConsumer>();
+    // kafka 是否在运行监控，做一个开关控制
     static Map<String,Boolean> kafkaConsumerBoolMap = new HashMap<String, Boolean>();
 
     //记录当前元数据 offset 文件夹名,不做为分组的一部分

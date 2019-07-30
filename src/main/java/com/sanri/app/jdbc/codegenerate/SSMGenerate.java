@@ -1,4 +1,4 @@
-package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerate;
+//package com.sanri.app.jdbc.codegenerate;
 //
 //import java.io.File;
 //import java.io.IOException;
@@ -6,12 +6,13 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //import java.util.List;
 //import java.util.Map;
 //
+//import com.sanri.app.jdbc.ExConnection;
+//import com.sanri.initexec.InitJdbcConnections;
 //import org.apache.commons.lang.StringUtils;
 //import org.apache.commons.lang.time.DateFormatUtils;
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;
 //
-//import sanri.utils.Validate;
 //import sanri.utils.VelocityUtil;
 //
 //import com.sanri.app.jdbc.Column;
@@ -27,9 +28,9 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //	private File buildPath;				//本次代码生成构建路径 表名_表数量_日期
 //	private File zipFile;
 //	private Map<String,List<String>> excludeColumnsMap;
-//	
+//
 //	/**
-//	 * 
+//	 *
 //	 * 作者:sanri <br/>
 //	 * 时间:2017-4-24下午2:00:46<br/>
 //	 * 功能:构建 ssm 项目 <br/>
@@ -42,7 +43,8 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //			basePath.mkdir();
 //		}
 //		List<Table> generateTables = MetaManager.tables(connName, tables);
-//		String now = DateFormatUtils.format(startTime, "yyyyMMddHHmmss");
+//        ExConnection exConnection = InitJdbcConnections.CONNECTIONS.get(connName);
+//        String now = DateFormatUtils.format(startTime, "yyyyMMddHHmmss");
 //		File currentPath = new File(basePath,connName+"_"+tables.size()+"_"+now);
 //		logger.info("ssm 项目生成 ,基路径为 "+currentPath+",需要的表为 :"+generateTables);
 //		this.buildPath = currentPath;
@@ -54,7 +56,7 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //		String daoImplPackage = generateConfig.getDaoImplPackage();
 //		String voPackage = generateConfig.getVoPackage();
 //		String modelPackage = generateConfig.getModelPackage();
-//		
+//
 //		if(!Validate.isEmpty(generateTables)){
 //			//目录生成
 //			File controllerDir = new File(currentPath,"controller");
@@ -65,9 +67,9 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //			File voDir = new File(currentPath,"vo");
 //			File modelDir = new File(currentPath,"model");
 //			dirCreate(currentPath,controllerDir,serviceDir,serviceImplDir,mapperDir,xmlDir,voDir,modelDir);
-//			
+//
 //			for (Table table : generateTables) {
-//				//javaBean 生成 
+//				//javaBean 生成
 //				buildJavaBean(table,voPackage,voDir);
 //				String tableName = table.getTableName();
 //				String tableComments = table.getComments();
@@ -76,7 +78,7 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //				}
 //				String className = renamePolicy.mapperClassName(tableName);
 //				String lowEntityName = StringUtils.uncapitalize(className);
-//				
+//
 //				Map<String,Object> context = new HashMap<String, Object>();
 //				context.put("lowEntity", lowEntityName);
 //				context.put("entity", className);
@@ -89,7 +91,7 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //				context.put("modelPackage", modelPackage);
 //				context.put("tableName", tableName);
 //				context.put("chineseEntity",tableComments );
-//				
+//
 //				try {
 //					//文件生成
 //					File serviceFile = new File(serviceDir,className+"Service.java");
@@ -99,7 +101,7 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //					File xmlFile = new File(xmlDir,className+"Mapper.xml");
 ////					File modelFile = new File(modelDir,className+"Model.java");
 ////					File voFile = new File(voDir,className+".java");
-//					
+//
 //					VelocityUtil.generateFile("/tpl/ssm/service.tpl", context, serviceFile);
 //					VelocityUtil.generateFile("/tpl/ssm/serviceImpl.tpl", context, serviceImplFile);
 //					VelocityUtil.generateFile("/tpl/ssm/mapper.tpl", context, mapperFile);
@@ -107,7 +109,7 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //					VelocityUtil.generateFile("/tpl/ssm/xml.tpl", context, xmlFile);
 ////					VelocityUtil.generateFile("/tpl/ssm/model.tpl", context, modelFile);
 ////					VelocityUtil.generateFile("/tpl/ssm/vo.tpl", context, voFile);
-//					
+//
 //					logFilePath(serviceFile,serviceImplFile,mapperFile,controllerFile,xmlFile);
 //				} catch (IOException e) {
 //					e.printStackTrace();
@@ -116,9 +118,9 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //		}
 //		return currentPath;
 //	}
-//	
+//
 //	/**
-//	 * 
+//	 *
 //	 * 作者:sanri <br/>
 //	 * 时间:2017-4-26下午4:28:56<br/>
 //	 * 功能:构建 javabean <br/>
@@ -143,7 +145,7 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //				propertysComments.put(columnName, column.getComments());
 //			}
 //		}
-//		
+//
 //		String className = renamePolicy.mapperClassName(tableName);
 //		JavaBean javaBean = new JavaBean();
 //		javaBean.setClassName(className);
@@ -185,12 +187,12 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 //	}
 //
 //	/**
-//	 * 
+//	 *
 //	 * 作者:sanri <br/>
 //	 * 时间:2017-4-24下午2:04:52<br/>
 //	 * 功能: 将生成的文件压缩成 zip 文件并读成流<br/>
 //	 * 入参: <br/>
-//	 * @throws  
+//	 * @throws
 //	 */
 ////	public InputStream getInputStream() {
 ////		this.zipFile = new File(basePath,buildPath.getTitle()+".zip");
@@ -202,7 +204,7 @@ package com.sanri.app.jdbc.codegenerate;//package com.sanri.app.jdbc.codegenerat
 ////		}
 ////		return null;
 ////	}
-//	
+//
 //	public GenerateConfig getGenerateConfig() {
 //		return generateConfig;
 //	}
