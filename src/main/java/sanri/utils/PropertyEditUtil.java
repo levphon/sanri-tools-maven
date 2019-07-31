@@ -243,6 +243,8 @@ public final class PropertyEditUtil {
 							Object invoke = readMethod.invoke(source);
 							writeMethod.invoke(dest, invoke);
 						}
+					}else if(sourcePropertyDescriptor.getPropertyType() != destPropertyDescriptor.getPropertyType()){
+						logger.warn("属性类型不匹配,不能复制:"+sourcePropertyDescriptor.getName());
 					}
 				}
 			} catch (Exception e) {
@@ -387,7 +389,7 @@ public final class PropertyEditUtil {
 	 */
 	private static Map<String,PropertyDescriptor> propertyDescriptorMap(Object source,String ...excludes){
 		Map<String,PropertyDescriptor> descriptorMap = new HashMap<String, PropertyDescriptor>();
-		
+
 		PropertyDescriptor[] propertyDescriptors = PropertyUtils.getPropertyDescriptors(source);
 		if(ArrayUtils.isNotEmpty(propertyDescriptors)){
 			for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
@@ -408,5 +410,7 @@ public final class PropertyEditUtil {
 	 */
 	public interface PrimitiveHandler{
 		Object handler(String name,Object dest,Object source);
-	} 
+	}
+
+
 }

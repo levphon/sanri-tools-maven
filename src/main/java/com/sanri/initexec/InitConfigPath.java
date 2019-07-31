@@ -19,9 +19,8 @@ public class InitConfigPath extends BaseServlet {
         mkConfigPath("kafka/configs/new");
         mkConfigPath("exportSql");
         mkConfigPath("templateCodePath");
+        mkConfigPath("tableTemplate");
 
         mkTmpPath("exportTmp");
-
-
     }
 }

@@ -1,6 +1,7 @@
 package com.sanri.app.servlet;
 
 import com.sanri.app.BaseServlet;
+import com.sanri.app.jdbc.Column;
 import com.sanri.app.jdbc.ExConnection;
 import com.sanri.app.jdbc.Table;
 import com.sanri.app.jdbc.codegenerate.GenerateConfig;
@@ -10,16 +11,14 @@ import com.sanri.app.jdbc.codegenerate.RenamePolicy;
 import com.sanri.app.jdbc.codegenerate.RenamePolicyDefault;
 import com.sanri.app.jdbc.codegenerate.RenamePolicyMybatisExtend;
 import com.sanri.app.jdbc.codegenerate.RenamePolicyaBExtend;
+import com.sanri.frame.DispatchServlet;
 import com.sanri.frame.RequestMapping;
 import com.sanri.initexec.InitJdbcConnections;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
-import sanri.utils.PathUtil;
-import sanri.utils.RegexValidate;
-import sanri.utils.VelocityUtil;
-import sanri.utils.ZipUtil;
+import sanri.utils.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +44,7 @@ public class CodeGenerateServlet extends BaseServlet {
 	private static File projectPath = null;
 	private static File projectCodePath = null;
 	private static File templateCodePath = null;
+	private static File tableTemplateCodePath = null;
 
 	static{
 		//读取类型映射配置
@@ -59,6 +59,7 @@ public class CodeGenerateServlet extends BaseServlet {
 			mybatisPath = mkTmpPath("generate/mybatisPath");
 			projectPath = mkTmpPath("generate/projectPath");
 			projectCodePath = mkTmpPath("generate/projectCodePath");
+			tableTemplateCodePath = mkTmpPath("generate/tableTemplateCodePath");
 
 			templateCodePath = mkConfigPath("templateCodePath");
 		} catch (FileNotFoundException e) {
@@ -455,5 +456,57 @@ public class CodeGenerateServlet extends BaseServlet {
 	public String loadTemplateCode(String codename) throws IOException {
 		File file = new File(templateCodePath, codename);
 		return FileUtils.readFileToString(file);
+	}
+
+	/**
+	 * 单表模板代码 由模板得到文件
+	 * @param ticket 本次生成的文件路径,最后做统一下载
+	 * @param templateName
+	 * @param connName
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 */
+	final String modul = "tableTemplate";
+	public String templateConvert(String ticket,String templateName,String connName,String schemaName,String tableName){
+		File codePath = null;
+		if(StringUtils.isBlank(ticket)){
+			ticket = SignUtil.uniqueTimestamp();
+			codePath = new File(tableTemplateCodePath,ticket);
+			if(!codePath.exists()){codePath.mkdir();}
+		}
+
+		ExConnection exConnection = InitJdbcConnections.CONNECTIONS.get(connName);
+		Table table = exConnection.getTable(schemaName, tableName);
+		String className = renamePolicy.mapperClassName(tableName);
+		Map<String,String> columnPropertyMapper = new HashMap<>();
+		List<Column> columns = table.getColumns();
+		for (Column column : columns) {
+			String columnName = column.getColumnName();
+			String propertyName = renamePolicy.mapperPropertyName(columnName);
+			columnPropertyMapper.put(columnName,propertyName);
+		}
+
+		//设置所有上下文参数
+		Map<String,Object> context = new HashMap<>();
+		context.put("DATE",DateFormatUtils.ISO_DATE_FORMAT.format(System.currentTimeMillis()));
+		context.put("TIME",DateFormatUtils.ISO_TIME_NO_T_FORMAT.format(System.currentTimeMillis()));
+		context.put("AUTHOR",System.getProperty("user.name"));
+
+		context.put("CONNECTION",connName);
+		context.put("SCHEMA",schemaName);
+		context.put("TABLE",tableName);
+		context.put("TABLE_COMMENTS",table.getComments());
+		context.put("COLUMNS",columns);
+
+		context.put("PO_NAME",className);
+		context.put("PO_NAME_LOWER",StringUtils.uncapitalize(className));
+		context.put("PROPERTIES",columnPropertyMapper);
+
+		//获取模板
+		ProjectConfigServlet projectConfigServlet = DispatchServlet.getServlet(ProjectConfigServlet.class);
+		projectConfigServlet.readConfig(modul,)
+		// 生成文件写入目录
+		VelocityUtil.formatString()
 	}
 }
