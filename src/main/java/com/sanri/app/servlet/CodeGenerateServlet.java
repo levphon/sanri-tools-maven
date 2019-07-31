@@ -468,7 +468,7 @@ public class CodeGenerateServlet extends BaseServlet {
 	 * @return
 	 */
 	final String modul = "tableTemplate";
-	public String templateConvert(String ticket,String templateName,String connName,String schemaName,String tableName){
+	public String templateConvert(String ticket,String templateName,String connName,String schemaName,String tableName) throws IOException {
 		File codePath = null;
 		if(StringUtils.isBlank(ticket)){
 			ticket = SignUtil.uniqueTimestamp();
@@ -505,8 +505,14 @@ public class CodeGenerateServlet extends BaseServlet {
 
 		//获取模板
 		ProjectConfigServlet projectConfigServlet = DispatchServlet.getServlet(ProjectConfigServlet.class);
-		projectConfigServlet.readConfig(modul,)
+		String templateCode = projectConfigServlet.readConfig(modul, templateName);
 		// 生成文件写入目录
-		VelocityUtil.formatString()
+		String formatCode = VelocityUtil.formatString(templateCode, context);
+		//提取文件名
+		String publicClassName = "";
+		File javaFile = new File(codePath, publicClassName + ".java");
+		FileUtils.writeStringToFile(javaFile,templateCode);
+
+		return ticket;
 	}
 }

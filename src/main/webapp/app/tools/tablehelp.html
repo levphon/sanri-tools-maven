@@ -157,7 +157,7 @@
             <tr><td>SCHEMA</td><td>数据库名</td></tr>
             <tr><td>TABLE</td><td>表格名</td></tr>
             <tr><td>TABLE_COMMENTS</td><td>表注释</td></tr>
-            <tr><td>COLUMNS</td><td>表格列的列表 Map 对象,下面有解释</td></tr>
+            <tr><td>COLUMNS</td><td>表格列的列表 List 对象,下面有解释</td></tr>
 
             <tr><td>TIME</td><td>时间 hh:mm:ss</td></tr>
             <tr><td>DATE</td><td>日期 yyyy-MM-dd</td></tr>
@@ -173,20 +173,21 @@
     <table class="table table-striped table-bordered">
         <caption>COLUMNS 说明</caption>
         <thead>
-            <tr><td>变量名</td><td>注释</td></tr>
+            <tr><td>变量名</td><td>解释</td></tr>
         </thead>
         <tbody>
-            <tr><td></td><td></td></tr>
+            <tr><td>columnName</td><td>列名</td></tr>
+            <tr><td>comments</td><td>列注释</td></tr>
         </tbody>
     </table>
 
     <table class="table table-striped table-bordered">
-        <caption>COLUMNS 说明</caption>
+        <caption>PROPERTIES 说明</caption>
         <thead>
-        <tr><td>变量名</td><td>注释</td></tr>
+        <tr><td>key</td><td>value</td></tr>
         </thead>
         <tbody>
-        <tr><td></td><td></td></tr>
+        <tr><td>columnName</td><td>propertyName</td></tr>
         </tbody>
     </table>
 
@@ -196,7 +197,7 @@
         <tr><td>列名</td><td>属性名</td></tr>
         </thead>
         <tbody>
-        <tr><td></td><td></td></tr>
+        <tr><td>columnName</td><td></td></tr>
         </tbody>
     </table>
 </div>
