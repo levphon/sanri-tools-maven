@@ -3,6 +3,7 @@ package com.sanri.app.servlet;
 import com.sanri.app.BaseServlet;
 import com.sanri.app.jdbc.Column;
 import com.sanri.app.jdbc.ExConnection;
+import com.sanri.app.jdbc.JavaProperty;
 import com.sanri.app.jdbc.Table;
 import com.sanri.app.jdbc.codegenerate.GenerateConfig;
 import com.sanri.app.jdbc.codegenerate.JavaPojo;
@@ -27,11 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -471,12 +468,14 @@ public class CodeGenerateServlet extends BaseServlet {
 		ExConnection exConnection = InitJdbcConnections.CONNECTIONS.get(connName);
 		Table table = exConnection.getTable(schemaName, tableName);
 		String className = renamePolicy.mapperClassName(tableName);
-		Map<String,String> columnPropertyMapper = new HashMap<>();
+//		Map<String,String> columnPropertyMapper = new HashMap<>();
+		List<JavaProperty> javaProperties = new ArrayList<>();
 		List<Column> columns = table.getColumns();
 		for (Column column : columns) {
 			String columnName = column.getColumnName();
 			String propertyName = renamePolicy.mapperPropertyName(columnName);
-			columnPropertyMapper.put(columnName,propertyName);
+			String propertyType = renamePolicy.mapperPropertyType(column.getColumnType().getDataType());
+			javaProperties.add(new JavaProperty(propertyName,propertyType,columnName));
 		}
 
 		//设置所有上下文参数
@@ -493,7 +492,7 @@ public class CodeGenerateServlet extends BaseServlet {
 
 		context.put("PO_NAME",className);
 		context.put("PO_NAME_LOWER",StringUtils.uncapitalize(className));
-		context.put("PROPERTIES",columnPropertyMapper);
+		context.put("PROPERTIES",javaProperties);
 
 		//获取模板,生成最终代码文件
 		FileManagerServlet projectConfigServlet = DispatchServlet.getServlet(FileManagerServlet.class);

@@ -93,6 +93,7 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                 var templateName = $('#templates').val();
 
                 util.requestData(apis.templateConvert,{ticket:ticket,templateName:templateName,connName:connName,schemaName:schemaName,tableName:tableName},function (_ticket) {
+                    layer.msg("代码生成成功,入场券是:"+_ticket);
                     $('#templatecodeconfig').data('ticket',_ticket);
                 });
             }
@@ -127,11 +128,14 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
     }
 
     /**
-     * 搜索相匹配的结果
+     * 搜索相匹配的结果,有可能数据表未初始化,需要做加载进度条
      * @param keyword
      */
     function search(keyword) {
         $('#columns>tbody').empty();
+        var index = layer.load(1, {
+            shade: [0.1,'#fff']
+        });
         util.requestData(apis.search,{connName:tablehelp.connName,schemaName:tablehelp.schemaName,keyword:keyword},function (tables) {
             var htmlCode = [];
             for(var i=0;i<tables.length;i++){
@@ -141,6 +145,9 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
             $('#tables').empty().html(htmlCode.join(''));
 
             $('#tables>li:first').addClass('active').click();
+            layer.close(index);
+        },function () {
+            layer.close(index);
         });
     }
 
@@ -172,11 +179,15 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
 
             //获取模板代码
             util.requestData(apis.readConfig,{modul:modul,baseName:template},function (templateConfig) {
-                $('#templatePreview').text(templateConfig);
+                $('#templatePreview').empty();
+                $('#templatePreview').append('<pre class="brush:\'java\';"></pre>');
+                $('#templatePreview>pre').text(templateConfig);
 
                 //打开代码预览
                 util.requestData(apis.codeConvertPreview,{templateName:template,connName:connName,schemaName:schemaName,tableName:tableName},function (formatCode) {
-                    $('#codepreview').text(formatCode);
+                    $('#codepreview').empty();
+                    $('#codepreview').append('<pre class="brush:\'java\';"></pre>');
+                    $('#codepreview>pre').text(formatCode);
                     SyntaxHighlighter.highlight();
                 });
             })
