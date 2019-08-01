@@ -1,5 +1,6 @@
 package com.sanri.app.jdbc;
 
+import com.sanri.app.jdbc.codegenerate.RenamePolicyMybatisExtend;
 import com.sanri.app.postman.JdbcConnDetail;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -103,5 +104,11 @@ public class PostgreSqlExConnection extends ExConnection {
     @Override
     public String ddL(String schemaName, String tableName) {
         return "pg 无法实现,使用 pg_dump 来查询";
+    }
+
+    static RenamePolicyMybatisExtend renamePolicyMybatisExtend = new RenamePolicyMybatisExtend(dbType);
+    @Override
+    public RenamePolicyMybatisExtend getRenamePolicyMybatis() {
+        return renamePolicyMybatisExtend;
     }
 }

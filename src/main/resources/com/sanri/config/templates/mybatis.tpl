@@ -6,7 +6,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
     #foreach( $column in $table.columns)
     #if ($column.columnName != 'id')
-    <result column="$column.columnName" jdbcType="$typeMapper.mapperJdbcTypeName($column.dataType)" property="$renamePolicy.mapperPropertyName($column.columnName)"/>
+    <result column="$column.columnName" jdbcType="$typeMapper.mapperJdbcTypeName($column.columnType.dataType)" property="$renamePolicy.mapperPropertyName($column.columnName)"/>
     #end
     #end
     </resultMap>

@@ -29,7 +29,7 @@ define(['util','dialog','icheck','jsonview'],function (util,dialog) {
             var $topics = $('#topics').empty();
 
             for(var topic in topics){
-                var $topic = $('<div class="list-group-item" topic="'+topic+'">'+topic+' <a href="javascript:;" class=" pull-right">删除</a></div>').appendTo($topics);
+                var $topic = $('<div class="list-group-item" topic="'+topic+'">'+topic+' <a href="javascript:void(0);" class=" pull-right">删除</a></div>').appendTo($topics);
                 $topic.data('partitions',topics[topic]);
             }
         });

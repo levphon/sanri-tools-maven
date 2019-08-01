@@ -1,5 +1,6 @@
 package com.sanri.app.jdbc;
 
+import com.sanri.app.jdbc.codegenerate.RenamePolicyMybatisExtend;
 import com.sanri.app.postman.JdbcConnDetail;
 
 import javax.sql.DataSource;
@@ -45,6 +46,11 @@ public class OracleExConnection extends ExConnection {
 
     @Override
     public String ddL(String schemaName, String tableName) {
+        return null;
+    }
+
+    @Override
+    public RenamePolicyMybatisExtend getRenamePolicyMybatis() {
         return null;
     }
 }

@@ -1,4 +1,4 @@
-define(['util','dialog','contextMenu'],function (util,dialog) {
+define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dialog) {
     var tablehelp = {
         connName:undefined,
         schemaName:undefined
@@ -7,8 +7,15 @@ define(['util','dialog','contextMenu'],function (util,dialog) {
         conns:'/sqlclient/connections',
         schemas:'/sqlclient/schemas',
         search:'/sqlclient/searchTables',
-        columns:'/sqlclient/refreshTable'
+        columns:'/sqlclient/refreshTable',
+        codeConvertPreview:'/code/codeConvertPreview',
+        templateNames:'/file/manager/simpleConfigNames',
+        writeConfig:'/file/manager/writeConfig',
+        readConfig:'/file/manager/readConfig',
+        templateConvert:'/code/templateConvert',
+        downloadPath:'/file/manager/downloadPath'
     };
+    var modul = 'tableTemplate';
 
     tablehelp.init = function () {
       initConns();
@@ -42,24 +49,80 @@ define(['util','dialog','contextMenu'],function (util,dialog) {
             selector: '#tables li',
             zIndex: 4,
             items:{
-                templateCode:{name:'模板代码...',icon:'copy',callback:templateCode}
+                templateCode:{name:'模板代码...',icon:'copy',callback:templateCode},
+                columns:{name:'属性列',icon:'cut',callback:tableColumns}
             }
         });
-        $('#testing').click(templateCode);
+
+        /**
+         * 查看当前表的所有列
+         * @param key
+         * @param opts
+         */
+        function tableColumns(key,opts) {
+            var tableName = currentTable(opts);
+            util.requestData(apis.columns,{tableName:tableName},function (columns) {
+                var columnNames = columns.map(column => {return column.columnName});
+                layer.msg(columnNames.join(','));
+            });
+        }
 
         /**
          * 使用表来创建模板代码
          */
-        function templateCode() {
-            dialog.create('模板代码')
+        function templateCode(key,opts) {
+            var tableName = currentTable(opts);
+            loadTemplates();
+            //记录数据在对话框上
+            $('#templatecodeconfig').data('tableName',tableName);
+
+            dialog.create('模板代码['+tableName+']')
                 .setContent($('#templatecodeconfig'))
                 .setWidthHeight('90%', '90%')
-                .addBtn({type:'yes',text:'下载代码',handler:downloadCode})
+                .addBtn({type:'yes',text:'生成代码',handler:writeCode})
+                .addBtn({type:'button',text:'下载代码',handler:downloadCode})
                 .build();
 
-            function downloadCode(index) {
+            /**
+             * 生成本次模板代码
+             */
+            function writeCode() {
+                var connName = $('#conns').val();
+                var schemaName = $('#schemas').val();
+                var ticket = $('#templatecodeconfig').data('ticket');
+                var templateName = $('#templates').val();
 
+                util.requestData(apis.templateConvert,{ticket:ticket,templateName:templateName,connName:connName,schemaName:schemaName,tableName:tableName},function (_ticket) {
+                    $('#templatecodeconfig').data('ticket',_ticket);
+                });
             }
+
+            /**
+             * 下载生成的所有模板代码
+             * @param index
+             */
+            function downloadCode(index) {
+                var ticket = $('#templatecodeconfig').data('ticket');
+                //tableTemplateCodePath generate
+                util.downFile(apis.downloadPath,{modul:'generate',baseName: 'tableTemplateCodePath/'+ticket},1000,function () {
+                    layer.close(index);
+                });
+            }
+        }
+
+        function loadTemplates() {
+            util.requestData(apis.templateNames,{modul:modul},function (templateNames) {
+               var $template = $('#templates').empty();
+               for (var i=0;i<templateNames.length;i++){
+                   $template.append('<option value="'+templateNames[i]+'">'+templateNames[i]+'</option>');
+               }
+                $template.change();
+            });
+        }
+
+        function currentTable(opts) {
+            var tableName = opts.$trigger.attr('tableName');
+            return tableName;
         }
     }
 
@@ -89,6 +152,7 @@ define(['util','dialog','contextMenu'],function (util,dialog) {
             {selector:'#seevars',types:['click'],handler:seeVars},
             {selector:'#plustemplate',types:['click'],handler:plusTemplate},
             {parent:'#tables',selector:'li',types:['click'],handler:columnsView},
+            {selector:'#templates',types:['change'],handler:switchTemplate},
             {selector:'#search',types:['keydown'],handler:function (event) {
                     var event = event || window.event;
                     if(event.keyCode == 13){
@@ -96,6 +160,27 @@ define(['util','dialog','contextMenu'],function (util,dialog) {
                     }
                 }
             }];
+
+        /**
+         * 模板切换时切换预览
+         */
+        function switchTemplate() {
+            var template = $(this).val();
+            var tableName = $('#templatecodeconfig').data('tableName');
+            var connName = $('#conns').val();
+            var schemaName = $('#schemas').val();
+
+            //获取模板代码
+            util.requestData(apis.readConfig,{modul:modul,baseName:template},function (templateConfig) {
+                $('#templatePreview').text(templateConfig);
+
+                //打开代码预览
+                util.requestData(apis.codeConvertPreview,{templateName:template,connName:connName,schemaName:schemaName,tableName:tableName},function (formatCode) {
+                    $('#codepreview').text(formatCode);
+                    SyntaxHighlighter.highlight();
+                });
+            })
+        }
 
         /**
          * 添加模板
@@ -110,9 +195,12 @@ define(['util','dialog','contextMenu'],function (util,dialog) {
             /**
              * 保存模板
              */
-            function saveTemplate() {
+            function saveTemplate(index) {
                 var data = util.serialize2Json($('#plustemplatedialog form').serialize());
-                console.log(data);
+                data.modul = modul;
+                util.requestData(apis.writeConfig,data,function () {
+                    layer.close(index);
+                })
             }
         }
 

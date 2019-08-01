@@ -32,7 +32,7 @@ define(['util','dialog','jsonview'],function (util,dialog) {
            var $menu = $('#connect>ul.dropdown-menu').empty();
            if(configs){
                for (var i = 0; i < configs.length; i++) {
-                   var $item = $('<li><a href="javascript:;">'+configs[i]+'</a></li>').appendTo($menu);
+                   var $item = $('<li><a href="javascript:void(0);">'+configs[i]+'</a></li>').appendTo($menu);
                    $item.data('value',configs[i]);
                }
                if(callback){

@@ -4,16 +4,22 @@ import com.sanri.app.BaseServlet;
 import com.sanri.app.postman.ConfigPath;
 import com.sanri.frame.RequestMapping;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import sanri.utils.ZipUtil;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @RequestMapping("/file/manager")
-public class ProjectConfigServlet extends BaseServlet {
+public class FileManagerServlet extends BaseServlet {
     /**
      * 返回所有模块
      * @return
@@ -98,6 +104,29 @@ public class ProjectConfigServlet extends BaseServlet {
         File file = new File(modulDir, baseName);
         return FileUtils.readFileToString(file);
     }
+
+    /**
+     * 这个主要读取大文件或目录，为 tmp 路径的文件
+     * @param baseName
+     */
+    public void downloadPath(String modul,String baseName, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        File modulDir = new File(dataTempPath, modul);
+        File path = new File(modulDir,baseName);
+
+        File targetFile = path;
+        if(path.isDirectory()){
+            targetFile = new File(path.getParent(),path.getName()+".zip");
+            ZipUtil.zip(path, targetFile);
+        }
+        FileInputStream fileInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(targetFile);
+            download(fileInputStream, MimeType.AUTO, targetFile.getName(), request, response);
+        }finally{
+            IOUtils.closeQuietly(fileInputStream);
+        }
+    }
+
 
     private List<ConfigPath> convertDir2ConfigPaths(File modulDir) {
         List<ConfigPath> configPaths = new ArrayList<>();

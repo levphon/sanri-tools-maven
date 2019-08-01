@@ -212,7 +212,7 @@ define(['util','dialog','template','ztree','contextMenu'],function (util,dialog,
             var $menu = $('#connect>ul.dropdown-menu').empty();
             if(conns){
                 for(var i=0;i<conns.length;i++){
-                    var $item = $('<li name="'+conns[i]+'"><a href="javascript:;">'+conns[i]+'</a></li>').appendTo($menu);
+                    var $item = $('<li name="'+conns[i]+'"><a href="javascript:void(0);">'+conns[i]+'</a></li>').appendTo($menu);
                     $item.data('value',conns[i]);
                 }
                 if(callback){

@@ -1,6 +1,7 @@
 package com.sanri.app.jdbc;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.sanri.app.jdbc.codegenerate.RenamePolicyMybatisExtend;
 import com.sanri.app.postman.JdbcConnDetail;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -130,6 +131,11 @@ public class MysqlExConnection extends ExConnection{
         QueryRunner queryRunner = new QueryRunner(schema.dataSource());
         String ddL = queryRunner.query("show create table " + tableName, new ScalarHandler<String>(2));
         return ddL;
+    }
+    static RenamePolicyMybatisExtend renamePolicyMybatisExtend = new RenamePolicyMybatisExtend(dbType);
+    @Override
+    public RenamePolicyMybatisExtend getRenamePolicyMybatis() {
+        return renamePolicyMybatisExtend;
     }
 
 }

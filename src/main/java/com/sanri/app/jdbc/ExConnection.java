@@ -1,5 +1,6 @@
 package com.sanri.app.jdbc;
 
+import com.sanri.app.jdbc.codegenerate.RenamePolicyMybatisExtend;
 import com.sanri.app.postman.JdbcConnDetail;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
@@ -241,4 +242,6 @@ public abstract class ExConnection {
      * @return
      */
     public abstract String ddL(String schemaName, String tableName) throws SQLException;
+
+    public abstract RenamePolicyMybatisExtend getRenamePolicyMybatis();
 }

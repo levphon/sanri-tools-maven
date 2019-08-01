@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="../../css/style.css" />
 
     <link rel="stylesheet" href="../../plugins/contextMenu/jquery.contextMenu.min.css" />
+    <link rel="stylesheet" href="../../plugins/syntaxhighlighter/shCore.css" />
+    <link rel="stylesheet" href="../../plugins/syntaxhighlighter/shCoreDefault.css" />
+    <link rel="stylesheet" href="../../plugins/syntaxhighlighter/theme/shThemeEclipse.css" />
     <style>
         .list-group-item{
             cursor: pointer;
@@ -41,7 +44,6 @@
 </nav>
 
 <div class="container-fluid">
-    <button class="btn btn-primary" id="testing">测试用</button>
     <div class="row">
         <div class="col-xs-4">
             <div class="form-inline">
@@ -112,20 +114,21 @@
                <div class="input-group input-group-sm">
                    <span class="input-group-addon"><i class="fa fa-bitbucket"></i></span>
                    <select class="form-control" name="" style="width: 150px;" id="templates">
-                       <option value="">模板一</option>
-                       <option value="">模板二</option>
                    </select>
                </div>
            </div>
            <div class="form-group">
                <button class="btn btn-info btn-sm" id="plustemplate"><i class="fa fa-plus-square"></i> 添加模板</button>
-               <a href="javascript:;" id="seevars">查看可用变量</a>
+               <a href="javascript:void(0);" id="seevars">查看可用变量</a>
            </div>
        </div>
 
+        <!-- 模板加载位置 -->
+       <pre class="brush:'java'" id="templatePreview"></pre>
    </div>
     <div class="col-xs-6">
-        <p id="codepreview"></p>
+        <pre class="brush:'java';" id="codepreview">
+        </pre>
     </div>
 </div>
 
@@ -134,10 +137,10 @@
     <div class="col-xs-12">
         <form class="form-horizontal" >
             <div class="form-group">
-                <input type="text" name="codename" class="form-control" placeholder="模板名称" />
+                <input type="text" name="baseName" class="form-control" placeholder="模板名称" />
             </div>
             <div class="form-group">
-                <textarea name="codesource" placeholder="模板源码可以使用变量" class="form-control" style="min-height: 450px;"></textarea>
+                <textarea name="content" placeholder="模板源码可以使用变量" class="form-control" style="min-height: 450px;"></textarea>
             </div>
         </form>
     </div>
@@ -191,15 +194,6 @@
         </tbody>
     </table>
 
-    <table class="table table-striped table-bordered">
-        <caption>PROPERTIES 说明</caption>
-        <thead>
-        <tr><td>列名</td><td>属性名</td></tr>
-        </thead>
-        <tbody>
-        <tr><td>columnName</td><td></td></tr>
-        </tbody>
-    </table>
 </div>
 
 <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>

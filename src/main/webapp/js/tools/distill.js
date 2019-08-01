@@ -20,7 +20,7 @@ define(['util'],function (util) {
 
         var $regexs = $('#examples>ul.dropdown-menu').empty();
         for (var key in regexs) {
-            var $item = $('<li name="' + key + '"><a href="javascript:;">' + key + '</a></li>').appendTo($regexs);
+            var $item = $('<li name="' + key + '"><a href="javascript:void(0);">' + key + '</a></li>').appendTo($regexs);
         }
          $('#examples>.dropdown-menu>li:first').click();
         distill.regex = regexs['java属性'];

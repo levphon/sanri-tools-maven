@@ -82,16 +82,7 @@ define(['util','sqlclient/code','dialog','ztree'],function(util,code,dialog){
 		if(metaInfo && metaInfo.databases){
 			var currDatabase = null;
 			//找到当前数据库 meta 元素
-			for(var i=0;i<metaInfo.databases.length;i++){
-				var database = metaInfo.databases[i];
-				if(database.schemaName == dbname){
-					currDatabase = database;
-					break;
-				}
-			}
-			if(currDatabase){
-				return currDatabase;
-			}
+			return metaInfo.databases[dbname];
 		}
 		return undefined;
 	}

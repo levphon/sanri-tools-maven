@@ -18,7 +18,7 @@ define(['util'],function (util) {
         util.requestData('/sqlclient/connections',function (connections) {
             var $menu = $('#connect>ul.dropdown-menu');
             for(var i=0;i<connections.length;i++){
-                $('<li><a href="javascript:;">'+connections[i]+'</a></li>').appendTo($menu);
+                $('<li><a href="javascript:void(0);">'+connections[i]+'</a></li>').appendTo($menu);
             }
         });
 

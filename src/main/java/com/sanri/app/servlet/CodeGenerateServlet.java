@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequestMapping("/code")
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -88,7 +90,6 @@ public class CodeGenerateServlet extends BaseServlet {
 	//使用默认命名策略
 	private RenamePolicy renamePolicy = new RenamePolicyDefault(TYPE_MIRROR_MAP);
 	private RenamePolicy extendRenamePolicy = new RenamePolicyaBExtend(TYPE_MIRROR_MAP);
-	private MybatisTypeMapper mybatisTypeMapper = new RenamePolicyMybatisExtend();
 	@RequestMapping("/build/javabean")
 	public String buildJavaBean(String connName,String dbName,String tableName,String model,String packageName,String baseEntity,String [] interfaces,String[] excludeColumns,String [] supports){
 //		Table table = MetaManager.table(connName, dbName, tableName);
@@ -136,7 +137,7 @@ public class CodeGenerateServlet extends BaseServlet {
 		context.put("table",table);
 		context.put("renamePolicy",extendRenamePolicy);
 		context.put("initSql",initSql);
-		context.put("typeMapper",mybatisTypeMapper);
+		context.put("typeMapper",exConnection.getRenamePolicyMybatis());
 		String className = extendRenamePolicy.mapperClassName(tableName);
 		File file = new File(mybatisPath, className + ".xml");
 		try {
@@ -459,23 +460,14 @@ public class CodeGenerateServlet extends BaseServlet {
 	}
 
 	/**
-	 * 单表模板代码 由模板得到文件
-	 * @param ticket 本次生成的文件路径,最后做统一下载
+	 * 模板代码转换预览
 	 * @param templateName
 	 * @param connName
 	 * @param schemaName
 	 * @param tableName
 	 * @return
 	 */
-	final String modul = "tableTemplate";
-	public String templateConvert(String ticket,String templateName,String connName,String schemaName,String tableName) throws IOException {
-		File codePath = null;
-		if(StringUtils.isBlank(ticket)){
-			ticket = SignUtil.uniqueTimestamp();
-			codePath = new File(tableTemplateCodePath,ticket);
-			if(!codePath.exists()){codePath.mkdir();}
-		}
-
+	public String codeConvertPreview(String templateName,String connName,String schemaName,String tableName) throws IOException {
 		ExConnection exConnection = InitJdbcConnections.CONNECTIONS.get(connName);
 		Table table = exConnection.getTable(schemaName, tableName);
 		String className = renamePolicy.mapperClassName(tableName);
@@ -503,15 +495,41 @@ public class CodeGenerateServlet extends BaseServlet {
 		context.put("PO_NAME_LOWER",StringUtils.uncapitalize(className));
 		context.put("PROPERTIES",columnPropertyMapper);
 
-		//获取模板
-		ProjectConfigServlet projectConfigServlet = DispatchServlet.getServlet(ProjectConfigServlet.class);
+		//获取模板,生成最终代码文件
+		FileManagerServlet projectConfigServlet = DispatchServlet.getServlet(FileManagerServlet.class);
 		String templateCode = projectConfigServlet.readConfig(modul, templateName);
-		// 生成文件写入目录
 		String formatCode = VelocityUtil.formatString(templateCode, context);
-		//提取文件名
+		return formatCode;
+	}
+
+	/**
+	 * 单表模板代码 由模板得到文件;这个生成好不能修改，可以再生成一个
+	 * @param ticket 本次生成的文件路径,最后做统一下载
+	 * @param templateName
+	 * @param connName
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 */
+	final String modul = "tableTemplate";
+	Pattern pattern = Pattern.compile("public\\s+class\\s+(\\w+)");
+	public String templateConvert(String ticket,String templateName,String connName,String schemaName,String tableName) throws IOException {
+		File codePath = null;
+		if(StringUtils.isBlank(ticket)){
+			ticket = SignUtil.uniqueTimestamp();
+			codePath = new File(tableTemplateCodePath,ticket);
+			if(!codePath.exists()){codePath.mkdir();}
+		}
+
+		String formatCode = codeConvertPreview(templateName, connName, schemaName, tableName);
+		//提取文件名,这里不能区分内部类 TODO ,所以模板文件中不要写内部类
+		Matcher matcher = pattern.matcher(formatCode);
 		String publicClassName = "";
+		if(matcher.find()){
+			publicClassName = matcher.group(1);
+		}
 		File javaFile = new File(codePath, publicClassName + ".java");
-		FileUtils.writeStringToFile(javaFile,templateCode);
+		FileUtils.writeStringToFile(javaFile,formatCode);
 
 		return ticket;
 	}

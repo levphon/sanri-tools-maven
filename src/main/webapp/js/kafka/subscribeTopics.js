@@ -31,7 +31,7 @@ define(['util','dialog','icheck'],function(util,dialog){
             var $tbody = $('#topictable>tbody').empty();
             for (var i = 0; i < data.length; i++) {
                 var topicItem = data[i];
-                var $tr = $('<tr><td>' + (i + 1) + '</td><td>' + topicItem.topic + '</td><td>' + topicItem.partitions + '</td><td>' + topicItem.offset + '</td><td>' + topicItem.logSize + '</td><td>' + topicItem.lag + '</td><td><a href="javascript:;"topic="' + topicItem.topic + '">监控</a></td></tr>').appendTo($tbody);
+                var $tr = $('<tr><td>' + (i + 1) + '</td><td>' + topicItem.topic + '</td><td>' + topicItem.partitions + '</td><td>' + topicItem.offset + '</td><td>' + topicItem.logSize + '</td><td>' + topicItem.lag + '</td><td><a href="javascript:void(0);"topic="' + topicItem.topic + '">监控</a></td></tr>').appendTo($tbody);
             }
             layer.close(index);
         });

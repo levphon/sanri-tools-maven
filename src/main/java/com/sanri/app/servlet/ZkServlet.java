@@ -22,12 +22,7 @@ import sanri.utils.ReachableUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * zookeeper 管理
@@ -46,7 +41,7 @@ public class ZkServlet extends BaseServlet {
     private static JdkSerializer jdkSerializer = new JdkSerializer();
     private static HessianSerializer hessianSerializer = new HessianSerializer();
 
-    static Map<String,ZkSerializer> zkSerializerMap = new HashMap<String, ZkSerializer>();
+    static Map<String,ZkSerializer> zkSerializerMap = new LinkedHashMap<>();
     static {
         zookeeperConfigDir = mkConfigPath("zookeeper");
         zkSerializerMap.put("string",stringSerializer);

@@ -1032,7 +1032,7 @@ public class SqlClientServlet extends BaseServlet{
 				String tableName = table.getTableName();
 				String tableComments = table.getComments();
 				if(StringUtils.isBlank(searchSchema) || "table".equalsIgnoreCase(searchSchema)) {
-					if (tableName.contains(keyword) || tableComments.contains(keyword)) {
+					if (tableName.contains(keyword) || (StringUtils.isNotBlank(tableComments) && tableComments.contains(keyword))) {
 						findTables.add(table);
 						continue;
 					}
@@ -1046,7 +1046,7 @@ public class SqlClientServlet extends BaseServlet{
 						String columnComments = column.getComments();
 
 						if(StringUtils.isBlank(searchSchema) || "column".equalsIgnoreCase(searchSchema)) {
-							if (columnName.contains(keyword) || columnComments.contains(keyword)) {
+							if (columnName.contains(keyword) || (StringUtils.isNotBlank(columnComments) && columnComments.contains(keyword))) {
 								findTables.add(table);
 							}
 						}
