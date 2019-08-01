@@ -18,7 +18,7 @@ public class TranslateChain implements Translate {
     }
      /**
      * 翻译任务
-     * @param translateWord
+     * @param translateCharSequence
      */
    public void doTranslate(TranslateCharSequence translateCharSequence,TranslateChain translateChain){
         if(translateChain.size() ==0 ||  index == translateChain.size()){

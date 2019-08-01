@@ -54,6 +54,9 @@ public class BaiduEnglishTranslate implements Translate ,EnglishTranslate{
             for (String result : translate) {
                 translateCharSequence.addTranslate(needTranslateWord,result);
             }
+        }else{
+            logger.error("百度翻译失败,使用原词代替");
+            translateCharSequence.addTranslate(needTranslateWord,needTranslateWord);
         }
     }
 

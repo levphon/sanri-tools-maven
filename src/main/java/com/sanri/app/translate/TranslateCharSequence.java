@@ -72,7 +72,6 @@ public class TranslateCharSequence {
     /**
      * 设置翻译完成
      * @param translate
-     * @param perChar
      */
     public void setTranslate(boolean translate) {
         this.translate = translate;
