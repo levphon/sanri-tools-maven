@@ -13,6 +13,7 @@ import com.sanri.app.jdbc.codegenerate.RenamePolicy;
 import com.sanri.app.jdbc.codegenerate.RenamePolicyDefault;
 import com.sanri.app.jdbc.codegenerate.RenamePolicyMybatisExtend;
 import com.sanri.app.jdbc.codegenerate.RenamePolicyaBExtend;
+import com.sanri.app.postman.JdbcConnDetail;
 import com.sanri.frame.DispatchServlet;
 import com.sanri.frame.RequestMapping;
 import com.sanri.initexec.InitJdbcConnections;
@@ -47,12 +48,7 @@ public class CodeGenerateServlet extends BaseServlet {
 	private static File tableTemplateCodePath = null;
 
 	static{
-		//读取类型映射配置
-//			Properties properties = new Properties();
-//			String pkgPath = PathUtil.pkgPath("com.sanri.config");
-//			FileInputStream fileInputStream = new FileInputStream(new File(pkgPath+"/mapper_jdbc_java.properties"));
-//			properties.load(fileInputStream);
-//			TYPE_MIRROR_MAP.putAll((Map)properties);
+		//读取数据库类型到java类型映射配置
 		ConfigCenter configCenter = ConfigCenter.getInstance();
 		List<String> dbTypes = configCenter.getList("mapper_jdbc_java","supports.dbType",String.class);
 		for (String dbType : dbTypes) {
@@ -90,7 +86,6 @@ public class CodeGenerateServlet extends BaseServlet {
 	private RenamePolicy extendRenamePolicy = new RenamePolicyaBExtend(TYPE_MIRROR_MAP);
 	@RequestMapping("/build/javabean")
 	public String buildJavaBean(String connName,String dbName,String tableName,String model,String packageName,String baseEntity,String [] interfaces,String[] excludeColumns,String [] supports){
-//		Table table = MetaManager.table(connName, dbName, tableName);
         ExConnection exConnection = InitJdbcConnections.CONNECTIONS.get(connName);
         Table table = exConnection.getTable(dbName, tableName);
         if(table == null){
@@ -469,14 +464,18 @@ public class CodeGenerateServlet extends BaseServlet {
 		ExConnection exConnection = InitJdbcConnections.CONNECTIONS.get(connName);
 		Table table = exConnection.getTable(schemaName, tableName);
 		String className = renamePolicy.mapperClassName(tableName);
-//		Map<String,String> columnPropertyMapper = new HashMap<>();
 		List<JavaProperty> javaProperties = new ArrayList<>();
 		List<Column> columns = table.getColumns();
 		for (Column column : columns) {
 			String columnName = column.getColumnName();
 			String propertyName = renamePolicy.mapperPropertyName(columnName);
 			String propertyType = renamePolicy.mapperPropertyType(column.getColumnType().getDataType(),exConnection.getDbType());
-			javaProperties.add(new JavaProperty(propertyName,propertyType,columnName));
+			String jdbcTypeName = exConnection.getRenamePolicyMybatis().mapperJdbcTypeName(column.getColumnType().getDataType());
+
+			JavaProperty javaProperty = new JavaProperty(propertyName, propertyType, columnName);
+			javaProperty.setComments(column.getComments());
+			javaProperty.setJdbcType(jdbcTypeName);
+			javaProperties.add(javaProperty);
 		}
 
 		//设置所有上下文参数
@@ -485,7 +484,9 @@ public class CodeGenerateServlet extends BaseServlet {
 		context.put("TIME",DateFormatUtils.ISO_TIME_NO_T_FORMAT.format(System.currentTimeMillis()));
 		context.put("AUTHOR",System.getProperty("user.name"));
 
+		JdbcConnDetail connDetail = exConnection.getConnDetail();
 		context.put("CONNECTION",connName);
+		context.put("IPPORT",connDetail.getHost()+":"+connDetail.getPort());
 		context.put("SCHEMA",schemaName);
 		context.put("TABLE",tableName);
 		context.put("TABLE_COMMENTS",table.getComments());

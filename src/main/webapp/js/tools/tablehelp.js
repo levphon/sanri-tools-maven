@@ -179,14 +179,19 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
 
             //获取模板代码
             util.requestData(apis.readConfig,{modul:modul,baseName:template},function (templateConfig) {
+                //简单判断下文件类型
+                var fileType = 'java';
+                if(templateConfig.startsWith('<?xml')){
+                    fileType = 'xml';
+                }
                 $('#templatePreview').empty();
-                $('#templatePreview').append('<pre class="brush:\'java\';"></pre>');
+                $('#templatePreview').append('<pre class="brush:\''+fileType+'\';"></pre>');
                 $('#templatePreview>pre').text(templateConfig);
 
                 //打开代码预览
                 util.requestData(apis.codeConvertPreview,{templateName:template,connName:connName,schemaName:schemaName,tableName:tableName},function (formatCode) {
                     $('#codepreview').empty();
-                    $('#codepreview').append('<pre class="brush:\'java\';"></pre>');
+                    $('#codepreview').append('<pre class="brush:\''+fileType+'\';"></pre>');
                     $('#codepreview>pre').text(formatCode);
                     SyntaxHighlighter.highlight();
                 });

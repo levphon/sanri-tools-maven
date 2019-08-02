@@ -4,6 +4,7 @@ public class Column {
     private String columnName;
     private String comments;
     private ColumnType columnType;
+    private boolean primaryKey;
 
     public Column(String columnName,ColumnType columnType, String comments) {
         this.columnType = columnType;
@@ -25,5 +26,13 @@ public class Column {
 
     public ColumnType getColumnType() {
         return columnType;
+    }
+
+    public boolean isPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(boolean primaryKey) {
+        this.primaryKey = primaryKey;
     }
 }

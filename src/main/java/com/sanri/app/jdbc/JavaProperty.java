@@ -5,8 +5,10 @@ import org.apache.commons.lang.StringUtils;
 public class JavaProperty {
     private String name;
     private String type;
+    private String jdbcType;
     private String columnName;
     private String capitalizeName;
+    private String comments;
 
     public JavaProperty() {
     }
@@ -49,5 +51,21 @@ public class JavaProperty {
 
     public void setCapitalizeName(String capitalizeName) {
         this.capitalizeName = capitalizeName;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public String getJdbcType() {
+        return jdbcType;
+    }
+
+    public void setJdbcType(String jdbcType) {
+        this.jdbcType = jdbcType;
     }
 }

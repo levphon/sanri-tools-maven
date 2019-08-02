@@ -5,14 +5,14 @@ import com.sanri.app.postman.JdbcConnDetail;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.postgresql.ds.PGSimpleDataSource;
 import sanri.utils.PropertyEditUtil;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class PostgreSqlExConnection extends ExConnection {
     public static final String dbType = "postgresql";
@@ -40,12 +40,39 @@ public class PostgreSqlExConnection extends ExConnection {
 
     @Override
     protected List<Table> refreshTables(String schemaName) throws SQLException {
-//        String sql = "select relname as name,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname";
-        String sql = "select concat(n.nspname,'.',relname) as name,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c\n" +
-                "inner join pg_namespace n on n.oid = c.relnamespace\n" +
-                "where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname ";
         Schema schema = schemas.get(schemaName);
         QueryRunner queryRunner = new QueryRunner(schema.dataSource());
+        //查询当前数据库所有表的主键信息
+        String primaryKeySql = "select pg_attribute.attname as primary_key,concat(n.nspname,'.',pg_class.relname) as tableName from pg_constraint " +
+                "inner join pg_class on pg_constraint.conrelid = pg_class.oid " +
+                "inner join pg_attribute on pg_attribute.attrelid = pg_class.oid and pg_attribute.attnum = pg_constraint.conkey[1] " +
+                "inner join pg_type on pg_type.oid = pg_attribute.atttypid " +
+                "inner join pg_namespace n on n.oid = pg_class.relnamespace ";
+
+        Map<String, Set<String>> tablePrimaryMap = queryRunner.query(primaryKeySql, new ResultSetHandler<Map<String, Set<String>>>() {
+            @Override
+            public Map<String, Set<String>> handle(ResultSet resultSet) throws SQLException {
+                Map<String, Set<String>> tablePrimaryKeyMap = new HashMap<>();
+                while (resultSet.next()) {
+                    String primaryKey = ObjectUtils.toString(resultSet.getString("primary_key")).toLowerCase();
+                    String tableName = ObjectUtils.toString(resultSet.getString("tableName")).toLowerCase();
+                    Set<String> strings = tablePrimaryKeyMap.get(tableName);
+                    if(strings == null){
+                        strings = new HashSet<>();
+                        tablePrimaryKeyMap.put(tableName,strings);
+                    }
+                    strings.add(primaryKey);
+                }
+
+                return tablePrimaryKeyMap;
+            }
+        });
+
+//        String sql = "select relname as name,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname";
+        String sql = "select concat(n.nspname,'.',relname) as name,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c " +
+                "inner join pg_namespace n on n.oid = c.relnamespace " +
+                "where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname ";
+
         List<Table> tables = queryRunner.query(sql, new ResultSetHandler<List<Table>>() {
             @Override
             public List<Table> handle(ResultSet resultSet) throws SQLException {
@@ -53,7 +80,12 @@ public class PostgreSqlExConnection extends ExConnection {
                 while (resultSet.next()) {
                     String tableName = ObjectUtils.toString(resultSet.getString("name")).toLowerCase();
                     String comments = resultSet.getString("comment");
-                    tables.add(new Table(tableName, comments));
+                    Table table = new Table(tableName, comments);
+                    Set<String> primaryKeys = tablePrimaryMap.get(tableName);
+                    if(primaryKeys != null) {
+                        table.setPrimaryKeys(primaryKeys);
+                    }
+                    tables.add(table);
                 }
                 return tables;
             }
@@ -64,6 +96,9 @@ public class PostgreSqlExConnection extends ExConnection {
     @Override
     protected List<Column> refreshColumns(String schemaName, String tableName) throws SQLException {
         Schema schema = schemas.get(schemaName);
+        Table table = schema.getTable(tableName);
+        Set<String> primaryKeys = table.getPrimaryKeys();
+
         QueryRunner queryRunner = new QueryRunner(schema.dataSource());
         tableName = tableName.split("\\.")[1];
         String sql = "SELECT col_description(a.attrelid,a.attnum) as comment,format_type(a.atttypid,a.atttypmod) as type,a.attname as name, a.attnotnull as notnull FROM pg_class as c,pg_attribute as a where c.relname = '"+tableName+"' and a.attrelid = c.oid and a.attnum>0";
@@ -75,9 +110,11 @@ public class PostgreSqlExConnection extends ExConnection {
                     String columnName = resultSet.getString(3);
                     String dataType = resultSet.getString(2);
                     String comment = resultSet.getString(1);
+                    boolean isPrimaryKey = primaryKeys.contains(columnName);
 
                     ColumnType columnType = new ColumnType(dataType);
                     Column column = new Column(columnName, columnType, comment);
+                    column.setPrimaryKey(isPrimaryKey);
                     columns.add(column);
                 }
                 return columns;

@@ -1,14 +1,13 @@
 package com.sanri.app.jdbc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Table {
     private String tableName;
     private String comments;
     private Map<String,Column> columns = new HashMap<String, Column>();
+    //主键列表
+    private Set<String> primaryKeys = new HashSet<>();
 
     public Table(String tableName) {
         this.tableName = tableName;
@@ -44,5 +43,13 @@ public class Table {
 
     public List<Column> getColumns() {
         return new ArrayList<Column>(columns.values());
+    }
+
+    public Set<String> getPrimaryKeys() {
+        return primaryKeys;
+    }
+
+    public void setPrimaryKeys(Set<String> primaryKeys) {
+        this.primaryKeys = primaryKeys;
     }
 }
