@@ -475,6 +475,7 @@ public class CodeGenerateServlet extends BaseServlet {
 			JavaProperty javaProperty = new JavaProperty(propertyName, propertyType, columnName);
 			javaProperty.setComments(column.getComments());
 			javaProperty.setJdbcType(jdbcTypeName);
+			javaProperty.setPrimaryKey(column.isPrimaryKey());
 			javaProperties.add(javaProperty);
 		}
 

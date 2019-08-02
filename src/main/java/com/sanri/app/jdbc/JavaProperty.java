@@ -9,6 +9,7 @@ public class JavaProperty {
     private String columnName;
     private String capitalizeName;
     private String comments;
+    private boolean primaryKey;
 
     public JavaProperty() {
     }
@@ -67,5 +68,13 @@ public class JavaProperty {
 
     public void setJdbcType(String jdbcType) {
         this.jdbcType = jdbcType;
+    }
+
+    public boolean isPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(boolean primaryKey) {
+        this.primaryKey = primaryKey;
     }
 }
