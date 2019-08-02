@@ -244,4 +244,6 @@ public abstract class ExConnection {
     public abstract String ddL(String schemaName, String tableName) throws SQLException;
 
     public abstract RenamePolicyMybatisExtend getRenamePolicyMybatis();
+
+    public abstract String getDbType();
 }

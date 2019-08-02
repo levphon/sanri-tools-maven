@@ -53,4 +53,9 @@ public class OracleExConnection extends ExConnection {
     public RenamePolicyMybatisExtend getRenamePolicyMybatis() {
         return null;
     }
+
+    @Override
+    public String getDbType() {
+        return dbType;
+    }
 }

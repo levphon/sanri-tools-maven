@@ -22,5 +22,5 @@ public interface RenamePolicy {
 	 * 功能:从数据库字段类型到 java 类型的映射  <br/>
 	 * 入参: <br/>
 	 */
-	String mapperPropertyType(String columnType);
+	String mapperPropertyType(String columnType,String dbType);
 }

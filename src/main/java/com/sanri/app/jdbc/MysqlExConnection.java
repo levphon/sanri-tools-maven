@@ -138,4 +138,9 @@ public class MysqlExConnection extends ExConnection{
         return renamePolicyMybatisExtend;
     }
 
+    @Override
+    public String getDbType() {
+        return dbType;
+    }
+
 }

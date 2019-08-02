@@ -111,4 +111,9 @@ public class PostgreSqlExConnection extends ExConnection {
     public RenamePolicyMybatisExtend getRenamePolicyMybatis() {
         return renamePolicyMybatisExtend;
     }
+
+    @Override
+    public String getDbType() {
+        return dbType;
+    }
 }

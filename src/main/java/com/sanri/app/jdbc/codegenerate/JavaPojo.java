@@ -1,6 +1,7 @@
 package com.sanri.app.jdbc.codegenerate;
 
 import com.sanri.app.jdbc.Column;
+import com.sanri.app.jdbc.MysqlExConnection;
 import com.sanri.app.jdbc.Table;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -226,7 +227,8 @@ public class JavaPojo  {
 				String propertyType = "String";
 				String propertyComment = column.getComments();
 				if(renamePolicy != null){
-					propertyType = renamePolicy.mapperPropertyType(column.getColumnType().getDataType());
+					//TODO 这里不知道 db类型，暂时用 mysql 的
+					propertyType = renamePolicy.mapperPropertyType(column.getColumnType().getDataType(), MysqlExConnection.dbType);
 					if(StringUtils.isBlank(propertyType)){		//如果没有映射到类型,默认使用 String 类型
 						propertyType = "String";
 					}

@@ -33,7 +33,6 @@ public class ConfigCenter {
         return configCenter;
     }
 
-
     static class ConfigNode{
         //节点名称
         private String name;
@@ -245,6 +244,23 @@ public class ConfigCenter {
         Properties properties = propertiesMap.get(baseName);
         String value = properties.getProperty(key,"-1");
         return NumberUtil.toFloat(value);
+    }
+
+    /**
+     * 获取列表数据
+     * @param mapper_jdbc_java
+     * @param s
+     * @return
+     */
+    public <T> List<T> getList(String baseName,String key,Class<T> clazz) {
+        Properties properties = propertiesMap.get(baseName);
+        String property = properties.getProperty(key);
+        String[] split = StringUtils.split(property, ',');
+        List<T> list = new ArrayList<>();
+        for (String part : split) {
+            list.add(clazz.cast(part));
+        }
+        return list;
     }
 
     /**

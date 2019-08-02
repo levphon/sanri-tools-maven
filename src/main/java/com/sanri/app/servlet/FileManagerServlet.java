@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +36,8 @@ public class FileManagerServlet extends BaseServlet {
      * @param configs 配置信息
      */
     public int writeConfig(String modul,String baseName,String content) throws IOException {
+        //content 可能有编码操作，需要解密
+        content = URLDecoder.decode(content,"utf-8");
         File modulDir = new File(dataConfigPath, modul);
         // check modul exists
         if(!modulDir.exists())modulDir.mkdir();

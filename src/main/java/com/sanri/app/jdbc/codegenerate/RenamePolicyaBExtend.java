@@ -8,7 +8,8 @@ import java.util.Map;
  * 扩展的驼峰命名,对于某某id ,某某no 更改原来的规则
  */
 public class RenamePolicyaBExtend extends RenamePolicyDefault {
-    public RenamePolicyaBExtend(Map<String, String> typeMirror) {
+
+    public RenamePolicyaBExtend(Map<String, Map<String, String>> typeMirror) {
         super(typeMirror);
     }
 

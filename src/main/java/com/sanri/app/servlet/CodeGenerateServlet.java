@@ -1,6 +1,7 @@
 package com.sanri.app.servlet;
 
 import com.sanri.app.BaseServlet;
+import com.sanri.app.ConfigCenter;
 import com.sanri.app.jdbc.Column;
 import com.sanri.app.jdbc.ExConnection;
 import com.sanri.app.jdbc.JavaProperty;
@@ -37,7 +38,7 @@ import java.util.regex.Pattern;
 public class CodeGenerateServlet extends BaseServlet {
 
 	//类型映射配置
-	public static final  Map<String,String> TYPE_MIRROR_MAP = new HashMap<String, String>();
+	public static final  Map<String,Map<String,String>> TYPE_MIRROR_MAP = new HashMap<>();
 	private static File pojoPath = null;
 	private static File mybatisPath = null;
 	private static File projectPath = null;
@@ -47,25 +48,25 @@ public class CodeGenerateServlet extends BaseServlet {
 
 	static{
 		//读取类型映射配置
-		try {
-			Properties properties = new Properties();
-			String pkgPath = PathUtil.pkgPath("com.sanri.config");
-			FileInputStream fileInputStream = new FileInputStream(new File(pkgPath+"/mapper_jdbc_java.properties"));
-			properties.load(fileInputStream);
-			TYPE_MIRROR_MAP.putAll((Map)properties);
-
-			pojoPath = mkTmpPath("generate/pojo");
-			mybatisPath = mkTmpPath("generate/mybatisPath");
-			projectPath = mkTmpPath("generate/projectPath");
-			projectCodePath = mkTmpPath("generate/projectCodePath");
-			tableTemplateCodePath = mkTmpPath("generate/tableTemplateCodePath");
-
-			templateCodePath = mkConfigPath("templateCodePath");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+//			Properties properties = new Properties();
+//			String pkgPath = PathUtil.pkgPath("com.sanri.config");
+//			FileInputStream fileInputStream = new FileInputStream(new File(pkgPath+"/mapper_jdbc_java.properties"));
+//			properties.load(fileInputStream);
+//			TYPE_MIRROR_MAP.putAll((Map)properties);
+		ConfigCenter configCenter = ConfigCenter.getInstance();
+		List<String> dbTypes = configCenter.getList("mapper_jdbc_java","supports.dbType",String.class);
+		for (String dbType : dbTypes) {
+			Map<String, String> typeMirror = configCenter.getSubConfigs("mapper_jdbc_java", dbType);
+			TYPE_MIRROR_MAP.put(dbType,typeMirror);
 		}
+
+		pojoPath = mkTmpPath("generate/pojo");
+		mybatisPath = mkTmpPath("generate/mybatisPath");
+		projectPath = mkTmpPath("generate/projectPath");
+		projectCodePath = mkTmpPath("generate/projectCodePath");
+		tableTemplateCodePath = mkTmpPath("generate/tableTemplateCodePath");
+
+		templateCodePath = mkConfigPath("templateCodePath");
 	}
 
 	/**
@@ -474,7 +475,7 @@ public class CodeGenerateServlet extends BaseServlet {
 		for (Column column : columns) {
 			String columnName = column.getColumnName();
 			String propertyName = renamePolicy.mapperPropertyName(columnName);
-			String propertyType = renamePolicy.mapperPropertyType(column.getColumnType().getDataType());
+			String propertyType = renamePolicy.mapperPropertyType(column.getColumnType().getDataType(),exConnection.getDbType());
 			javaProperties.add(new JavaProperty(propertyName,propertyType,columnName));
 		}
 

@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * 
@@ -12,12 +13,12 @@ import java.util.Map;
  * 功能:默认命名策略<br/>
  */
 public class RenamePolicyDefault implements RenamePolicy {
-	private Map<String,String> typeMirror = new HashMap<String, String>();
-	
-	public RenamePolicyDefault(Map<String,String> typeMirror){
+	private Map<String,Map<String,String>> typeMirror = new HashMap<>();
+
+	public RenamePolicyDefault(Map<String, Map<String, String>> typeMirror) {
 		this.typeMirror = typeMirror;
 	}
-	
+
 	@Override
 	public String mapperClassName(String tableName) {
 		if (!StringUtils.isBlank(tableName)) {
@@ -58,7 +59,14 @@ public class RenamePolicyDefault implements RenamePolicy {
 	}
 
 	@Override
-	public String mapperPropertyType(String columnType) {
-		return typeMirror.get(columnType);
+	public String mapperPropertyType(String columnType,String dbType) {
+		Map<String, String> typeMirrorMap = typeMirror.get(dbType);
+		if(typeMirrorMap == null)return "";
+		Matcher matcher = RenamePolicyMybatisExtend.pattern.matcher(columnType);
+		String typeName = "";
+		if(matcher.find()){
+			typeName = matcher.group(1);
+		}
+		return typeMirrorMap.get(typeName);
 	}
 }
