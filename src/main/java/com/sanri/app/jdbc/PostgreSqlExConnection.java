@@ -43,30 +43,13 @@ public class PostgreSqlExConnection extends ExConnection {
         Schema schema = schemas.get(schemaName);
         QueryRunner queryRunner = new QueryRunner(schema.dataSource());
         //查询当前数据库所有表的主键信息
-        String primaryKeySql = "select pg_attribute.attname as primary_key,concat(n.nspname,'.',pg_class.relname) as tableName from pg_constraint " +
+        String primaryKeySql = "select pg_attribute.attname as primaryKey,concat(n.nspname,'.',pg_class.relname) as tableName from pg_constraint " +
                 "inner join pg_class on pg_constraint.conrelid = pg_class.oid " +
                 "inner join pg_attribute on pg_attribute.attrelid = pg_class.oid and pg_attribute.attnum = pg_constraint.conkey[1] " +
                 "inner join pg_type on pg_type.oid = pg_attribute.atttypid " +
                 "inner join pg_namespace n on n.oid = pg_class.relnamespace ";
 
-        Map<String, Set<String>> tablePrimaryMap = queryRunner.query(primaryKeySql, new ResultSetHandler<Map<String, Set<String>>>() {
-            @Override
-            public Map<String, Set<String>> handle(ResultSet resultSet) throws SQLException {
-                Map<String, Set<String>> tablePrimaryKeyMap = new HashMap<>();
-                while (resultSet.next()) {
-                    String primaryKey = ObjectUtils.toString(resultSet.getString("primary_key")).toLowerCase();
-                    String tableName = ObjectUtils.toString(resultSet.getString("tableName")).toLowerCase();
-                    Set<String> strings = tablePrimaryKeyMap.get(tableName);
-                    if(strings == null){
-                        strings = new HashSet<>();
-                        tablePrimaryKeyMap.put(tableName,strings);
-                    }
-                    strings.add(primaryKey);
-                }
-
-                return tablePrimaryKeyMap;
-            }
-        });
+        Map<String, Set<String>> tablePrimaryMap = queryPrimaryKeys(queryRunner,primaryKeySql);
 
 //        String sql = "select relname as name,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c where relkind = 'r' and relname not like 'pg_%' and relname not like 'sql_%' order by relname";
         String sql = "select concat(n.nspname,'.',relname) as name,cast(obj_description(relfilenode,'pg_class') as varchar) as comment from pg_class c " +

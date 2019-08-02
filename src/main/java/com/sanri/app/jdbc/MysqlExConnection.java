@@ -13,10 +13,7 @@ import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MysqlExConnection extends ExConnection{
     public static final String dbType = "mysql";
@@ -66,6 +63,10 @@ public class MysqlExConnection extends ExConnection{
     protected List<Table> refreshTables(String schemaName) throws SQLException {
         Schema schema = schemas.get(schemaName);
         QueryRunner queryRunner = new QueryRunner(schema.dataSource());
+        //查询当前数据库所有表的主键信息
+        String primaryKeySql ="SELECT TABLE_NAME as tableName,COLUMN_NAME as primaryKey FROM INFORMATION_SCHEMA.`KEY_COLUMN_USAGE` WHERE  constraint_name='PRIMARY' and CONSTRAINT_SCHEMA = '"+schemaName+"'";
+        Map<String, Set<String>> tablePrimaryMap = queryPrimaryKeys(queryRunner, primaryKeySql);
+
         List<Table> tables = queryRunner.query("show table status", new ResultSetHandler<List<Table>>() {
             @Override
             public List<Table> handle(ResultSet resultSet) throws SQLException {
@@ -73,7 +74,12 @@ public class MysqlExConnection extends ExConnection{
                 while (resultSet.next()) {
                     String tableName = ObjectUtils.toString(resultSet.getString("name")).toLowerCase();
                     String comments = resultSet.getString("comment");
-                    tables.add(new Table(tableName, comments));
+                    Table table = new Table(tableName, comments);
+                    Set<String> primaryKeys = tablePrimaryMap.get(tableName);
+                    if(primaryKeys != null) {
+                        table.setPrimaryKeys(primaryKeys);
+                    }
+                    tables.add(table);
                 }
                 return tables;
             }
@@ -84,6 +90,9 @@ public class MysqlExConnection extends ExConnection{
     @Override
     protected List<Column> refreshColumns(String schemaName, String tableName) throws SQLException {
         Schema schema = schemas.get(schemaName);
+        Table table = schema.getTable(tableName);
+        Set<String> primaryKeys = table.getPrimaryKeys();
+
         QueryRunner queryRunner = new QueryRunner(schema.dataSource());
         String sql = "select column_name,data_type,column_comment,numeric_precision,numeric_scale,character_maximum_length " +
                 "from information_schema.columns " +
@@ -100,9 +109,11 @@ public class MysqlExConnection extends ExConnection{
                     int precision = resultSet.getInt(4);
                     int scale = resultSet.getInt(5);
                     long varcharLength = resultSet.getLong(6);
+                    boolean isPrimaryKey = primaryKeys.contains(columnName);
 
                     ColumnType columnType = new ColumnType(dataType, precision, scale, varcharLength);
                     Column column = new Column(columnName, columnType, comment);
+                    column.setPrimaryKey(isPrimaryKey);
                     columns.add(column);
                 }
                 return columns;

@@ -60,10 +60,12 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
          * @param opts
          */
         function tableColumns(key,opts) {
+            var connName = $('#conns').val();
+            var schemaName = $('#schemas').val();
             var tableName = currentTable(opts);
-            util.requestData(apis.columns,{tableName:tableName},function (columns) {
+            util.requestData(apis.columns,{tableName:tableName,connName:connName,schemaName:schemaName},function (columns) {
                 var columnNames = columns.map(column => {return column.columnName});
-                layer.msg(columnNames.join(','));
+                layer.alert(columnNames.join(','));
             });
         }
 
@@ -140,7 +142,7 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
             var htmlCode = [];
             for(var i=0;i<tables.length;i++){
                 if(!tables[i].tableName)continue;
-                htmlCode.push('<li class="list-group-item" tableName = "'+tables[i].tableName+'"> <i class="fa fa-table"></i> '+tables[i].tableName+'('+tables[i].comments+')</li>')
+                htmlCode.push('<li class="list-group-item" tableName = "'+tables[i].tableName+'"> <i class="fa fa-table"></i> '+tables[i].tableName+'('+(tables[i].comments || '未说明')+')</li>')
             }
             $('#tables').empty().html(htmlCode.join(''));
 

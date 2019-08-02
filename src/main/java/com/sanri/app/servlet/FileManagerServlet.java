@@ -101,6 +101,7 @@ public class FileManagerServlet extends BaseServlet {
      * @return
      */
     public String readConfig(String modul,String baseName) throws IOException {
+        if(StringUtils.isBlank(baseName))return "";
         File modulDir = new File(dataConfigPath, modul);
         // check modul exists
         if(!modulDir.exists())modulDir.mkdir();

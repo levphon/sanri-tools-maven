@@ -4,14 +4,14 @@ import com.sanri.app.jdbc.codegenerate.RenamePolicyMybatisExtend;
 import com.sanri.app.postman.JdbcConnDetail;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.lang.ObjectUtils;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class ExConnection {
     private String dbType;
@@ -246,4 +246,27 @@ public abstract class ExConnection {
     public abstract RenamePolicyMybatisExtend getRenamePolicyMybatis();
 
     public abstract String getDbType();
+
+    public Map<String, Set<String>> queryPrimaryKeys(QueryRunner queryRunner,String primaryKeySql) throws SQLException {
+        Map<String, Set<String>> tablePrimaryMap = queryRunner.query(primaryKeySql, new ResultSetHandler<Map<String, Set<String>>>() {
+            @Override
+            public Map<String, Set<String>> handle(ResultSet resultSet) throws SQLException {
+                Map<String, Set<String>> tablePrimaryKeyMap = new HashMap<>();
+                while (resultSet.next()) {
+                    String primaryKey = ObjectUtils.toString(resultSet.getString("primaryKey")).toLowerCase();
+                    String tableName = ObjectUtils.toString(resultSet.getString("tableName")).toLowerCase();
+                    Set<String> strings = tablePrimaryKeyMap.get(tableName);
+                    if(strings == null){
+                        strings = new HashSet<>();
+                        tablePrimaryKeyMap.put(tableName,strings);
+                    }
+                    strings.add(primaryKey);
+                }
+
+                return tablePrimaryKeyMap;
+            }
+        });
+
+        return tablePrimaryMap;
+    }
 }

@@ -463,12 +463,12 @@ public class CodeGenerateServlet extends BaseServlet {
 	public String codeConvertPreview(String templateName,String connName,String schemaName,String tableName) throws IOException {
 		ExConnection exConnection = InitJdbcConnections.CONNECTIONS.get(connName);
 		Table table = exConnection.getTable(schemaName, tableName);
-		String className = renamePolicy.mapperClassName(tableName);
+		String className = extendRenamePolicy.mapperClassName(tableName);
 		List<JavaProperty> javaProperties = new ArrayList<>();
 		List<Column> columns = table.getColumns();
 		for (Column column : columns) {
 			String columnName = column.getColumnName();
-			String propertyName = renamePolicy.mapperPropertyName(columnName);
+			String propertyName = extendRenamePolicy.mapperPropertyName(columnName);
 			String propertyType = renamePolicy.mapperPropertyType(column.getColumnType().getDataType(),exConnection.getDbType());
 			String jdbcTypeName = exConnection.getRenamePolicyMybatis().mapperJdbcTypeName(column.getColumnType().getDataType());
 
