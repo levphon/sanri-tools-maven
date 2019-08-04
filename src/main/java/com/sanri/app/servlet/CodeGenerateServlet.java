@@ -519,20 +519,22 @@ public class CodeGenerateServlet extends BaseServlet {
 		File codePath = null;
 		if(StringUtils.isBlank(ticket)){
 			ticket = SignUtil.uniqueTimestamp();
-			codePath = new File(tableTemplateCodePath,ticket);
-			if(!codePath.exists()){codePath.mkdir();}
 		}
+		codePath = new File(tableTemplateCodePath,ticket);
+		if(!codePath.exists()){codePath.mkdir();}
 
 		String formatCode = codeConvertPreview(templateName, connName, schemaName, tableName);
 		//提取文件名,这里不能区分内部类 TODO ,所以模板文件中不要写内部类
 		Matcher matcher = pattern.matcher(formatCode);
-		String publicClassName = "";
+		String publicClassName = templateName;
 		if(matcher.find()){
 			publicClassName = matcher.group(1);
 		}
+
 		File javaFile = new File(codePath, publicClassName + ".java");
 		FileUtils.writeStringToFile(javaFile,formatCode);
 
 		return ticket;
 	}
+
 }

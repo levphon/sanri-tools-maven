@@ -1025,6 +1025,10 @@ public class SqlClientServlet extends BaseServlet{
 		}
 
 		List<Table> tables = tables(connName, schemaName);
+		if(StringUtils.isBlank(keyword)){
+			//空搜索,列出所有表
+			return tables;
+		}
 
 		List<Table> findTables = new ArrayList<Table>();
 		if(CollectionUtils.isNotEmpty(tables)){

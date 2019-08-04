@@ -20,6 +20,7 @@ public class InitConfigPath extends BaseServlet {
         mkConfigPath("exportSql");
         mkConfigPath("templateCodePath");
         mkConfigPath("tableTemplate");
+        mkConfigPath("codeSchema");
 
         mkTmpPath("exportTmp");
     }

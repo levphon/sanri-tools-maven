@@ -112,13 +112,14 @@
        <div class="form-inline">
            <div class="form-group">
                <div class="input-group input-group-sm">
-                   <span class="input-group-addon"><i class="fa fa-bitbucket"></i></span>
+                   <span class="input-group-addon"><i class="fa fa-bank"></i> 选择模板</span>
                    <select class="form-control" name="" style="width: 150px;" id="templates">
                    </select>
                </div>
            </div>
            <div class="form-group">
-               <button class="btn btn-info btn-sm" id="plustemplate"><i class="fa fa-plus-square"></i> 添加模板</button>
+               <button class="btn btn-primary btn-sm" id="plustemplate"><i class="fa fa-plus"></i> 新模板</button>
+               <button class="btn btn-info btn-sm" id="codeschema"><i class="fa fa-folder"></i> 方案</button>
                <a href="javascript:void(0);" id="seevars">查看可用变量</a>
            </div>
        </div>
@@ -130,6 +131,30 @@
         <div  id="codepreview">
         </div>
     </div>
+</div>
+
+<!--使用方案生成的进度框-->
+<div class="open-dialog" id="codeSchemaProcessDialog">
+    <div class="row">
+        <div class="col-xs-12" >
+            <ul class="list-group" ></ul>
+        </div>
+    </div>
+</div>
+
+<!--使用方案生成对话框-->
+<div class="open-dialog" id="codeSchemaDialog">
+    <div class="form-group">
+        <div class="btn-group">
+            <button class="btn btn-sm btn-primary" id="newCodeSchema"><i class="fa fa-plus-circle"></i> 新方案</button>
+        </div>
+    </div>
+
+    <div class="alert-info alert ">点击方案即可下载代码</div>
+    <ul class="list-group ">
+        <li class="list-group-item">pojo,service,mybatis</li>
+        <li class="list-group-item">service,mybatis</li>
+    </ul>
 </div>
 
 <!-- 添加模板对话框 -->

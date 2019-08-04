@@ -16,6 +16,7 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
         downloadPath:'/file/manager/downloadPath'
     };
     var modul = 'tableTemplate';
+    var codeSchemaModul = 'codeSchema';
 
     tablehelp.init = function () {
       initConns();
@@ -162,6 +163,8 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
             {selector:'#plustemplate',types:['click'],handler:plusTemplate},
             {parent:'#tables',selector:'li',types:['click'],handler:columnsView},
             {selector:'#templates',types:['change'],handler:switchTemplate},
+            {selector:'#codeschema',types:['click'],handler:codeSchemaDialog},
+            {parent:'#codeSchemaDialog>ul.list-group',selector:'li',types:['click'],handler:makeCodeFromSchema},
             {selector:'#search',types:['keydown'],handler:function (event) {
                     var event = event || window.event;
                     if(event.keyCode == 13){
@@ -170,6 +173,64 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                 }
             }];
 
+        /**
+         * 使用方案生成代码
+         */
+        function makeCodeFromSchema() {
+            var connName = $('#codeSchemaDialog').data('connName');
+            var schemaName= $('#codeSchemaDialog').data('schemaName');
+            var tableName = $('#codeSchemaDialog').data('tableName');
+            var codeSchemas = $(this).data('codeSchemas');
+
+            //打开一相进度框
+            $('#codeSchemaProcessDialog').find('ul.list-group').empty();
+            dialog.create('代码生成进度')
+                .setContent($('#codeSchemaProcessDialog'))
+                .setWidthHeight('400px', '400px')
+                .build();
+
+
+            var ticket = '';
+            var $process = $('#codeSchemaProcessDialog',$(top.document)).find('ul.list-group');
+            for(var i=0;i<codeSchemas.length;i++){
+                util.requestData(apis.templateConvert,{ticket:ticket,connName:connName,schemaName:schemaName,tableName:tableName,templateName:codeSchemas[i],sync:true},function (_ticket) {
+                    $process.append('<li class="list-group-item list-group-item-success">'+tableName+' -> '+codeSchemas[i]+' completed </li>');
+                    ticket = _ticket;
+                });
+            }
+
+            //开始下载
+            util.downFile(apis.downloadPath,{modul:'generate',baseName: 'tableTemplateCodePath/'+ticket},1000,function () {
+
+            });
+        }
+
+        /**
+         * 打开方案对话框
+         */
+        function codeSchemaDialog() {
+            //加载代码方案
+            util.requestData(apis.templateNames,{modul:codeSchemaModul},function (codeSchemas) {
+               var $listGroup = $('#codeSchemaDialog>ul.list-group').empty();
+               for(var i=0;i<codeSchemas.length;i++){
+                   var $li = $('<li class="list-group-item">'+codeSchemas[i]+'</li>');
+                   $li.data('codeSchemas',codeSchemas[i].split('+'));
+                   $listGroup.append($li);
+               }
+            });
+
+            //记录数据
+            var tableName = $('#templatecodeconfig').data('tableName');
+            var connName = $('#conns').val();
+            var schemaName = $('#schemas').val();
+            $('#codeSchemaDialog').data('connName',connName);
+            $('#codeSchemaDialog').data('schemaName',schemaName);
+            $('#codeSchemaDialog').data('tableName',tableName);
+            dialog.create('使用方案生成')
+                .setContent($('#codeSchemaDialog'))
+                .setWidthHeight('700px', '90%')
+                .build();
+        }
         /**
          * 模板切换时切换预览
          */
@@ -250,7 +311,7 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
 
         function clickSearch() {
             var keyword = $('#search').val().trim();
-            if(keyword.endsWith(':') || !keyword)return ;
+            if(keyword.endsWith(':') )return ;
             search(keyword);
         }
         function keyupSearch() {
