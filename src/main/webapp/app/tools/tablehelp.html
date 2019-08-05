@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../../plugins/syntaxhighlighter/shCore.css" />
     <link rel="stylesheet" href="../../plugins/syntaxhighlighter/shCoreDefault.css" />
     <link rel="stylesheet" href="../../plugins/syntaxhighlighter/theme/shThemeEclipse.css" />
+    <link rel="stylesheet" href="../../plugins/icheck/custom.css" />
     <style>
         .list-group-item{
             cursor: pointer;
@@ -48,7 +49,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-xs-6">
             <div class="form-inline">
                 <div class="form-group">
                     <div class="input-group">
@@ -266,7 +267,7 @@
 <script type="text/html" id="generatetablestemplate">
     {{each tables as table}}
     <tr tablename="{{table.tableName}}">
-        <td><input type="checkbox" checked  name="notgenerate" /></td>
+        <td><input type="checkbox" {{if (table.selected === true ) }}checked{{/if}}  name="notgenerate" /></td>
         <td>{{table.tableName}}</td>
         <td>{{table.comments}}</td>
     </tr>

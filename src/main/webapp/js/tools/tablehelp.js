@@ -187,15 +187,27 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                         clickSearch();
                     }
                 }
-            }];
+            },{selector:'#multisearch',types:['keydown'],handler:function (event) {
+                    var event = event || window.event;
+                    if(event.keyCode == 13){
+                        multiClickSearch();
+                    }
+            }}];
 
         function multiSearch(keyword) {
             var $tbody = $('#multitableschemadialog').find('tbody').empty();
+            var selectedTables = $('#multitableschemadialog').data('selectedTables');
             searchRequest(keyword,function (tables) {
+                //标记表是否被选中
+                for(var i=0;i<tables.length;i++){
+                    if($.inArray(tables[i].tableName,selectedTables) != -1){
+                        tables[i].selected = true;
+                    }
+                }
                require(['template','icheck'],function (template) {
-                    var htmlCode = template('generatetablestemplate',tables);
+                   var htmlCode = template('generatetablestemplate',{tables:tables});
                    $tbody.html(htmlCode);
-                   $tbody.iCheck({
+                   $tbody.closest('table').find('input:checkbox').iCheck({
                        checkboxClass: 'icheckbox_square-green'
                    });
                })
@@ -203,11 +215,17 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
         }
 
         function multiKeyupSearch() {
-
+            var keyword = $(this).val().trim();
+            if(keyword.length > 10){
+                if(keyword.endsWith(':'))return ;
+                multiSearch(keyword);
+            }
         }
 
         function multiClickSearch() {
-
+            var keyword = $('#multisearch').val().trim();
+            if(keyword.endsWith(':') )return ;
+            multiSearch(keyword);
         }
 
         function switchCodeSchema() {
@@ -227,14 +245,28 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                 }
             });
 
-            dialog.create('多表使用方案生成代码')
-                .setContent($('#multitableschemadialog'))
-                .setWidthHeight('90%', '90%')
-                .addBtn({type:'yes',text:'确定',handler:requestCodeTicket})
-                .build();
+            //记录所有选中表的信息(初次记录,所有表选中)
+            searchRequest('',function (tables) {
+                var tableNames = [];
+                for (var i=0;i<tables.length;i++){
+                    tableNames.push(tables[i].tableName);
+                }
+                $('#multitableschemadialog').data('selectedTables',tableNames);
+
+                dialog.create('多表使用方案生成代码')
+                    .setContent($('#multitableschemadialog'))
+                    .setWidthHeight('90%', '90%')
+                    .addBtn({type:'yes',text:'确定',handler:requestCodeTicket})
+                    .build();
+
+                //触发表搜索
+                $('#multisearchBtn').click();
+            });
 
             function requestCodeTicket(index) {
-                util.requestData(apis.multiTableSchemaConvert,{},function (ticket) {
+                var selectedTables = $('#multitableschemadialog').data('selectedTables');
+                var codeSchemaName = $codeSchemaUl.find('li.list-group-item.active').attr('value');
+                util.requestData(apis.multiTableSchemaConvert,{connName:tablehelp.connName,schemaName:tablehelp.schemaName,tableNames:selectedTables,codeSchemaName:codeSchemaName},function (ticket) {
                     util.downFile(apis.downloadPath,{modul:'generate',baseName: 'tableTemplateCodePath/'+ticket},1000,function () {
                         layer.close(index);
                     });
