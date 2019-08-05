@@ -194,6 +194,30 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                     }
             }}];
 
+        //绑定选表的时候的复选事件
+        $('#multitableschemadialog').find('table').on('ifChanged','input:checkbox',function () {
+            var name = $(this).attr('name');
+            if(name== 'checkall'){
+                var checked = $(this).prop('checked');
+                var $items =  $('#multitableschemadialog').find('tbody').find('input:checkbox')
+                if(checked){
+                    $items.iCheck('check');
+                }else {
+                    $items.iCheck('uncheck');
+                }
+            }
+            var selectedTables = [];
+            $('#multitableschemadialog').find('tbody>tr').each(function () {
+                var tableName = $(this).attr('tablename');
+                var selected = $(this).find('input:checkbox').prop('checked');
+                if(selected && tableName){
+                    selectedTables.push(tableName);
+                }
+            });
+            //TODO 这里写得有点问题,连调了三次
+            $('#multitableschemadialog').data('selectedTables',selectedTables);
+        });
+
         function multiSearch(keyword) {
             var $tbody = $('#multitableschemadialog').find('tbody').empty();
             var selectedTables = $('#multitableschemadialog').data('selectedTables');
