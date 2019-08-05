@@ -33,6 +33,9 @@ public class PostgreSqlExConnection extends ExConnection {
         List<Schema> schemas = new ArrayList<Schema>();
         List<String> databases = mainQueryRunner.query("SELECT datname FROM pg_database", new TypeListHandler<String>());
         for (String database : databases) {
+            if(database.startsWith("template")){    //排除 template 数据库
+                continue;
+            }
             schemas.add(new Schema(database));
         }
         return schemas;
