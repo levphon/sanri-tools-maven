@@ -524,12 +524,7 @@ public class CodeGenerateServlet extends BaseServlet {
 		if(!codePath.exists()){codePath.mkdir();}
 
 		String formatCode = codeConvertPreview(templateName, connName, schemaName, tableName);
-		//提取文件名,这里不能区分内部类 TODO ,所以模板文件中不要写内部类
-		Matcher matcher = pattern.matcher(formatCode);
-		String publicClassName = templateName;
-		if(matcher.find()){
-			publicClassName = matcher.group(1);
-		}
+		String publicClassName = matchClassName(templateName,tableName, formatCode);
 
 		File javaFile = new File(codePath, publicClassName + ".java");
 		FileUtils.writeStringToFile(javaFile,formatCode);
@@ -537,4 +532,40 @@ public class CodeGenerateServlet extends BaseServlet {
 		return ticket;
 	}
 
+	private String matchClassName(String templateName,String tableName, String formatCode) {
+		//提取文件名,这里不能区分内部类 TODO ,所以模板文件中不要写内部类
+		Matcher matcher = pattern.matcher(formatCode);
+		String publicClassName = tableName+'.'+templateName;
+		if(matcher.find()){
+			publicClassName = matcher.group(1);
+		}
+		return publicClassName;
+	}
+
+	/**
+	 * 多表方案生成
+	 * @param connName
+	 * @param schemaName
+	 * @param tableNames
+	 * @param codeSchemaName
+	 * @return
+	 */
+	public String multiTableSchemaConvert(String connName,String schemaName,List<String> tableNames,String codeSchemaName) throws SQLException, IOException {
+		String partPath = SignUtil.uniqueTimestamp();
+		File codePath = new File(tableTemplateCodePath,partPath);
+		codePath.mkdir();
+
+		String[] templateNames = StringUtils.split(codeSchemaName, '+');
+
+		for (String tableName : tableNames) {
+			for (String templateName : templateNames) {
+				String partCode = codeConvertPreview(templateName, connName, schemaName, tableName);
+				String className = matchClassName(templateName, tableName, partCode);
+				File file = new File(codePath, className + ".java");
+				FileUtils.writeStringToFile(file,partCode);
+			}
+		}
+
+		return partPath;
+	}
 }

@@ -32,6 +32,9 @@
         select>option{
             font-size: 16px;
         }
+        #multitableschemadialog ul.list-group>li{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -59,6 +62,9 @@
                         </select>
                     </div>
 
+                    <div class="input-group">
+                        <button class="btn btn-warning btn-sm" id="multiTableSchemaCode">多表方案生成</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,6 +108,34 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- 多表按方案生成代码 -->
+<div class="open-dialog" id="multitableschemadialog">
+    <div class="row">
+        <div class="col-xs-5">
+            <ul class="list-group" >
+            </ul>
+        </div>
+        <div class="col-xs-7">
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control " placeholder="搜索表" id="multisearch" />
+                <span class="input-group-btn"><button class="btn btn-primary" id="multisearchBtn"><i class="fa fa-search"></i> </button></span>
+            </div>
+            <table name="generatetables" class="table table-striped table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" name="checkall" checked></th>
+                    <th>表格名称</th>
+                    <th>表格注释</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -228,6 +262,16 @@
     </table>
 
 </div>
+
+<script type="text/html" id="generatetablestemplate">
+    {{each tables as table}}
+    <tr tablename="{{table.tableName}}">
+        <td><input type="checkbox" checked  name="notgenerate" /></td>
+        <td>{{table.tableName}}</td>
+        <td>{{table.comments}}</td>
+    </tr>
+    {{/each}}
+</script>
 
 <script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
 <script type="text/javascript" src="../config.js"></script>

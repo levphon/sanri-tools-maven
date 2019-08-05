@@ -13,7 +13,8 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
         writeConfig:'/file/manager/writeConfig',
         readConfig:'/file/manager/readConfig',
         templateConvert:'/code/templateConvert',
-        downloadPath:'/file/manager/downloadPath'
+        downloadPath:'/file/manager/downloadPath',
+        multiTableSchemaConvert:'/code/multiTableSchemaConvert'
     };
     var modul = 'tableTemplate';
     var codeSchemaModul = 'codeSchema';
@@ -131,15 +132,29 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
     }
 
     /**
+     * 从后台请求表格数据
+     * @param keyword
+     * @param callback
+     */
+    function searchRequest(keyword, callback) {
+        var index = layer.load(1, {
+            shade: [0.1,'#fff']
+        });
+        util.requestData(apis.search,{connName:tablehelp.connName,schemaName:tablehelp.schemaName,keyword:keyword},function (tables) {
+            callback(tables);
+            layer.close(index);
+        },function () {
+            layer.close(index);
+        });
+    }
+
+    /**
      * 搜索相匹配的结果,有可能数据表未初始化,需要做加载进度条
      * @param keyword
      */
     function search(keyword) {
         $('#columns>tbody').empty();
-        var index = layer.load(1, {
-            shade: [0.1,'#fff']
-        });
-        util.requestData(apis.search,{connName:tablehelp.connName,schemaName:tablehelp.schemaName,keyword:keyword},function (tables) {
+        searchRequest(keyword,function (tables) {
             var htmlCode = [];
             for(var i=0;i<tables.length;i++){
                 if(!tables[i].tableName)continue;
@@ -148,9 +163,6 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
             $('#tables').empty().html(htmlCode.join(''));
 
             $('#tables>li:first').addClass('active').click();
-            layer.close(index);
-        },function () {
-            layer.close(index);
         });
     }
 
@@ -159,12 +171,16 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
             {selector:'#schemas',types:['change'],handler:switchSchema},
             {selector:'#search',types:['keyup'],handler:keyupSearch},
             {selector:'#btnsearch',types:['click'],handler:clickSearch},
+            {selector:'#multisearch',types:['keyup'],handler:multiKeyupSearch},
+            {selector:'#multisearchBtn',types:['click'],handler:multiClickSearch},
             {selector:'#seevars',types:['click'],handler:seeVars},
             {selector:'#plustemplate',types:['click'],handler:plusTemplate},
             {parent:'#tables',selector:'li',types:['click'],handler:columnsView},
             {selector:'#templates',types:['change'],handler:switchTemplate},
             {selector:'#codeschema',types:['click'],handler:codeSchemaDialog},
             {parent:'#codeSchemaDialog>ul.list-group',selector:'li',types:['click'],handler:makeCodeFromSchema},
+            {selector:'#multiTableSchemaCode',types:['click'],handler:multiTableSchemaCode},
+            {parent:'#multitableschemadialog ul.list-group',selector:'li',types:['click'],handler:switchCodeSchema},
             {selector:'#search',types:['keydown'],handler:function (event) {
                     var event = event || window.event;
                     if(event.keyCode == 13){
@@ -172,6 +188,60 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                     }
                 }
             }];
+
+        function multiSearch(keyword) {
+            var $tbody = $('#multitableschemadialog').find('tbody').empty();
+            searchRequest(keyword,function (tables) {
+               require(['template','icheck'],function (template) {
+                    var htmlCode = template('generatetablestemplate',tables);
+                   $tbody.html(htmlCode);
+                   $tbody.iCheck({
+                       checkboxClass: 'icheckbox_square-green'
+                   });
+               })
+            });
+        }
+
+        function multiKeyupSearch() {
+
+        }
+
+        function multiClickSearch() {
+
+        }
+
+        function switchCodeSchema() {
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+            $(this).closest('ul').data('value',$(this).attr('value'));
+        }
+
+
+        function multiTableSchemaCode() {
+            //加载所有模板信息和表信息
+            var $codeSchemaUl = $('#multitableschemadialog').find('ul.list-group').empty();
+            util.requestData(apis.templateNames,{modul:codeSchemaModul},function (codeSchemas) {
+                for(var i=0;i<codeSchemas.length;i++){
+                    var clazz = (i==0 ? 'list-group-item active':'list-group-item');
+                    $codeSchemaUl.append('<li class="'+clazz+'" value="'+codeSchemas[i]+'">'+codeSchemas[i]+'</li>')
+                }
+            });
+
+            dialog.create('多表使用方案生成代码')
+                .setContent($('#multitableschemadialog'))
+                .setWidthHeight('90%', '90%')
+                .addBtn({type:'yes',text:'确定',handler:requestCodeTicket})
+                .build();
+
+            function requestCodeTicket(index) {
+                util.requestData(apis.multiTableSchemaConvert,{},function (ticket) {
+                    util.downFile(apis.downloadPath,{modul:'generate',baseName: 'tableTemplateCodePath/'+ticket},1000,function () {
+                        layer.close(index);
+                    });
+                });
+
+            }
+        }
 
         /**
          * 使用方案生成代码
