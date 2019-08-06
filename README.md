@@ -10,13 +10,16 @@
 
 2. 除了使用 maven 下载包,还需要依赖三个第三方包,执行如下命令安装 
    
+   [下载 jar 包](https://github.com/sanri1993/resources/tree/master/sanri-tools-maven)
+   
+   
+   
    ```shell
    mvn install:install-file -Dfile=d:\IKAnalyzer2012FF_u1.jar -DgroupId=org.wltea.analyzer -DartifactId=IKAnalyzer -Dversion=2012FF_u1 -Dpackaging=jar
    mvn install:install-file -Dfile=d:\diamond-utils-2.0.5.5.jar -DgroupId=com.taobao.diamond -DartifactId=diamond-utils -Dversion=2.0.5.5 -Dpackaging=jar
    mvn install:install-file -Dfile=d:\diamond-client-2.0.5.5.jar -DgroupId=com.taobao.diamond -DartifactId=diamond-client -Dversion=2.0.5.5 -Dpackaging=jar
    ```
    
-
 3. 启动
 
 ```shell
@@ -37,11 +40,7 @@ mvn jetty:run
 
 1. 方法或变量取名
 2. 数据提取
-3. SQL 客户端,已经支持 mysql,postgresql,oracle ; 可自定义实现其它数据库 
-   * 表结构查询
-   * pojo,xml  生成
-   * 项目模板代码生成
-   * 数据导出
+3. 生份证号码生成与验证
 4. kafka  监控和 offset 设置,支持新旧版本 kafka
 5. zookeeper 数据监控
 6. 模板代码生成,根据列字段 
@@ -49,12 +48,30 @@ mvn jetty:run
 8. 数据库表字段,注释,名称查询,及后续模板代码操作
 9. webservice 调试工具,只要输入 wsdl 地址,自动解析并构建 xml 消息 
 10. 下划线转驼峰,驼峰转下划线工具
-11. 生份证号码生成与验证
-12. 图片转 base64 ,base64 转图片
+11. 图片转 base64 ,base64 转图片
+12. SQL 客户端,已经支持 mysql,postgresql,oracle ; 可自定义实现其它数据库 
+   * 表结构查询
+   * pojo,xml  生成
+   * 项目模板代码生成
+   * 数据导出
 
+13. 数据表处理工具（SQL 客户端升级版 ）
+    * 可以根据变量自定义模板
+    * 由多个模板组成一种方案
+    * 单表使用模板生成，然后生成多种模板的代码后统一下载
+    * 单表使用方案生成
+    * 多表使用方案生成
 
 ## 扩展自己的工具
 
 * 除前端交互 servlet 必须写在 com.sanri.app.servlet 包中以外,其它随便自己定制
 
 * servlet 中的代码由于框架 javassist 的原因 ,不支持 java8 的 lambada 表达式
+
+### 如何交流、反馈、参与贡献？
+
+* Git仓库：https://github.com/sanri1993/sanri-tools-maven
+* 官方QQ群：645576465
+* 技术讨论、二次开发等咨询、问题和建议，请移步到人人开源社区，我会在第一时间进行解答和回复
+* 如需关注项目最新动态，请Watch、Star项目，同时也是对项目最好的支持
+* 微信扫码并关注我，获得项目最新动态及更新提醒

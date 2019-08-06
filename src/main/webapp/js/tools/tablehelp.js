@@ -432,6 +432,7 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                var htmlCode = [];
                for(var i=0;i<columns.length;i++){
                    htmlCode.push('<tr>');
+                   htmlCode.push('<td>'+(i+1)+'</td>');
                    htmlCode.push('<td>'+columns[i].columnName+'</td>');
                    htmlCode.push('<td>'+columns[i].columnType.dataType+'</td>');
                    htmlCode.push('<td>'+columns[i].comments+'</td>');

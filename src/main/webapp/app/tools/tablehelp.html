@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用于查找表及字段</title>
+    <title>表字段查找,代码生成,从客户端优化</title>
     <link rel="stylesheet" href="../../css/font-awesome.min.css" />
     <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
     <link rel="stylesheet" href="../../css/bootstrap.min.css" />
@@ -95,6 +95,7 @@
                             <table class="table table-striped table-bordered" id="columns">
                                 <thead>
                                     <tr>
+                                        <th>顺序</th>
                                         <td>列名</td>
                                         <td>类型</td>
                                         <td>注释</td>
@@ -257,8 +258,7 @@
         <tr><td>type</td><td>属性类型</td></tr>
         <tr><td>jdbcType</td><td>数据库类型名</td></tr>
         <tr><td>columnName</td><td>数据库字段名</td></tr>
-        <tr><td>comments</td><td>注释信息</td></tr>
-        <tr><td>primaryKey</td><td>是否主键 true/false</td></tr>
+        <tr><td>comments</td><td>注释信息</td></tr><tr><td>primaryKey</td><td>是否主键 true/false</td></tr>
         </tbody>
     </table>
 
