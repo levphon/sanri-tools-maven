@@ -194,18 +194,22 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                     }
             }}];
 
-        //绑定选表的时候的复选事件
-        $('#multitableschemadialog').find('table').on('ifChanged','input:checkbox',function () {
+        //绑定全选/不选的复选事件
+        $('#multitableschemadialog').find('thead').on('ifChanged','input:checkbox',function () {
             var name = $(this).attr('name');
-            if(name== 'checkall'){
-                var checked = $(this).prop('checked');
-                var $items =  $('#multitableschemadialog').find('tbody').find('input:checkbox')
-                if(checked){
-                    $items.iCheck('check');
-                }else {
-                    $items.iCheck('uncheck');
-                }
+            var checked = $(this).prop('checked');
+            var $items =  $('#multitableschemadialog').find('tbody').find('input:checkbox');
+            var selectedTables = [];
+            // $items.prop('checked',checked);
+            $items.iCheck('toggle');
+            if(checked){
+                // $items.iCheck('check',false);
+                selectedTables = $('#multitableschemadialog').data('allTables');
             }
+            $('#multitableschemadialog').data('selectedTables',selectedTables);
+        });
+        //绑定选表的时候的复选事件
+        $('#multitableschemadialog').find('tbody').on('ifChanged','input:checkbox',function () {
             var selectedTables = [];
             $('#multitableschemadialog').find('tbody>tr').each(function () {
                 var tableName = $(this).attr('tablename');
@@ -214,7 +218,8 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                     selectedTables.push(tableName);
                 }
             });
-            //TODO 这里写得有点问题,连调了三次
+            //TODO 这里写得有点问题,连调了多次，几张表就调用几次
+            console.log('调用次数');
             $('#multitableschemadialog').data('selectedTables',selectedTables);
         });
 
@@ -276,6 +281,7 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
                     tableNames.push(tables[i].tableName);
                 }
                 $('#multitableschemadialog').data('selectedTables',tableNames);
+                $('#multitableschemadialog').data('allTables',tableNames);
 
                 dialog.create('多表使用方案生成代码')
                     .setContent($('#multitableschemadialog'))
