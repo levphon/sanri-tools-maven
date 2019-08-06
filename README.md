@@ -83,7 +83,11 @@ mvn jetty:run
 * mapper_jdbc_java.properties  这个是生成 java 实体类时，数据库类型映射到 java 类型
 * db_mapper_mybatis_type.properties  这个是数据库类型映射到 mybatis 类型的映射表
 
-7. 隐私说明 
+7. 常用模板
+
+   [常用配置信息，把所有内容复制到function.open.properties 配置的 data.config.path 路径中 ](https://github.com/sanri1993/resources/tree/master/sanri-tools-maven/sanritoolsconfig)
+
+8. 隐私说明 
 
 * 由于有些功能用到了个人帐号，我目前还是留在配置文件中，请勿用于非法用途
 * 如果有能力，请用私人帐号代替我的帐号
