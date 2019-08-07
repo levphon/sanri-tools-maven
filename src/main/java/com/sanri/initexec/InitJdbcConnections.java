@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class InitJdbcConnections {
     private static Log logger = LogFactory.getLog(InitJdbcConnections.class);
-    /** 保存所有的连接信息 */
+    /** 保存所有的连接信息 连接名 ==> 连接 */
     public static Map<String,ExConnection> CONNECTIONS = new HashMap<String, ExConnection>();
 
     /**

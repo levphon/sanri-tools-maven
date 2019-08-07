@@ -37,16 +37,26 @@ sanri-tools-maven 是一个开源的用于企业开发的工具包，重点想�
    * 数据导出
 
 13. 数据表处理工具（SQL 客户端升级版 ）
-    * 可以根据变量自定义模板
-    * 由多个模板组成一种方案
-    * 单表使用模板生成，然后生成多种模板的代码后统一下载
-    * 单表使用方案生成
-    * 多表使用方案生成
+  * 可以根据变量自定义模板
+  * 由多个模板组成一种方案
+  * 单表使用模板生成，然后生成多种模板的代码后统一下载
+  * 单表使用方案生成
+  * 多表使用方案生成
 
 ## 扩展自己的工具
 
 * 除前端交互 servlet 必须写在 com.sanri.app.servlet 包中以外,其它随便自己定制
 * servlet 中的代码由于框架 javassist 的原因 ,不支持 java8 的 lambada 表达式
+* 数据表元数据信息保存在 InitJdbcConnections.CONNECTIONS 信息中
+* 配置信息统一使用 ConfigCenter 进行读取，保存的是配置树结构 
+* 文件系统配置信息统一管理接口 FileManagerServlet 
+* 目录结构说明 com.sanri
+   + algorithm 写的算法存放目录
+   + app 所有工具信息
+      - servlet 存放所有与前端交互的 servlet 
+   + deginmodel 设计模式学习
+   + frame 本项目自定义框架
+   + initexec 初始化执行目录；放入本目录的文件，在启动的时候会查找 @PostConstruct 注解的方法执行
 
 ## 如何搭建环境 
 
