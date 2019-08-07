@@ -4,8 +4,10 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import com.sanri.app.ConfigCenter;
 import com.sanri.app.jdbc.ExConnection;
 import com.sanri.app.jdbc.MysqlExConnection;
+import com.sanri.app.jdbc.OracleExConnection;
 import com.sanri.app.jdbc.PostgreSqlExConnection;
 import com.sanri.app.postman.JdbcConnDetail;
+import oracle.jdbc.pool.OracleDataSource;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -49,6 +51,15 @@ public class InitJdbcConnections {
 
             exConnection = ExConnection.newInstance(connectionInfo.getDbType(), connectionInfo.getDatabase(), pgSimpleDataSource);
 
+        }else if(OracleExConnection.dbType.equalsIgnoreCase(connectionInfo.getDbType())){
+            OracleDataSource oracleDataSource = new OracleDataSource();
+            oracleDataSource.setServerName(connectionInfo.getHost());
+            oracleDataSource.setPortNumber(Integer.parseInt(connectionInfo.getPort()));
+            oracleDataSource.setDatabaseName(connectionInfo.getDatabase());
+            oracleDataSource.setUser(connectionInfo.getUsername());
+            oracleDataSource.setPassword(connectionInfo.getUserpass());
+
+            exConnection = ExConnection.newInstance(connectionInfo.getDbType(),connectionInfo.getDatabase(), oracleDataSource);
         }
         if(exConnection != null) {
             CONNECTIONS.put(connectionInfo.getName(), exConnection);

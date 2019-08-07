@@ -131,7 +131,6 @@ public class FileManagerServlet extends BaseServlet {
         }
     }
 
-
     private List<ConfigPath> convertDir2ConfigPaths(File modulDir) {
         List<ConfigPath> configPaths = new ArrayList<>();
         File[] files = modulDir.listFiles();

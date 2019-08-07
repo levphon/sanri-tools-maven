@@ -1,5 +1,9 @@
 package com.sanri.app.postman;
 
+/**
+ * 用于向前端展示文件信息
+ * 文件名+是否是目录
+ */
 public class ConfigPath {
     private String pathName;
     private boolean isDirectory;

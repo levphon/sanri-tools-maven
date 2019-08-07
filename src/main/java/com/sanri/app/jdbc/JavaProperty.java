@@ -2,6 +2,9 @@ package com.sanri.app.jdbc;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * 数据映射到 java 属性列信息，用于代码生成
+ */
 public class JavaProperty {
     private String name;
     private String type;

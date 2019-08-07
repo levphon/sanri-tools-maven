@@ -40,6 +40,8 @@ public abstract class ExConnection {
             exConnection = new MysqlExConnection(dataSource);
         }else if(PostgreSqlExConnection.dbType.equalsIgnoreCase(dbType)){
             exConnection = new PostgreSqlExConnection(dataSource);
+        }else if(OracleExConnection.dbType.equalsIgnoreCase(dbType)){
+            exConnection = new OracleExConnection(dataSource);
         }
         if(exConnection != null) {
             exConnection.connName = connName;
@@ -125,7 +127,7 @@ public abstract class ExConnection {
         return new ArrayList<Schema>(schemas.values());
     }
 
-    protected abstract DataSource copyDataSource(String schemaName);
+    protected abstract DataSource copyDataSource(String schemaName) throws SQLException;
 
     /**
      * 获取某个数据库所有的表

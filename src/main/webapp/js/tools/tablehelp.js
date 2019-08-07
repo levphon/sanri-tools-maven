@@ -52,9 +52,25 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
             zIndex: 4,
             items:{
                 templateCode:{name:'模板代码...',icon:'copy',callback:templateCode},
-                columns:{name:'属性列',icon:'cut',callback:tableColumns}
+                columns:{name:'属性列',icon:'cut',callback:tableColumns},
+                steps:'------',
+                tableInfo:{name:'表格属性',icon:'copy',callback:tableInfo}
             }
         });
+
+        /**
+         * 查看表信息
+         */
+        function tableInfo(key,opts) {
+            var connName = $('#conns').val();
+            var schemaName = $('#schemas').val();
+            var tableName = currentTable(opts);
+            layer.alert('<ul class="">' +
+                '<li class="">'+connName+'</li>' +
+                '<li class="">'+schemaName+'</li>' +
+                '<li class="">'+tableName+'</li>' +
+                '</ul>');
+        }
 
         /**
          * 查看当前表的所有列
@@ -108,6 +124,10 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
              */
             function downloadCode(index) {
                 var ticket = $('#templatecodeconfig').data('ticket');
+                if(!ticket){
+                    layer.msg('请先用模板生成代码先');
+                    return ;
+                }
                 //tableTemplateCodePath generate
                 util.downFile(apis.downloadPath,{modul:'generate',baseName: 'tableTemplateCodePath/'+ticket},1000,function () {
                     layer.close(index);
