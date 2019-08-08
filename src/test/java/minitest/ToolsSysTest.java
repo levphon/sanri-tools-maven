@@ -9,7 +9,7 @@ import java.util.Set;
 public class ToolsSysTest {
     @Test
     public void testTranslate(){
-        TranslateCharSequence translateCharSequence = new TranslateCharSequence("我爱你");
+        TranslateCharSequence translateCharSequence = new TranslateCharSequence("我是中国人");
         translateCharSequence.addSegment(Arrays.asList("我","是","中国人"));
         translateCharSequence.addSegment(Arrays.asList("我","是","中国","人"));
 

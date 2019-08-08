@@ -364,6 +364,22 @@
 <!--            <artifactId>protobuf-java</artifactId>-->
 <!--            <version>3.6.1</version>-->
 <!--        </dependency>-->
+        <dependency>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+    <!-- 音频，视频处理-->
+        <dependency>
+            <groupId>it.sauronsoftware</groupId>
+            <artifactId>jave</artifactId>
+            <version>1.0.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/jave-1.0.2.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
@@ -388,22 +404,32 @@
                 </configuration>
             </plugin>
 
-            <!--jetty 插件-->
+            <!-- 内嵌 tomcat 插件-->
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.2.11.v20150529</version>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat8-maven-plugin</artifactId>
+                <version>3.0-r1655215</version>
                 <configuration>
-                    <httpConnector>
-                        <port>8081</port>
-                    </httpConnector>
-                    <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <webApp>
-                        <contextPath>/sanritools</contextPath>
-                    </webApp>
+                    <path>/sanritools</path>
+                    <port>8081</port>
                 </configuration>
             </plugin>
+            <!--jetty 插件-->
+<!--            <plugin>-->
+<!--                <groupId>org.eclipse.jetty</groupId>-->
+<!--                <artifactId>jetty-maven-plugin</artifactId>-->
+<!--                <version>9.2.11.v20150529</version>-->
+<!--                <configuration>-->
+<!--                    <httpConnector>-->
+<!--                        <port>8081</port>-->
+<!--                    </httpConnector>-->
+<!--                    <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>-->
+<!--                    <scanIntervalSeconds>10</scanIntervalSeconds>-->
+<!--                    <webApp>-->
+<!--                        <contextPath>/sanritools</contextPath>-->
+<!--                    </webApp>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
@@ -429,6 +455,23 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>alfresco-public</id>
+            <url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>alfresco-public-snapshots</id>
+            <url>https://artifacts.alfresco.com/nexus/content/groups/public-snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>beardedgeeks-releases</id>
+            <url>http://beardedgeeks.googlecode.com/svn/repository/releases</url>
         </pluginRepository>
     </pluginRepositories>
 

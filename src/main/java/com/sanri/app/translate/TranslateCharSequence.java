@@ -174,14 +174,18 @@ public class TranslateCharSequence {
             //加载子节点可能的路径
             for (TreeModel children : childrens) {
                 loadProbablePaths(children,stack,treeResults);
-                stack.pop();//回溯时候出栈
+                stack.pop();        //回溯时候出栈,加载下一条路径的时候，需要替换当前顶层元素比如 am 和 is
             }
         }
     }
 
 
     /**
-     * 查找树的子节点,到到当前句子完毕
+     * 查找树的子节点,到到当前句子完毕;
+     * 这个会根据当前分词的句子，把翻译词整成一颗树状
+     *      I
+     *   is     am
+     * chinaman     chinaman
      * @param sequ
      * @param parent
      * @param deep
