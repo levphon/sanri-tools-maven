@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天</title>
+
+    <link rel="stylesheet" href="../../css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/fa-font-awesome.min.css" />
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../css/animate.min.css" />
+    <link rel="stylesheet" href="../../css/appbase.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <style>
+        .message-box{
+            padding: 3px;
+            height: 500px;
+            border: 1px dotted #999;
+            overflow-y: scroll;
+        }
+        .message-box .message-item{
+        }
+        .message-box .message-item.message-other{
+
+        }
+        .message-box .message-item.message-self{
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="javascript:;" class="navbar-brand">聊天</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="panel panel-default ">
+        <div class="panel-heading">欢迎 <span id="username"></span></div>
+        <div class="panel-body">
+            <div class="col-xs-3">
+                <ul class="list-group" id="friends">
+
+                </ul>
+            </div>
+            <div class="col-xs-9">
+                <ul class="message-box" id="messagebox">
+
+                </ul>
+                <div class="input-group input-group-sm" id="messageSend">
+                    <input type="text" class="form-control" placeholder="输入你的内容">
+                    <div class="input-group-btn" ><button class="btn btn-primary"><i class="fa fa-send"></i> 发送</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="open-dialog" id="usernamedialog">
+    <div class="form-inline">
+        <div class="form-group">
+            <label for="" class="col-sm-3">用户名</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control input-sm" id="userName" name="userName" placeholder="用户名" spellcheck="false" autocomplete="off" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="messageTemplate">
+    <li class="message-item {{owner}}">
+        <div class="message-meta">
+            <b class="margin-right">{{userName}}</b><span>{{time | dateFormat:'yyyy-MM-dd HH:mm:ss'}}</span>
+        </div>
+        <div class="message-body">{{content}}</div>
+    </li>
+</script>
+
+<script type="text/javascript" src="../../js/requirejs2.1.11-min.js"></script>
+<script type="text/javascript" src="../config.js"></script>
+<script type="text/javascript">
+    require(['bootstrap','chat/chatmain']);
+</script>
+</body>
+</html>
