@@ -2,9 +2,7 @@
 ---
 sanri-tools-maven 是一个开源的用于企业开发的工具包，重点想解决项目开发中一些比较麻烦的问题
 
-可在线生成entity、xml、dao、service、html、js、sql代码，减少70%以上的开发任务
-
-常用的 kafka,zookeeper 数据监控等
+根据表和模板生成相应代码；一些身份证，企业代码，车架号的验证与生成； kafka ,zookeeper 的数据监控等
 
 ---
 
@@ -43,6 +41,11 @@ sanri-tools-maven 是一个开源的用于企业开发的工具包，重点想�
   * 单表使用方案生成
   * 多表使用方案生成
 
+14. 增加聊天功能(可以学下 websocket 怎么用)
+    * 保存历史消息，针对当前 session 标签页而言
+    * 目前只能群聊
+    * 只支持单独 tomcat7 以上部署，用 maven  tomcat 插件是不行的
+
 ## 扩展自己的工具
 
 * 除前端交互 servlet 必须写在 com.sanri.app.servlet 包中以外,其它随便自己定制
@@ -61,37 +64,24 @@ sanri-tools-maven 是一个开源的用于企业开发的工具包，重点想�
 ## 如何搭建环境 
 
 1. 通过git下载源码
+2. 修改部分配置
+   - function.open.properties 用于配置临时文件路径和产生的配置路径 
+   - tools.properties  配置当前环境可以展示哪些工具，里面是所有工具的配置信息
+   - jdbcdefault.properties 项目初始化时加载的默认 jdbc 连接 ,可将你的数据库配置到这里
+   - mapper_jdbc_java.properties  这个是生成 java 实体类时，数据库类型映射到 java 类型
+   - db_mapper_mybatis_type.properties  这个是数据库类型映射到 mybatis 类型的映射表
+3. `mvn jetty:run`
+4. 注意：需要1.8 以上的 jdk ,前端需 chrome es6 以上
 
-2. 修改部分配置，配置项说明在第 6 点
+**或者你想更快的运行起来**
 
-3. jdk 版本需 7 以上
+下载 release 的 tomcat  版本 
 
-4. 除了使用 maven 下载包,还需要依赖三个第三方包,执行如下命令安装 
+https://github.com/sanri1993/sanri-tools-maven/releases
 
-   [下载依赖包](https://github.com/sanri1993/resources/tree/master/sanri-tools-maven)
-
-   ```shell
-   mvn install:install-file -Dfile=d:\IKAnalyzer2012FF_u1.jar -DgroupId=org.wltea.analyzer -DartifactId=IKAnalyzer -Dversion=2012FF_u1 -Dpackaging=jar
-   mvn install:install-file -Dfile=d:\diamond-utils-2.0.5.5.jar -DgroupId=com.taobao.diamond -DartifactId=diamond-utils -Dversion=2.0.5.5 -Dpackaging=jar
-   mvn install:install-file -Dfile=d:\diamond-client-2.0.5.5.jar -DgroupId=com.taobao.diamond -DartifactId=diamond-client -Dversion=2.0.5.5 -Dpackaging=jar
-   ```
-
-5. 启动
-
-```shell
-mvn jetty:run
-```
+然后可以直接像运行 tomcat 项目，直接运行
 
 
-
-6. 重要配置项说明 （所有的配置项都在 com.sanri.config 目录下）
-
-* function.open.properties 用于配置临时文件路径和产生的配置路径 
-
-* tools.properties  配置当前环境可以展示哪些工具，里面是所有工具的配置信息
-* jdbcdefault.properties 项目初始化时加载的默认 jdbc 连接 ,可将你的数据库配置到这里
-* mapper_jdbc_java.properties  这个是生成 java 实体类时，数据库类型映射到 java 类型
-* db_mapper_mybatis_type.properties  这个是数据库类型映射到 mybatis 类型的映射表
 
 7. 常用模板
 
@@ -120,3 +110,9 @@ mvn jetty:run
 
 
 ![](http://m.qpic.cn/psb?/V14Rorzr338mDG/btFWmDMeCvYOpR.JtSc3xokPTxM52TJbTyt3lXH9c*U!/b/dIMAAAAAAAAA&bo=xQRNAgAAAAADJ4w!&rf=viewer_4)
+
+![](http://m.qpic.cn/psb?/V14Rorzr338mDG/C4yyvFkPVjo0BOQA0ol6wiwuUZmyHf9aLklVk1zpa*8!/b/dL4AAAAAAAAA&bo=MQVIAgAAAAADB1w!&rf=viewer_4)
+
+
+
+![](http://m.qpic.cn/psb?/V14Rorzr338mDG/fTZY2ZdA5x4MDCe*x03.c1vfqpcLYS4Sc1NiGKPRq5o!/b/dLYAAAAAAAAA&bo=HgU6AgAAAAADFxE!&rf=viewer_4)
