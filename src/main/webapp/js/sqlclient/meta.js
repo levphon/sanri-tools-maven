@@ -311,6 +311,8 @@ define(['util','sqlclient/code','dialog','ztree'],function(util,code,dialog){
 					util.requestData(api.connectionInfo,{name:connNode.originName},function (connInfo) {
 						if(connInfo.dbType == 'postgresql'){
 							newSqlLine = 'select * from '+metatree.current.table+' limit 10';
+						}else if(connInfo.dbType == 'oracle'){
+							newSqlLine = 'select t.*,rownum from '+metatree.current.table+' t where rownum <= 10';
 						}
 						code.appendSql(newSqlLine);
 						code.executeSqls(metatree.current.conn,metatree.current.db,newSqlLine);

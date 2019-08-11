@@ -14,11 +14,12 @@
     <style>
         .message-box{
             padding: 3px;
-            height: 500px;
-            border: 1px dotted #999;
+            height: 470px;
+            border: 1px dotted #aaa;
             overflow-y: scroll;
         }
         .message-box .message-item{
+
         }
         .message-box .message-item.message-other{
 
@@ -26,7 +27,13 @@
         .message-box .message-item.message-self{
             text-align: right;
         }
-
+        .message-item .message-body {
+            display: inline-block;
+            padding: 5px;
+        }
+        .message-item.message-system .message-body{
+            color: #ff350e;
+        }
     </style>
 </head>
 <body>
@@ -72,6 +79,12 @@
 </div>
 
 <script type="text/html" id="messageTemplate">
+    {{if $userName == 'system'}}
+    <li class="message-item {{owner}} message-system">
+    {{else}}
+    <li class="message-item {{owner}}">
+    {{/if}}
+
     <li class="message-item {{owner}}">
         <div class="message-meta">
             <b class="margin-right">{{userName}}</b><span>{{time | dateFormat:'yyyy-MM-dd HH:mm:ss'}}</span>

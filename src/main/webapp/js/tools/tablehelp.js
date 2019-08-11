@@ -39,7 +39,9 @@ define(['util','dialog','contextMenu','javabrush','xmlbrush'],function (util,dia
             }
             $('#conns').empty().append(htmlCode.join(''));
 
-            $('#conns').change();
+            if(conns.length != 0){
+                $('#conns').change();
+            }
         });
     }
 

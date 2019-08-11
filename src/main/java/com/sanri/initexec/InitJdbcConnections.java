@@ -58,7 +58,10 @@ public class InitJdbcConnections {
             oracleDataSource.setDatabaseName(connectionInfo.getDatabase());
             oracleDataSource.setUser(connectionInfo.getUsername());
             oracleDataSource.setPassword(connectionInfo.getUserpass());
+            oracleDataSource.setDriverType("thin");
+//            oracleDataSource.setTNSEntryName(connectionInfo.getHost()+":"+connectionInfo.getPort()+":"+connectionInfo.getDatabase());
 
+            oracleDataSource.setURL("jdbc:oracle:thin:@"+connectionInfo.getHost()+":"+connectionInfo.getPort()+":"+connectionInfo.getDatabase()+"");
             exConnection = ExConnection.newInstance(connectionInfo.getDbType(),connectionInfo.getDatabase(), oracleDataSource);
         }
         if(exConnection != null) {

@@ -5,7 +5,7 @@
 define(['util'],function(util){
 	var Dialog = function(title){
 		this.title = title;
-	}
+	};
 	
 	//内部方法,用来获取按扭的索引值的
 	function getBtnIndex(btnIndex,_this){
@@ -123,7 +123,15 @@ define(['util'],function(util){
 			}
 			//创建对话框,得到层位置
 			this.index = layer.open(options);
+
+			//如果当前 content 是 jquery 对象，则绑定当前对话框对象在上面
+			if(this.content instanceof jQuery){
+				this.content.data('dialog',this);
+			}
 			return this;
+		},
+		close:function () {
+			layer.close(this.index);
 		}
 	});
 	

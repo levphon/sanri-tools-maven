@@ -1024,6 +1024,12 @@ public class SqlClientServlet extends BaseServlet{
 			keyword = keyword.split(":")[1];
 		}
 
+		//如果为 oracle ,搜索关键字转大写
+		ExConnection exConnection = InitJdbcConnections.CONNECTIONS.get(connName);
+		if(exConnection instanceof OracleExConnection){
+			keyword = keyword.toUpperCase();
+		}
+
 		List<Table> tables = tables(connName, schemaName);
 		if(StringUtils.isBlank(keyword)){
 			//空搜索,列出所有表

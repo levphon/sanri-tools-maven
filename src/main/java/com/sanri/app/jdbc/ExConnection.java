@@ -255,8 +255,8 @@ public abstract class ExConnection {
             public Map<String, Set<String>> handle(ResultSet resultSet) throws SQLException {
                 Map<String, Set<String>> tablePrimaryKeyMap = new HashMap<>();
                 while (resultSet.next()) {
-                    String primaryKey = ObjectUtils.toString(resultSet.getString("primaryKey")).toLowerCase();
-                    String tableName = ObjectUtils.toString(resultSet.getString("tableName")).toLowerCase();
+                    String primaryKey = ObjectUtils.toString(resultSet.getString(2));
+                    String tableName = ObjectUtils.toString(resultSet.getString(1));
                     Set<String> strings = tablePrimaryKeyMap.get(tableName);
                     if(strings == null){
                         strings = new HashSet<>();

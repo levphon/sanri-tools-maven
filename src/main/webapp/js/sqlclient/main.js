@@ -117,9 +117,9 @@ define(['util','dialog','sqlclient/meta','sqlclient/code','sqlclient/output','sq
 		 */
 		function switchDbType(event) {
 			var value = $(this).val();
-			var defaultValues = {mysql:{port:3306,database:'mysql',username:'root'},
-			postgresql:{port:5432,database: 'postgres',username:'postgres'},
-			oracle:{port:1521,database:'orcl',username:'sanri'}};
+			var defaultValues = {mysql:{port:3306,database:'mysql',username:'root',name:'mysqlLocal'},
+			postgresql:{port:5432,database: 'postgres',username:'postgres',name:'postgresqlLocal'},
+			oracle:{port:1521,database:'orcl',username:'sanri',name:'oracleLocal'}};
 
 			$('#newconn').find('input').each(function () {
 				var elname = $(this).attr('name');
